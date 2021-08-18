@@ -23,10 +23,13 @@ import UserLayout from '@/components/layout/UserLayout';
 import BoxCard from '@/components/boxes/BoxCard';
 import useBoxes from '@/hooks/useBoxes';
 import CreateBoxDialog from '@/components/boxes/CreateBoxDialog';
+import DeleteBoxDialog from '@/components/boxes/DeleteBoxDialog';
+import EditBoxDialog from '@/components/boxes/EditBoxDialog';
+import ShareBoxDialog from '@/components/boxes/ShareBoxDialog';
 
 const Boxes: NextPage = (): ReactElement => {
   const { currentUser } = useAuth();
-  const { boxes, createBox } = useBoxes(currentUser);
+  const { boxes, createBox, deleteBox, editBox } = useBoxes(currentUser);
 
   const [view, setView] = useState<string | null>('grid');
   const handleChangeView = (_: any, newView: string | null) => {
@@ -35,16 +38,41 @@ const Boxes: NextPage = (): ReactElement => {
     }
   };
 
-  const [openCreateBoxDialog, setOpenCreateBoxDialog] = useState(false);
-  const handleOpenCreateBoxDialog = () => setOpenCreateBoxDialog(true);
-  const handleCloseCreateBoxDialog = () => setOpenCreateBoxDialog(false);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<string | null>(null);
+  const [openEditDialog, setOpenEditDialog] = useState<string | null>(null);
+  const [openShareDialog, setOpenShareDialog] = useState<string | null>(null);
+
+  const handleOpenCreateDialog = () => setOpenCreateDialog(true);
+  const handleOpenDeleteDialog = (boxId: string) => setOpenDeleteDialog(boxId);
+  const handleOpenEditDialog = (boxId: string) => setOpenEditDialog(boxId);
+  const handleOpenShareDialog = (boxId: string) => setOpenShareDialog(boxId);
+
+  const handleCloseCreateDialog = () => setOpenCreateDialog(false);
+  const handleCloseDeleteDialog = () => setOpenDeleteDialog(null);
+  const handleCloseEditDialog = () => setOpenEditDialog(null);
+  const handleCloseShareDialog = () => setOpenShareDialog(null);
 
   return (
     <UserLayout title="Home">
       <CreateBoxDialog
-        open={openCreateBoxDialog}
-        handleClose={handleCloseCreateBoxDialog}
+        open={openCreateDialog}
+        handleClose={handleCloseCreateDialog}
         createBox={createBox}
+      />
+      <DeleteBoxDialog
+        open={openDeleteDialog}
+        handleClose={handleCloseDeleteDialog}
+        deleteBox={deleteBox}
+      />
+      <EditBoxDialog
+        open={openEditDialog}
+        handleClose={handleCloseEditDialog}
+        editBox={editBox}
+      />
+      <ShareBoxDialog
+        open={openShareDialog}
+        handleClose={handleCloseShareDialog}
       />
       <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
         <AllInboxIcon sx={{ fontSize: '1em', mr: 2 }} />
@@ -61,7 +89,7 @@ const Boxes: NextPage = (): ReactElement => {
             variant="contained"
             startIcon={<AddIcon />}
             sx={{ height: 'fit-content' }}
-            onClick={handleOpenCreateBoxDialog}
+            onClick={handleOpenCreateDialog}
           >
             Create box
           </Button>
@@ -95,7 +123,13 @@ const Boxes: NextPage = (): ReactElement => {
       <Grid container spacing={2} sx={{ mb: 2 }}>
         {boxes?.map((box: any) => (
           <Grid item xs={12} sm={6} lg={3} key={box.key}>
-            <BoxCard box={box.box} />
+            <BoxCard
+              id={box.key}
+              box={box.box}
+              openDeleteDialog={handleOpenDeleteDialog}
+              openEditDialog={handleOpenEditDialog}
+              openShareDialog={handleOpenShareDialog}
+            />
           </Grid>
         ))}
       </Grid>
@@ -107,7 +141,7 @@ const Boxes: NextPage = (): ReactElement => {
           bottom: 25,
           display: { xs: 'flex', lg: 'none' },
         }}
-        onClick={handleOpenCreateBoxDialog}
+        onClick={handleOpenCreateDialog}
       >
         <AddIcon />
       </Fab>

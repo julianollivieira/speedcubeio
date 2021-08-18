@@ -22,7 +22,15 @@ import {
   Share as ShareIcon,
 } from '@material-ui/icons';
 
-const BoxCard = (props: any): ReactElement => {
+interface Props {
+  id: string;
+  box: any;
+  openDeleteDialog: any;
+  openEditDialog: any;
+  openShareDialog: any;
+}
+
+const BoxCard = (props: Props): ReactElement => {
   const [showMenuButtons, setShowMenuButtons] = useState(false);
   const handleShowMenu = () => setShowMenuButtons(true);
   const handleHideMenu = () => setShowMenuButtons(false);
@@ -90,13 +98,13 @@ const BoxCard = (props: any): ReactElement => {
           /500
         </Typography>
         <Box sx={{ display: showMenuButtons ? 'flex' : 'none' }}>
-          <IconButton>
+          <IconButton onClick={() => props.openShareDialog(props.id)}>
             <ShareIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => props.openEditDialog(props.id)}>
             <EditIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => props.openDeleteDialog(props.id)}>
             <DeleteIcon />
           </IconButton>
         </Box>

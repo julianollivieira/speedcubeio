@@ -12,7 +12,13 @@ import ColorPicker from '@/components/general/ColorPicker';
 import boxSchema from '@/validation/box';
 import { useFormik } from 'formik';
 
-const CreateBoxDialog = (props: any): ReactElement => {
+interface Props {
+  open: boolean;
+  handleClose: any;
+  createBox: any;
+}
+
+const CreateBoxDialog = (props: Props): ReactElement => {
   const formik = useFormik({
     initialValues: { name: '', icon: '', color: '#FFF' },
     validationSchema: boxSchema,
@@ -32,7 +38,7 @@ const CreateBoxDialog = (props: any): ReactElement => {
         <DialogTitle>Create a new box</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
           <TextField
-            // autoFocus
+            autoFocus
             name="name"
             id="name"
             label="Name"

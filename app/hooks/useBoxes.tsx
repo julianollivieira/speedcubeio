@@ -33,7 +33,11 @@ const useBoxes = (currentUser: any) => {
       });
   };
 
-  return { boxes, createBox };
+  const deleteBox = (id: string) => {};
+
+  const editBox = (id: string) => {};
+
+  return { boxes, createBox, deleteBox, editBox };
 };
 
 export default useBoxes;
