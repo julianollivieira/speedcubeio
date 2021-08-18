@@ -14,7 +14,6 @@ const Home: NextPage = (): ReactElement => {
         {`Good${getDaypart()}`}, {currentUser?.displayName}
       </Typography>
       <Divider sx={{ my: 3 }} />
-      {/* {JSON.stringify(currentUser)} */}
     </UserLayout>
   );
 };

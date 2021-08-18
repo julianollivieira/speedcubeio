@@ -1,6 +1,6 @@
 import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import {
   Add as AddIcon,
   AllInbox as AllInboxIcon,
@@ -22,10 +22,11 @@ import {
 import UserLayout from '@/components/layout/UserLayout';
 import BoxCard from '@/components/boxes/BoxCard';
 import useBoxes from '@/hooks/useBoxes';
+import CreateBoxDialog from '@/components/boxes/CreateBoxDialog';
 
 const Boxes: NextPage = (): ReactElement => {
   const { currentUser } = useAuth();
-  const { boxes } = useBoxes(currentUser);
+  const { boxes, createBox } = useBoxes(currentUser);
 
   const [view, setView] = useState<string | null>('grid');
   const handleChangeView = (_: any, newView: string | null) => {
@@ -34,8 +35,17 @@ const Boxes: NextPage = (): ReactElement => {
     }
   };
 
+  const [openCreateBoxDialog, setOpenCreateBoxDialog] = useState(false);
+  const handleOpenCreateBoxDialog = () => setOpenCreateBoxDialog(true);
+  const handleCloseCreateBoxDialog = () => setOpenCreateBoxDialog(false);
+
   return (
     <UserLayout title="Home">
+      <CreateBoxDialog
+        open={openCreateBoxDialog}
+        handleClose={handleCloseCreateBoxDialog}
+        createBox={createBox}
+      />
       <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
         <AllInboxIcon sx={{ fontSize: '1em', mr: 2 }} />
         Your boxes
@@ -51,6 +61,7 @@ const Boxes: NextPage = (): ReactElement => {
             variant="contained"
             startIcon={<AddIcon />}
             sx={{ height: 'fit-content' }}
+            onClick={handleOpenCreateBoxDialog}
           >
             Create box
           </Button>
@@ -96,6 +107,7 @@ const Boxes: NextPage = (): ReactElement => {
           bottom: 25,
           display: { xs: 'flex', lg: 'none' },
         }}
+        onClick={handleOpenCreateBoxDialog}
       >
         <AddIcon />
       </Fab>

@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import {
   Card,
   CardActionArea,
@@ -21,7 +21,6 @@ import {
   Delete as DeleteIcon,
   Share as ShareIcon,
 } from '@material-ui/icons';
-import { useState } from 'react';
 
 const BoxCard = (props: any): ReactElement => {
   const [showMenuButtons, setShowMenuButtons] = useState(false);

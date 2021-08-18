@@ -5,10 +5,10 @@ export const getDaypart = () => {
   return hour < 6
     ? 'night'
     : hour < 12
-    ? 'morning'
+    ? ' morning'
     : hour < 18
-    ? 'afternoon'
+    ? ' afternoon'
     : hour < 24
-    ? 'evening'
+    ? ' evening'
     : '';
 };

@@ -36,7 +36,13 @@ const Layout = ({ title, children }: Props): ReactElement => {
       </Head>
       <AppNavigationBar />
       <NavigationDrawer sx={{ display: { xs: 'none', md: 'flex' } }} />
-      <Box sx={{ pt: '64px', pl: { xs: 0, md: '240px' } }}>
+      <Box
+        sx={{
+          pt: '64px',
+          pl: { xs: 0, md: '240px' },
+          pr: { xs: 0, md: '240px' },
+        }}
+      >
         <Box sx={{ pt: 5, px: 2 }}>{children}</Box>
       </Box>
     </>

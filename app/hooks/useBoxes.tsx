@@ -9,7 +9,7 @@ const useBoxes = (currentUser: any) => {
         .app('client')
         .database()
         .ref(`/users/${currentUser.uid}`);
-      ref.once('value').then((snapshot) => {
+      ref.on('value', (snapshot) => {
         let boxesObj = snapshot.child('boxes').val();
         let boxesArr = [];
         for (const property in boxesObj) {
@@ -19,7 +19,21 @@ const useBoxes = (currentUser: any) => {
       });
     }
   }, [currentUser]);
-  return { boxes };
+
+  const createBox = (name: string, icon: string, color: string) => {
+    firebase
+      .app('client')
+      .database()
+      .ref(`/users/${currentUser.uid}/boxes`)
+      .push()
+      .set({
+        name: name,
+        icon: icon,
+        color: color,
+      });
+  };
+
+  return { boxes, createBox };
 };
 
 export default useBoxes;
