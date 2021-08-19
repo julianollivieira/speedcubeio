@@ -11,7 +11,6 @@ const Logo = (props: any): ReactElement => {
           height: 1,
           display: 'flex',
           alignItems: 'center',
-          p: 1,
         }}
       >
         <Box

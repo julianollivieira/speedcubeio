@@ -50,7 +50,7 @@ const AppNavigationBar = (): ReactElement => {
           sx={{ justifyContent: 'space-between', height: '64px' }}
           disableGutters
         >
-          <Logo expanded sx={{ pl: 1, py: 0.5, height: 1 }} />
+          <Logo expanded sx={{ pl: 2, py: 1, height: 1 }} />
           <Box sx={{ height: 1, p: 0.5 }}>
             <IconButton sx={{ height: 1 }} onClick={handleClick}>
               <ProfilePicture

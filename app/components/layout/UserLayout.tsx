@@ -8,9 +8,11 @@ import Head from 'next/head';
 interface Props {
   title?: string;
   children: ReactNode;
+  sx?: any;
 }
 
-const Layout = ({ title, children }: Props): ReactElement => {
+const Layout = (props: Props): ReactElement => {
+  const { title, children, ...other } = props;
   const { currentUser }: { currentUser: any } = useAuth();
 
   if (!currentUser) {
@@ -36,13 +38,7 @@ const Layout = ({ title, children }: Props): ReactElement => {
       </Head>
       <AppNavigationBar />
       <NavigationDrawer sx={{ display: { xs: 'none', md: 'flex' } }} />
-      <Box
-        sx={{
-          pt: '64px',
-          pl: { xs: 0, md: '240px' },
-          pr: { xs: 0, md: '240px' },
-        }}
-      >
+      <Box {...other}>
         <Box sx={{ pt: 5, px: 2 }}>{children}</Box>
       </Box>
     </>

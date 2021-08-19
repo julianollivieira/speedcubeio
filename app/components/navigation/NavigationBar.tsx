@@ -28,7 +28,7 @@ const NavigationBar = (): ReactElement => {
               sx={{ justifyContent: 'space-between', height: '64px' }}
               disableGutters
             >
-              <Logo expanded sx={{ pl: 1, py: 0.5, height: 1 }} />
+              <Logo expanded sx={{ py: 1, height: 1 }} />
               <Box>
                 <Button
                   component={Link}

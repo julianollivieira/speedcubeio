@@ -50,6 +50,7 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Public+Sans:300,400,500,700&display=swap"
         />
+        <link rel="stylesheet" href="/styles/globals.css" />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
