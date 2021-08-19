@@ -23,6 +23,8 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
           mode: prefersDarkMode ? 'dark' : 'light',
           background: {
             // default: '#21252B',
+            default: '#151C24',
+            paper: 'rgb(29, 36, 46)',
           },
           primary: {
             // main: '#3834C7',
@@ -31,9 +33,9 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
           secondary: {
             main: '#873FAD',
           },
-          // typography: {
-          //   fontFamily: 'Public Sans',
-          // },
+        },
+        typography: {
+          fontFamily: 'Public Sans',
         },
       }),
     [prefersDarkMode]
@@ -44,6 +46,10 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
       <Head>
         <title>Speedcube.io</title>
         <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Public+Sans:300,400,500,700&display=swap"
+        />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
