@@ -22,10 +22,13 @@ const NavigationBar = (): ReactElement => {
   return (
     <>
       <ElevationScroll>
-        <AppBar position="fixed" sx={{ bgcolor: 'background.paper' }}>
+        <AppBar position="fixed" sx={{ bgcolor: 'background.default' }}>
           <Container maxWidth="lg">
-            <Toolbar sx={{ justifyContent: 'space-between' }} disableGutters>
-              <Logo expanded />
+            <Toolbar
+              sx={{ justifyContent: 'space-between', height: '64px' }}
+              disableGutters
+            >
+              <Logo expanded sx={{ pl: 1, py: 0.5, height: 1 }} />
               <Box>
                 <Button
                   component={Link}
