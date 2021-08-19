@@ -8,7 +8,14 @@ const Admin: NextPage = (): ReactElement => {
   const { currentUser }: { currentUser: any } = useAuth();
 
   return (
-    <UserLayout title="Admin">
+    <UserLayout
+      title="Admin"
+      sx={{
+        pt: '64px',
+        pl: { xs: 0, md: '240px' },
+        pr: { xs: 0, md: '240px' },
+      }}
+    >
       <Grid container spacing={2}>
         {[1, 2, 3, 4].map((item) => (
           <Grid item xs={12} md={4} key={item}>

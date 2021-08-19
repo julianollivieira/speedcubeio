@@ -22,7 +22,14 @@ import SocialChip from '@/components/general/SocialChip';
 const Profile: NextPage = (): ReactElement => {
   const { currentUser }: { currentUser: any } = useAuth();
   return (
-    <UserLayout title={currentUser?.displayName}>
+    <UserLayout
+      title={currentUser?.displayName}
+      sx={{
+        pt: '64px',
+        pl: { xs: 0, md: '240px' },
+        pr: { xs: 0, md: '240px' },
+      }}
+    >
       <Container maxWidth="lg" sx={{ px: 0 }}>
         <Grid container>
           <Grid
