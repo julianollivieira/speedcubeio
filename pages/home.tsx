@@ -9,7 +9,14 @@ const Home: NextPage = (): ReactElement => {
   const { currentUser }: { currentUser: any } = useAuth();
 
   return (
-    <UserLayout title="Home">
+    <UserLayout
+      title="Home"
+      sx={{
+        pt: '64px',
+        pl: { xs: 0, md: '240px' },
+        pr: { xs: 0, md: '240px' },
+      }}
+    >
       <Typography variant="h3">
         {`Good${getDaypart()}`}, {currentUser?.displayName}
       </Typography>

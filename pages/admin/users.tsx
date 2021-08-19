@@ -6,7 +6,14 @@ import UsersTable from '@/components/admin/UsersTable';
 
 const Users: NextPage = (): ReactElement => {
   return (
-    <UserLayout title="Manage users">
+    <UserLayout
+      title="Manage users"
+      sx={{
+        pt: '64px',
+        pl: { xs: 0, md: '240px' },
+        pr: { xs: 0, md: '240px' },
+      }}
+    >
       <Typography variant="h3">Manage users</Typography>
       <Divider sx={{ my: 3 }} />
       <Card>
