@@ -9,30 +9,30 @@ import {
 } from '@material-ui/core';
 
 interface Props {
-  open: string | null;
+  boxId: string | null;
   handleClose: any;
   deleteBox: any;
 }
 
 const DeleteBoxDialog = (props: Props): ReactElement => {
-  // const handleDelete = () => {
-  //   props.handleClose();
-  //   props.deleteBox('id_here');
-  // };
+  const handleDelete = () => {
+    props.handleClose();
+    props.deleteBox(props.boxId);
+  };
   return (
-    <Dialog open={Boolean(props.open)} onClose={props.handleClose}>
-      <DialogTitle>{props.open}</DialogTitle>
-      {/* <DialogContent>
+    <Dialog open={Boolean(props.boxId)} onClose={props.handleClose}>
+      <DialogTitle>Delete box</DialogTitle>
+      <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Are you sure you want to delete your box?
+          Are you sure you want to delete this box?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose}>Cancel</Button>
-        <Button onClick={handleDelete} autoFocus>
-          Delete
+        <Button onClick={props.handleClose} autoFocus>
+          Cancel
         </Button>
-      </DialogActions> */}
+        <Button onClick={handleDelete}>Delete</Button>
+      </DialogActions>
     </Dialog>
   );
 };

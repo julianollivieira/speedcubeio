@@ -25,7 +25,8 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
             // default: '#21252B',
           },
           primary: {
-            main: '#3834C7',
+            // main: '#3834C7',
+            main: '#2d9c93',
           },
           secondary: {
             main: '#873FAD',

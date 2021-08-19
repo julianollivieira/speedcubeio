@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 interface Props {
-  open: string | null;
+  boxId: string | null;
   handleClose: any;
 }
 
@@ -19,8 +19,8 @@ const ShareBoxDialog = (props: Props): ReactElement => {
   //   props.deleteBox('id_here');
   // };
   return (
-    <Dialog open={Boolean(props.open)} onClose={props.handleClose}>
-      <DialogTitle>{props.open}</DialogTitle>
+    <Dialog open={Boolean(props.boxId)} onClose={props.handleClose}>
+      <DialogTitle>{props.boxId}</DialogTitle>
       {/* <DialogContent>
         <DialogContentText id="alert-dialog-description">
           Are you sure you want to delete your box?

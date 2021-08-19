@@ -12,7 +12,14 @@ const ColorPicker = (props: any): ReactElement => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
       <TextField
         onChange={(event) => {
           setColor(event.target.value);

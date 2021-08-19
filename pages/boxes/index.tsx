@@ -28,7 +28,7 @@ import EditBoxDialog from '@/components/boxes/EditBoxDialog';
 import ShareBoxDialog from '@/components/boxes/ShareBoxDialog';
 
 const Boxes: NextPage = (): ReactElement => {
-  const { currentUser } = useAuth();
+  const { currentUser }: { currentUser: any } = useAuth();
   const { boxes, createBox, deleteBox, editBox } = useBoxes(currentUser);
 
   const [view, setView] = useState<string | null>('grid');
@@ -61,17 +61,17 @@ const Boxes: NextPage = (): ReactElement => {
         createBox={createBox}
       />
       <DeleteBoxDialog
-        open={openDeleteDialog}
+        boxId={openDeleteDialog}
         handleClose={handleCloseDeleteDialog}
         deleteBox={deleteBox}
       />
       <EditBoxDialog
-        open={openEditDialog}
+        boxId={openEditDialog}
         handleClose={handleCloseEditDialog}
         editBox={editBox}
       />
       <ShareBoxDialog
-        open={openShareDialog}
+        boxId={openShareDialog}
         handleClose={handleCloseShareDialog}
       />
       <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>

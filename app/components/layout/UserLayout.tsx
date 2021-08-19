@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Layout = ({ title, children }: Props): ReactElement => {
-  const { currentUser } = useAuth();
+  const { currentUser }: { currentUser: any } = useAuth();
 
   if (!currentUser) {
     return (

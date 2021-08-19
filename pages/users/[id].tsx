@@ -20,7 +20,7 @@ import dayjs from 'dayjs';
 import SocialChip from '@/components/general/SocialChip';
 
 const Profile: NextPage = (): ReactElement => {
-  const { currentUser } = useAuth();
+  const { currentUser }: { currentUser: any } = useAuth();
   return (
     <UserLayout title={currentUser?.displayName}>
       <Container maxWidth="lg" sx={{ px: 0 }}>

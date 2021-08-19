@@ -3,7 +3,7 @@ import { Avatar } from '@material-ui/core';
 import { useAuth } from '@/utils/auth';
 
 const ProfilePicture = (props: any): ReactElement => {
-  const { currentUser } = useAuth();
+  const { currentUser }: { currentUser: any } = useAuth();
   return (
     <Avatar
       alt={`${currentUser?.displayName}'s profile picture`}

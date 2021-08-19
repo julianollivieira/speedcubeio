@@ -5,13 +5,13 @@ import { Grid, Card, CardContent, Typography } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
 
 const Admin: NextPage = (): ReactElement => {
-  const { currentUser } = useAuth();
+  const { currentUser }: { currentUser: any } = useAuth();
 
   return (
     <UserLayout title="Admin">
       <Grid container spacing={2}>
         {[1, 2, 3, 4].map((item) => (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4} key={item}>
             <Card sx={{ p: 2 }}>
               <Typography color="text.secondary" gutterBottom>
                 Total amount of users

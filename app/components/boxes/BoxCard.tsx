@@ -23,11 +23,12 @@ import {
 } from '@material-ui/icons';
 
 interface Props {
-  id: string;
+  id?: string;
   box: any;
-  openDeleteDialog: any;
-  openEditDialog: any;
-  openShareDialog: any;
+  openDeleteDialog?: any;
+  openEditDialog?: any;
+  openShareDialog?: any;
+  noActions?: boolean;
 }
 
 const BoxCard = (props: Props): ReactElement => {
@@ -80,35 +81,37 @@ const BoxCard = (props: Props): ReactElement => {
           </TableContainer>
         </CardContent>
       </CardActionArea>
-      <CardActions
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          height: 50,
-          p: 2,
-        }}
-      >
-        {/* <Typography variant="caption" color="text.secondary">
+      {props.noActions ?? (
+        <CardActions
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            height: 50,
+            p: 2,
+          }}
+        >
+          {/* <Typography variant="caption" color="text.secondary">
           Created on {props.box.creationTime}
         </Typography> */}
-        <Typography variant="caption" color="text.secondary">
-          <Box component="span" sx={{ fontSize: '1.5em' }}>
-            126
+          <Typography variant="caption" color="text.secondary">
+            <Box component="span" sx={{ fontSize: '1.5em' }}>
+              126
+            </Box>
+            /500
+          </Typography>
+          <Box sx={{ display: showMenuButtons ? 'flex' : 'none' }}>
+            <IconButton onClick={() => props.openShareDialog(props.id)}>
+              <ShareIcon />
+            </IconButton>
+            <IconButton onClick={() => props.openEditDialog(props.id)}>
+              <EditIcon />
+            </IconButton>
+            <IconButton onClick={() => props.openDeleteDialog(props.id)}>
+              <DeleteIcon />
+            </IconButton>
           </Box>
-          /500
-        </Typography>
-        <Box sx={{ display: showMenuButtons ? 'flex' : 'none' }}>
-          <IconButton onClick={() => props.openShareDialog(props.id)}>
-            <ShareIcon />
-          </IconButton>
-          <IconButton onClick={() => props.openEditDialog(props.id)}>
-            <EditIcon />
-          </IconButton>
-          <IconButton onClick={() => props.openDeleteDialog(props.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-      </CardActions>
+        </CardActions>
+      )}
     </Card>
   );
 };
