@@ -51,11 +51,15 @@ const useBoxes = (currentUser: any) => {
     icon: string,
     color: string
   ) => {
-    firebase.database().ref(`/users/${currentUser.uid}/boxes/${boxId}`).update({
-      name: name,
-      icon: icon,
-      color: color,
-    });
+    firebase
+      .app('client')
+      .database()
+      .ref(`/users/${currentUser.uid}/boxes/${boxId}`)
+      .update({
+        name: name,
+        icon: icon,
+        color: color,
+      });
   };
 
   return { boxes, createBox, deleteBox, editBox };

@@ -2,19 +2,10 @@ import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
 import { FormatListNumbered as FormatListNumberedIcon } from '@material-ui/icons';
-import {
-  Box,
-  Typography,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Fab,
-} from '@material-ui/core';
+import { Box, Typography, Fab } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
 import useBoxes from '@/hooks/useBoxes';
+import TimeList from '@/components/general/TimeList';
 
 const Timer: NextPage = (): ReactElement => {
   const { currentUser }: { currentUser: any } = useAuth();
@@ -44,7 +35,7 @@ const Timer: NextPage = (): ReactElement => {
           00.00
         </Typography>
       </Box>
-      <Box
+      <TimeList
         sx={{
           position: 'absolute',
           top: 64,
@@ -55,34 +46,7 @@ const Timer: NextPage = (): ReactElement => {
           borderLeft: '1px solid rgba(255, 255, 255, 0.12)',
           display: { xs: 'none', lg: 'flex' },
         }}
-      >
-        <TableContainer>
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell>#</TableCell>
-                <TableCell>Time</TableCell>
-                <TableCell>AO5</TableCell>
-                <TableCell>AO12</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
-                .map((time, index: number) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell>{time}</TableCell>
-                      <TableCell>00.00</TableCell>
-                      <TableCell>00.00</TableCell>
-                      <TableCell>00.00</TableCell>
-                    </TableRow>
-                  );
-                })
-                .reverse()}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+      />
       <Fab
         color="primary"
         sx={{

@@ -19,6 +19,8 @@ import {
   MenuItem,
   ListItemIcon,
 } from '@material-ui/core';
+import Link from 'next/link';
+
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -47,97 +49,100 @@ const BoxCard = (props: Props): ReactElement => {
 
   return (
     <Card onMouseEnter={handleShowMenu} onMouseLeave={handleHideMenu}>
-      <CardActionArea>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <CardHeader
-            sx={{ '& .MuiCardHeader-content': { width: 'calc(100% - 50px)' } }}
-            title={props.box.name}
-            titleTypographyProps={{ noWrap: true }}
-            subheader={`Last used yesterday`}
-            avatar={
-              <Avatar sx={{ bgcolor: props.box.color }} variant="rounded">
-                {props.box.icon}
-              </Avatar>
-            }
-          />
-          <IconButton
-            size="large"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', lg: showMenuButtons ? 'flex' : 'none' },
-            }}
-            onTouchStart={(event) => {
-              event.stopPropagation();
-            }}
-            onMouseDown={(event) => {
-              event.stopPropagation();
-            }}
-            onClick={(event) => {
-              event.stopPropagation();
-              event.preventDefault();
-              handleMenuOpen(event);
-            }}
-          >
-            <MoreVertIcon />
-          </IconButton>
-        </Box>
-        <CardContent>
-          <TableContainer>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>#</TableCell>
-                  <TableCell>Last</TableCell>
-                  <TableCell>Best</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Time</TableCell>
-                  <TableCell>00.00</TableCell>
-                  <TableCell>00.00</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>AO5</TableCell>
-                  <TableCell>00.00</TableCell>
-                  <TableCell>00.00</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>AO12</TableCell>
-                  <TableCell>00.00</TableCell>
-                  <TableCell>00.00</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-
-        {props.noActions ?? (
-          <CardActions
+      <Link href={`/boxes/${props.id}`}>
+        <CardActionArea>
+          <Box
             sx={{
               display: 'flex',
+              alignItems: 'center',
               justifyContent: 'space-between',
-              height: 50,
-              p: 2,
             }}
           >
-            {/* <Typography variant="caption" color="text.secondary">
+            <CardHeader
+              sx={{
+                '& .MuiCardHeader-content': { width: 'calc(100% - 50px)' },
+              }}
+              title={props.box.name}
+              titleTypographyProps={{ noWrap: true }}
+              subheader={`Last used yesterday`}
+              avatar={
+                <Avatar sx={{ bgcolor: props.box.color }} variant="rounded">
+                  {props.box.icon}
+                </Avatar>
+              }
+            />
+            <IconButton
+              size="large"
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', lg: showMenuButtons ? 'flex' : 'none' },
+              }}
+              onTouchStart={(event) => {
+                event.stopPropagation();
+              }}
+              onMouseDown={(event) => {
+                event.stopPropagation();
+              }}
+              onClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                handleMenuOpen(event);
+              }}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          </Box>
+          <CardContent>
+            <TableContainer>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>#</TableCell>
+                    <TableCell>Last</TableCell>
+                    <TableCell>Best</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Time</TableCell>
+                    <TableCell>00.00</TableCell>
+                    <TableCell>00.00</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>AO5</TableCell>
+                    <TableCell>00.00</TableCell>
+                    <TableCell>00.00</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>AO12</TableCell>
+                    <TableCell>00.00</TableCell>
+                    <TableCell>00.00</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </CardContent>
+
+          {props.noActions ?? (
+            <CardActions
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                height: 50,
+                p: 2,
+              }}
+            >
+              {/* <Typography variant="caption" color="text.secondary">
             Created on {props.box.creationTime}
             Created an hour ago
           </Typography> */}
-            <Typography variant="caption" color="text.secondary">
-              <Box component="span" sx={{ fontSize: '1.6em' }}>
-                126
-              </Box>
-              /500
-            </Typography>
-            {/* <Box sx={{ display: showMenuButtons ? 'flex' : 'none' }}>
+              <Typography variant="caption" color="text.secondary">
+                <Box component="span" sx={{ fontSize: '1.6em' }}>
+                  126
+                </Box>
+                /500
+              </Typography>
+              {/* <Box sx={{ display: showMenuButtons ? 'flex' : 'none' }}>
             <IconButton onClick={() => props.openShareDialog(props.id)}>
               <ShareIcon />
             </IconButton>
@@ -148,9 +153,10 @@ const BoxCard = (props: Props): ReactElement => {
               <DeleteIcon />
             </IconButton>
           </Box> */}
-          </CardActions>
-        )}
-      </CardActionArea>
+            </CardActions>
+          )}
+        </CardActionArea>
+      </Link>
       <Menu
         id="box-menu"
         anchorEl={anchorEl}
