@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardContent,
   Grid,
+  Fab,
 } from '@material-ui/core';
 import { Edit as EditIcon, Verified as VerifiedIcon } from '@material-ui/icons';
 import UserLayout from '@/components/layout/UserLayout';
@@ -38,7 +39,11 @@ const Profile: NextPage = (): ReactElement => {
             item
             xs={12}
             lg={2}
-            sx={{ display: 'flex', justifyContent: 'center' }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
             <ProfilePicture
               sx={{
@@ -46,73 +51,87 @@ const Profile: NextPage = (): ReactElement => {
                 width: 150,
                 borderRadius: '50%',
                 border: 1,
-                mb: 5,
+                mb: { xs: 5, lg: 0 },
               }}
             />
           </Grid>
-          <Grid item xs={12} lg={10}>
+          <Grid
+            item
+            xs={12}
+            lg={10}
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
             <Box
               sx={{
-                pl: 3,
                 display: 'flex',
-                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 flexGrow: 1,
               }}
             >
               <Box
                 sx={{
+                  pl: 3,
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: { xs: 'center', lg: 'flex-start' },
+                  flexDirection: 'column',
+                  flexGrow: 1,
                 }}
               >
-                <Typography
-                  variant="h3"
-                  sx={{ fontSize: { xs: '2em', lg: '2.5em' } }}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: { xs: 'center', lg: 'flex-start' },
+                  }}
                 >
-                  {currentUser?.displayName}
+                  <Typography
+                    variant="h3"
+                    sx={{ fontSize: { xs: '2em', lg: '2.5em' } }}
+                  >
+                    {currentUser?.displayName}
+                  </Typography>
+                  <VerifiedIcon sx={{ ml: 2 }} color="info" fontSize="large" />
+                </Box>
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: { xs: 'center', lg: 'flex-start' },
+                  }}
+                >
+                  Joined on the{' '}
+                  {dayjs(currentUser?.metadata.creationTime)
+                    .utc()
+                    .format('MMMM D[th] YYYY')}
                 </Typography>
-                <VerifiedIcon sx={{ ml: 2 }} color="info" fontSize="large" />
-              </Box>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  display: 'flex',
-                  justifyContent: { xs: 'center', lg: 'flex-start' },
-                }}
-              >
-                Joined on the{' '}
-                {dayjs(currentUser?.metadata.creationTime)
-                  .utc()
-                  .format('MMMM D[th] YYYY')}
-              </Typography>
-              <Box
-                sx={{
-                  my: 1,
-                  display: 'flex',
-                  justifyContent: { xs: 'center', lg: 'flex-start' },
-                }}
-              >
-                <Box>
-                  <Chip
-                    label="PRO MEMBER"
-                    color="error"
-                    size="small"
-                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                  />
-                  <Chip
-                    label="BETA TESTER"
-                    color="warning"
-                    size="small"
-                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                  />
+                <Box
+                  sx={{
+                    my: 1,
+                    display: 'flex',
+                    justifyContent: { xs: 'center', lg: 'flex-start' },
+                  }}
+                >
+                  <Box>
+                    <Chip
+                      label="PRO MEMBER"
+                      color="error"
+                      size="small"
+                      sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+                    />
+                    <Chip
+                      label="BETA TESTER"
+                      color="warning"
+                      size="small"
+                      sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+                    />
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-            <Box>
-              <IconButton size="large">
-                <EditIcon />
-              </IconButton>
+              <Box sx={{ pr: 4, display: { xs: 'none', lg: 'flex' } }}>
+                <IconButton size="large">
+                  <EditIcon />
+                </IconButton>
+              </Box>
             </Box>
           </Grid>
         </Grid>
@@ -148,6 +167,17 @@ const Profile: NextPage = (): ReactElement => {
           </Grid>
         </Grid>
       </Container>
+      <Fab
+        color="primary"
+        sx={{
+          position: 'fixed',
+          right: 25,
+          bottom: 25,
+          display: { xs: 'flex', lg: 'none' },
+        }}
+      >
+        <EditIcon />
+      </Fab>
     </UserLayout>
   );
 };
