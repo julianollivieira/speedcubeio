@@ -6,10 +6,12 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
 const convertTimesObjectToArray = (obj: any): Array<any> => {
+  // console.log('obj', obj);
   let arr = [];
   for (const property in obj) {
     arr.push({ key: property, time: obj[property] });
   }
+  // console.log('arr', arr);
   return arr;
 };
 

@@ -42,6 +42,7 @@ const CreateBoxDialog = (props: Props): ReactElement => {
         <DialogContent sx={{ display: 'flex', flexDirection: 'row' }}>
           <Grid container>
             <Grid
+              item
               xs={12}
               lg={6}
               sx={{
@@ -102,6 +103,7 @@ const CreateBoxDialog = (props: Props): ReactElement => {
             >
               {/* <Typography variant="subtitle1">Preview</Typography> */}
               <BoxCard
+                id="testid"
                 box={{
                   name: formik.values.name,
                   color: formik.values.color,

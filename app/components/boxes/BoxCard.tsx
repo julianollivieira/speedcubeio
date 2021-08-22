@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import {
   Card,
   CardActionArea,
@@ -20,6 +20,10 @@ import {
   ListItemIcon,
 } from '@material-ui/core';
 import Link from 'next/link';
+import { useAuth } from '@/utils/auth';
+import useTimes from '@/hooks/useTimes';
+import TimeList from '@/classes/TimeList';
+import { msToTime } from '@/utils/msToTime';
 
 import {
   Edit as EditIcon,
@@ -29,7 +33,7 @@ import {
 } from '@material-ui/icons';
 
 interface Props {
-  id?: string;
+  id: string;
   box: any;
   openDeleteDialog?: any;
   openEditDialog?: any;
@@ -46,6 +50,17 @@ const BoxCard = (props: Props): ReactElement => {
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
+
+  const { currentUser }: { currentUser: any } = useAuth();
+  const { times } = useTimes(currentUser, props.id);
+
+  const [timeList, setTimeList] = useState<TimeList | null>(null);
+  useEffect(() => {
+    if (!times) return;
+    const timesArray = times?.map((time: any) => time.time.time);
+    const timeList: TimeList = new TimeList(timesArray);
+    setTimeList(timeList);
+  }, [times]);
 
   return (
     <Card onMouseEnter={handleShowMenu} onMouseLeave={handleHideMenu}>
@@ -105,18 +120,30 @@ const BoxCard = (props: Props): ReactElement => {
                 <TableBody>
                   <TableRow>
                     <TableCell>Time</TableCell>
-                    <TableCell>00.00</TableCell>
-                    <TableCell>00.00</TableCell>
+                    <TableCell>
+                      {msToTime(timeList?.getLastTime(), true)}
+                    </TableCell>
+                    <TableCell>
+                      {msToTime(timeList?.getBestTime(), true)}
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>AO5</TableCell>
-                    <TableCell>00.00</TableCell>
-                    <TableCell>00.00</TableCell>
+                    <TableCell>
+                      {msToTime(timeList?.getLastAverageOf5(), true)}
+                    </TableCell>
+                    <TableCell>
+                      {msToTime(timeList?.getBestAverageOf5(), true)}
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>AO12</TableCell>
-                    <TableCell>00.00</TableCell>
-                    <TableCell>00.00</TableCell>
+                    <TableCell>
+                      {msToTime(timeList?.getLastAverageOf12(), true)}
+                    </TableCell>
+                    <TableCell>
+                      {msToTime(timeList?.getBestAverageOf12(), true)}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
