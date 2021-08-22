@@ -129,7 +129,7 @@ const Boxes: NextPage = (): ReactElement => {
       </Grid>
       <Grid container spacing={2} sx={{ mb: 2 }}>
         {boxes?.map((box: any) => (
-          <Grid item xs={12} sm={6} lg={3} key={box.key}>
+          <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.key}>
             <BoxCard
               id={box.key}
               box={box.box}
