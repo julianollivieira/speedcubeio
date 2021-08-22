@@ -16,8 +16,10 @@ import {
 import { Edit as EditIcon, Verified as VerifiedIcon } from '@material-ui/icons';
 import UserLayout from '@/components/layout/UserLayout';
 import ProfilePicture from '@/components/general/ProfilePicture';
-import dayjs from 'dayjs';
 import SocialChip from '@/components/general/SocialChip';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 const Profile: NextPage = (): ReactElement => {
   const { currentUser }: { currentUser: any } = useAuth();
@@ -80,9 +82,9 @@ const Profile: NextPage = (): ReactElement => {
                 }}
               >
                 Joined on the{' '}
-                {dayjs(currentUser?.metadata.creationTime).format(
-                  'MMMM D[th] YYYY'
-                )}
+                {dayjs(currentUser?.metadata.creationTime)
+                  .utc()
+                  .format('MMMM D[th] YYYY')}
               </Typography>
               <Box
                 sx={{

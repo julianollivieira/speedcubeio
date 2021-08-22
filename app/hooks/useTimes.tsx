@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import firebase from '@/utils/firebase';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const convertTimesObjectToArray = (obj: any): Array<any> => {
   let arr = [];
@@ -36,7 +39,7 @@ const useTimes = (currentUser: any, boxId: string) => {
         scramble: scramble,
         puzzle: puzzle,
         comment: '',
-        creationTime: dayjs().format(),
+        creationTime: dayjs().utc().format(),
       });
   };
 

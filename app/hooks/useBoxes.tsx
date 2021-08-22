@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import firebase from '@/utils/firebase';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-
 dayjs.extend(utc);
 
 const convertBoxObjectToArray = (obj: any): Array<any> => {

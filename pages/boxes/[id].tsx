@@ -16,8 +16,9 @@ import useBox from '@/hooks/useBox';
 import TimeList from '@/components/general/TimeList';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-
+import utc from 'dayjs/plugin/utc';
 dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 const Box: NextPage = (): ReactElement => {
   const router = useRouter();
@@ -63,7 +64,7 @@ const Box: NextPage = (): ReactElement => {
               justifyContent: { xs: 'center', lg: 'flex-start' },
             }}
           >
-            Created {dayjs(box?.creationTime).fromNow()}
+            Created {dayjs(box?.creationTime).utc().fromNow()}
           </Typography>
         </MUIBox>
       </MUIBox>
