@@ -165,21 +165,10 @@ const BoxCard = (props: Props): ReactElement => {
           </Typography> */}
               <Typography variant="caption" color="text.secondary">
                 <Box component="span" sx={{ fontSize: '1.6em' }}>
-                  126
+                  {timeList?.times.length}
                 </Box>
                 /500
               </Typography>
-              {/* <Box sx={{ display: showMenuButtons ? 'flex' : 'none' }}>
-            <IconButton onClick={() => props.openShareDialog(props.id)}>
-              <ShareIcon />
-            </IconButton>
-            <IconButton onClick={() => props.openEditDialog(props.id)}>
-              <EditIcon />
-            </IconButton>
-            <IconButton onClick={() => props.openDeleteDialog(props.id)}>
-              <DeleteIcon />
-            </IconButton>
-          </Box> */}
             </CardActions>
           )}
         </CardActionArea>
