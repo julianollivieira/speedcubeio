@@ -2,12 +2,13 @@ import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
 import { FormatListNumbered as FormatListNumberedIcon } from '@material-ui/icons';
-import { Box, Typography, Fab } from '@material-ui/core';
+import { Box, Fab } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
 import useBoxes from '@/hooks/useBoxes';
 import TimeList from '@/components/general/TimeList';
+import Timer from '@/components/timer/Timer';
 
-const Timer: NextPage = (): ReactElement => {
+const TimerPage: NextPage = (): ReactElement => {
   const { currentUser } = useAuth();
   const { boxes } = useBoxes(currentUser);
 
@@ -25,15 +26,7 @@ const Timer: NextPage = (): ReactElement => {
           justifyContent: 'center',
         }}
       >
-        <Typography
-          variant="h1"
-          sx={{
-            fontFamily: 'Digit',
-            fontSize: { xs: '8em', lg: '16em' },
-          }}
-        >
-          00.00
-        </Typography>
+        <Timer />
       </Box>
       <TimeList
         sx={{
@@ -62,4 +55,4 @@ const Timer: NextPage = (): ReactElement => {
   );
 };
 
-export default Timer;
+export default TimerPage;
