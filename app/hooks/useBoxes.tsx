@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 import firebase from '@/utils/firebase';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const convertBoxObjectToArray = (obj: any): Array<any> => {
   let arr = [];
@@ -34,6 +38,7 @@ const useBoxes = (currentUser: any) => {
         name: name,
         icon: icon,
         color: color,
+        creationTime: dayjs().utc().format(),
       });
   };
 

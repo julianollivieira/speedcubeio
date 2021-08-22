@@ -2,11 +2,22 @@ import type { NextPage } from 'next';
 import { useAuth } from '@/utils/auth';
 import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
-import { Typography, Divider, Avatar, Grid, Fab } from '@material-ui/core';
+import {
+  Typography,
+  Divider,
+  Avatar,
+  Grid,
+  Fab,
+  Box as MUIBox,
+} from '@material-ui/core';
 import { FormatListNumbered as FormatListNumberedIcon } from '@material-ui/icons';
 import UserLayout from '@/components/layout/UserLayout';
 import useBox from '@/hooks/useBox';
 import TimeList from '@/components/general/TimeList';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 const Box: NextPage = (): ReactElement => {
   const router = useRouter();
@@ -23,21 +34,39 @@ const Box: NextPage = (): ReactElement => {
         pr: { xs: 0, md: '240px', lg: '480px' },
       }}
     >
-      <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar
-          sx={{
-            bgcolor: box?.color,
-            height: 75,
-            width: 75,
-            fontSize: '0.75em',
-            mr: 3,
-          }}
-          variant="rounded"
-        >
-          {box?.icon}
-        </Avatar>
-        {box?.name}
-      </Typography>
+      <MUIBox sx={{ display: 'flex', alignItems: 'center' }}>
+        <Typography variant="h3">
+          <Avatar
+            sx={{
+              bgcolor: box?.color,
+              height: 75,
+              width: 75,
+              fontSize: '0.75em',
+              mr: 3,
+            }}
+            variant="rounded"
+          >
+            {box?.icon}
+          </Avatar>
+        </Typography>
+        <MUIBox sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography
+            variant="h3"
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
+            {box?.name}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              display: 'flex',
+              justifyContent: { xs: 'center', lg: 'flex-start' },
+            }}
+          >
+            Created {dayjs(box?.creationTime).fromNow()}
+          </Typography>
+        </MUIBox>
+      </MUIBox>
       <Divider sx={{ my: 3 }} />
       <Grid container spacing={2}>
         <Grid item xs={12}>
