@@ -13,7 +13,7 @@ import {
   TableCell,
   Typography,
   CardActions,
-  Box,
+  Box as MUIBox,
   Avatar,
   Menu,
   MenuItem,
@@ -24,6 +24,8 @@ import { useAuth } from '@/utils/auth';
 import useTimes from '@/hooks/useTimes';
 import TimeList from '@/classes/TimeList';
 import { msToTime } from '@/utils/msToTime';
+import Box from '@/types/Box';
+import Time from '@/types/Time';
 
 import {
   Edit as EditIcon,
@@ -33,12 +35,11 @@ import {
 } from '@material-ui/icons';
 
 interface Props {
-  id: string;
-  box: any;
-  openDeleteDialog?: any;
-  openEditDialog?: any;
-  openShareDialog?: any;
-  noActions?: boolean;
+  box: Box;
+  openDeleteDialog: (boxId: string) => void;
+  openEditDialog: (boxId: string) => void;
+  openShareDialog: (boxId: string) => void;
+  isPreview?: boolean;
 }
 
 const BoxCard = (props: Props): ReactElement => {
@@ -51,22 +52,23 @@ const BoxCard = (props: Props): ReactElement => {
     setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
 
-  const { currentUser }: { currentUser: any } = useAuth();
-  const { times } = useTimes(currentUser, props.id);
+  const { currentUser } = useAuth();
+  const { times } = useTimes(currentUser, props.box.id);
 
   const [timeList, setTimeList] = useState<TimeList | null>(null);
+
   useEffect(() => {
     if (!times) return;
-    const timesArray = times?.map((time: any) => time.time.time);
+    const timesArray = times?.map((time: Time) => time.time);
     const timeList: TimeList = new TimeList(timesArray);
     setTimeList(timeList);
   }, [times]);
 
   return (
     <Card onMouseEnter={handleShowMenu} onMouseLeave={handleHideMenu}>
-      <Link href={`/boxes/${props.id}`}>
+      <Link href={`/boxes/${props.box.id}`}>
         <CardActionArea>
-          <Box
+          <MUIBox
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -106,7 +108,7 @@ const BoxCard = (props: Props): ReactElement => {
             >
               <MoreVertIcon />
             </IconButton>
-          </Box>
+          </MUIBox>
           <CardContent>
             <TableContainer>
               <Table size="small">
@@ -149,8 +151,7 @@ const BoxCard = (props: Props): ReactElement => {
               </Table>
             </TableContainer>
           </CardContent>
-
-          {props.noActions ?? (
+          {!props.isPreview ? (
             <CardActions
               sx={{
                 display: 'flex',
@@ -159,17 +160,15 @@ const BoxCard = (props: Props): ReactElement => {
                 p: 2,
               }}
             >
-              {/* <Typography variant="caption" color="text.secondary">
-            Created on {props.box.creationTime}
-            Created an hour ago
-          </Typography> */}
               <Typography variant="caption" color="text.secondary">
-                <Box component="span" sx={{ fontSize: '1.6em' }}>
+                <MUIBox component="span" sx={{ fontSize: '1.6em' }}>
                   {timeList?.times.length}
-                </Box>
+                </MUIBox>
                 /500
               </Typography>
             </CardActions>
+          ) : (
+            ''
           )}
         </CardActionArea>
       </Link>
@@ -183,7 +182,7 @@ const BoxCard = (props: Props): ReactElement => {
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            props.openEditDialog(props.id);
+            props.openEditDialog(props.box.id);
           }}
         >
           <ListItemIcon>
@@ -194,7 +193,7 @@ const BoxCard = (props: Props): ReactElement => {
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            props.openDeleteDialog(props.id);
+            props.openDeleteDialog(props.box.id);
           }}
         >
           <ListItemIcon>
@@ -205,7 +204,7 @@ const BoxCard = (props: Props): ReactElement => {
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            props.openShareDialog(props.id);
+            props.openShareDialog(props.box.id);
           }}
         >
           <ListItemIcon>

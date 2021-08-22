@@ -12,7 +12,7 @@ import {
   Typography,
   Divider,
   Grid,
-  Box,
+  Box as MUIBox,
   Button,
   ToggleButtonGroup,
   ToggleButton,
@@ -26,9 +26,10 @@ import CreateBoxDialog from '@/components/boxes/CreateBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/EditBoxDialog';
 import ShareBoxDialog from '@/components/boxes/ShareBoxDialog';
+import Box from '@/types/Box';
 
 const Boxes: NextPage = (): ReactElement => {
-  const { currentUser }: { currentUser: any } = useAuth();
+  const { currentUser } = useAuth();
   const { boxes, createBox, deleteBox, editBox } = useBoxes(currentUser);
 
   const [view, setView] = useState<string | null>('grid');
@@ -102,14 +103,14 @@ const Boxes: NextPage = (): ReactElement => {
           </Button>
         </Grid>
         <Grid item xs={8} lg={4}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-end', width: 1 }}>
+          <MUIBox sx={{ display: 'flex', alignItems: 'flex-end', width: 1 }}>
             <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
             <TextField
               label="Search for boxes"
               variant="standard"
               sx={{ width: 1 }}
             />
-          </Box>
+          </MUIBox>
         </Grid>
         <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <ToggleButtonGroup
@@ -128,11 +129,10 @@ const Boxes: NextPage = (): ReactElement => {
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ mb: 2 }}>
-        {boxes?.map((box: any) => (
-          <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.key}>
+        {boxes?.map((box: Box) => (
+          <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
             <BoxCard
-              id={box.key}
-              box={box.box}
+              box={box}
               openDeleteDialog={handleOpenDeleteDialog}
               openEditDialog={handleOpenEditDialog}
               openShareDialog={handleOpenShareDialog}

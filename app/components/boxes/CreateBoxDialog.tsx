@@ -8,7 +8,6 @@ import {
   Button,
   Box,
   Grid,
-  Typography,
 } from '@material-ui/core';
 import ColorPicker from '@/components/general/ColorPicker';
 import boxSchema from '@/validation/box';
@@ -17,7 +16,7 @@ import BoxCard from '@/components/boxes/BoxCard';
 
 interface Props {
   open: boolean;
-  handleClose: any;
+  handleClose: () => void;
   createBox: any;
 }
 
@@ -102,7 +101,7 @@ const CreateBoxDialog = (props: Props): ReactElement => {
               }}
             >
               {/* <Typography variant="subtitle1">Preview</Typography> */}
-              <BoxCard
+              {/* <BoxCard
                 id="testid"
                 box={{
                   name: formik.values.name,
@@ -110,7 +109,7 @@ const CreateBoxDialog = (props: Props): ReactElement => {
                   icon: formik.values.icon,
                 }}
                 noActions
-              />
+              /> */}
             </Grid>
           </Grid>
         </DialogContent>

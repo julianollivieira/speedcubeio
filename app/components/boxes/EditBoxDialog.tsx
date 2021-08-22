@@ -10,7 +10,7 @@ import {
 
 interface Props {
   boxId: string | null;
-  handleClose: any;
+  handleClose: () => void;
   editBox: any;
 }
 

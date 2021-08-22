@@ -22,9 +22,9 @@ dayjs.extend(utc);
 
 const Box: NextPage = (): ReactElement => {
   const router = useRouter();
-  const { currentUser }: { currentUser: any } = useAuth();
+  const { currentUser } = useAuth();
   const { id } = router.query;
-  const { box }: { box: any } = useBox(currentUser, id);
+  const { box } = useBox(currentUser, id);
 
   return (
     <UserLayout

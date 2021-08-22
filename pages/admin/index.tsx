@@ -5,7 +5,7 @@ import { Grid, Card, CardContent, Typography } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
 
 const Admin: NextPage = (): ReactElement => {
-  const { currentUser }: { currentUser: any } = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <UserLayout

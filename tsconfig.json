@@ -20,7 +20,8 @@
       "@/validation/*": ["app/validation/*"],
       "@/classes/*": ["app/classes/*"],
       "@/public/*": ["public/*"],
-      "@/hooks/*": ["app/hooks/*"]
+      "@/hooks/*": ["app/hooks/*"],
+      "@/types/*": ["app/types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

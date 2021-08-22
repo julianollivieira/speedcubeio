@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import firebase from '@/utils/firebase';
+import Box from '@/types/Box';
 
-const useBoxes = (currentUser: any, boxId: string | string[] | undefined) => {
-  const [box, setBox] = useState<any>(null);
+const useBoxes = (
+  currentUser: firebase.User | null | undefined,
+  boxId: string | string[] | undefined
+) => {
+  const [box, setBox] = useState<Box>();
 
   useEffect(() => {
     if (currentUser) {
@@ -10,7 +14,7 @@ const useBoxes = (currentUser: any, boxId: string | string[] | undefined) => {
         .app('client')
         .database()
         .ref(`/users/${currentUser.uid}/boxes/${boxId}`)
-        .on('value', (snapshot) => {
+        .on('value', (snapshot: firebase.database.DataSnapshot) => {
           setBox(snapshot.val());
         });
     }

@@ -8,7 +8,7 @@ import useBoxes from '@/hooks/useBoxes';
 import TimeList from '@/components/general/TimeList';
 
 const Timer: NextPage = (): ReactElement => {
-  const { currentUser }: { currentUser: any } = useAuth();
+  const { currentUser } = useAuth();
   const { boxes } = useBoxes(currentUser);
 
   return (

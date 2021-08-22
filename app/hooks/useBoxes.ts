@@ -1,19 +1,27 @@
 import { useState, useEffect } from 'react';
 import firebase from '@/utils/firebase';
+import Box from '@/types/Box';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
-const convertBoxObjectToArray = (obj: any): Array<any> => {
-  let arr = [];
-  for (const property in obj) {
-    arr.push({ key: property, box: obj[property] });
+const convertBoxObjectToBoxArray = (boxObject: any): Array<Box> => {
+  let boxArray: Array<Box> = [];
+  for (const property in boxObject) {
+    boxArray.push({
+      id: property,
+      name: boxObject[property].name,
+      icon: boxObject[property].icon,
+      color: boxObject[property].color,
+      creationTime: boxObject[property].creationTime,
+      times: boxObject[property].times,
+    });
   }
-  return arr;
+  return boxArray;
 };
 
-const useBoxes = (currentUser: any) => {
-  const [boxes, setBoxes] = useState<any>(null);
+const useBoxes = (currentUser: firebase.User | null | undefined) => {
+  const [boxes, setBoxes] = useState<Array<Box>>();
 
   useEffect(() => {
     if (currentUser) {
@@ -21,17 +29,17 @@ const useBoxes = (currentUser: any) => {
         .app('client')
         .database()
         .ref(`/users/${currentUser.uid}/boxes`)
-        .on('value', (snapshot) => {
-          setBoxes(convertBoxObjectToArray(snapshot.val()));
+        .on('value', (snapshot: firebase.database.DataSnapshot) => {
+          setBoxes(convertBoxObjectToBoxArray(snapshot.val()));
         });
     }
   }, [currentUser]);
 
-  const createBox = (name: string, icon: string, color: string) => {
+  const createBox = (name: string, icon: string, color: string): Promise<any> =>
     firebase
       .app('client')
       .database()
-      .ref(`/users/${currentUser.uid}/boxes`)
+      .ref(`/users/${currentUser?.uid}/boxes`)
       .push()
       .set({
         name: name,
@@ -39,32 +47,29 @@ const useBoxes = (currentUser: any) => {
         color: color,
         creationTime: dayjs().utc().format(),
       });
-  };
 
-  const deleteBox = (boxId: string) => {
+  const deleteBox = (boxId: string): Promise<any> =>
     firebase
       .app('client')
       .database()
-      .ref(`/users/${currentUser.uid}/boxes/${boxId}`)
+      .ref(`/users/${currentUser?.uid}/boxes/${boxId}`)
       .remove();
-  };
 
   const editBox = (
     boxId: string,
     name: string,
     icon: string,
     color: string
-  ) => {
+  ): Promise<any> =>
     firebase
       .app('client')
       .database()
-      .ref(`/users/${currentUser.uid}/boxes/${boxId}`)
+      .ref(`/users/${currentUser?.uid}/boxes/${boxId}`)
       .update({
         name: name,
         icon: icon,
         color: color,
       });
-  };
 
   return { boxes, createBox, deleteBox, editBox };
 };

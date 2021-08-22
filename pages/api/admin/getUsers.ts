@@ -14,12 +14,8 @@ export default function handler(
     .app('admin')
     .auth()
     .listUsers()
-    .then((listUsersResult: any) => {
-      console.log('Successfully fetched user data:');
-      listUsersResult.users.forEach((userRecord: any) => {
-        console.log(userRecord.toJSON());
-      });
-      res.status(200).json(listUsersResult);
+    .then((listUsersResult: admin.auth.ListUsersResult) => {
+      res.status(200).json(<any>listUsersResult);
     })
     .catch((error: any) => {
       console.log('Error fetching user data:', error);

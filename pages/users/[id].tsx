@@ -23,7 +23,7 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
 const Profile: NextPage = (): ReactElement => {
-  const { currentUser }: { currentUser: any } = useAuth();
+  const { currentUser } = useAuth();
   return (
     <UserLayout
       title={currentUser?.displayName}

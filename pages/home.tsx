@@ -6,7 +6,7 @@ import UserLayout from '@/components/layout/UserLayout';
 import { getDaypart } from '@/utils/time';
 
 const Home: NextPage = (): ReactElement => {
-  const { currentUser }: { currentUser: any } = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <UserLayout

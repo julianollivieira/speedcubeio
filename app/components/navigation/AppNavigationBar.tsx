@@ -27,7 +27,7 @@ const AppNavigationBar = (): ReactElement => {
   const handleClose = () => setAnchorEl(null);
 
   const router = useRouter();
-  const { currentUser, logout }: { currentUser: any; logout: any } = useAuth();
+  const { currentUser, logout } = useAuth();
   const handleLogout = async () => {
     try {
       await logout();

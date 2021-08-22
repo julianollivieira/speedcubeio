@@ -6,14 +6,14 @@ import { useAuth } from '@/utils/auth';
 import Head from 'next/head';
 
 interface Props {
-  title?: string;
+  title?: string | null;
   children: ReactNode;
   sx?: any;
 }
 
 const Layout = (props: Props): ReactElement => {
   const { title, children, ...other } = props;
-  const { currentUser }: { currentUser: any } = useAuth();
+  const { currentUser } = useAuth();
 
   if (!currentUser) {
     return (
