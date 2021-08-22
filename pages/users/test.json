@@ -1,0 +1,33 @@
+{
+  "uid": "3aYyndcUsGZVEbS6ivQj4nONbeF2",
+  "displayName": "starwarsfan571",
+  "photoURL": null,
+  "email": "starwars@starwars.com",
+  "emailVerified": false,
+  "phoneNumber": null,
+  "isAnonymous": false,
+  "tenantId": null,
+  "providerData": [
+    {
+      "uid": "starwars@starwars.com",
+      "displayName": "starwarsfan571",
+      "photoURL": null,
+      "email": "starwars@starwars.com",
+      "phoneNumber": null,
+      "providerId": "password"
+    }
+  ],
+  "apiKey": "AIzaSyBOo8yEK4pjtdiEQNgu1BGZKVZp7r5Y0g0",
+  "appName": "[DEFAULT]",
+  "authDomain": "speedcubeio-dev.firebaseapp.com",
+  "stsTokenManager": {
+    "apiKey": "AIzaSyBOo8yEK4pjtdiEQNgu1BGZKVZp7r5Y0g0",
+    "refreshToken": "ACzBnCgkCWbL3Zhk0UQNifJng4deke6Fqq2drBlOf-6UTXui-z7xAu0SYO_SmzZQXvE-pavfIpkkaqOqR4T9Pat5Cxe-LMAko67VNaMPdbiw_vm0j3JmI_-vxyuC3Xi0dRw-IGvxzLSMVSHF7EwW1JiP2Ka_XAQ4Bz-u85FJwbYx2ftNXAaNa1TUiOKXY-lAmh7f6oJq-w3prEKwNQvTlJF73XnvM4Tiq85XDrscbV6m8yDYbo2l0O0",
+    "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM2NGU4NTQ1NzI5OWQ5NzIxYjczNDQyZGNiNTQ3Y2U2ZDk4NGRmNTkiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoic3RhcndhcnNmYW41NzEiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3BlZWRjdWJlaW8tZGV2IiwiYXVkIjoic3BlZWRjdWJlaW8tZGV2IiwiYXV0aF90aW1lIjoxNjI5MjI2MzU5LCJ1c2VyX2lkIjoiM2FZeW5kY1VzR1pWRWJTNml2UWo0bk9OYmVGMiIsInN1YiI6IjNhWXluZGNVc0daVkViUzZpdlFqNG5PTmJlRjIiLCJpYXQiOjE2MjkyMjYzNTksImV4cCI6MTYyOTIyOTk1OSwiZW1haWwiOiJzdGFyd2Fyc0BzdGFyd2Fycy5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3RhcndhcnNAc3RhcndhcnMuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.lTXMnZZwUw9IDC3ZtF1wAQ4ixWzJOk3bgde5PaEcKsODZGe81MJYC7O7LNunVQJaLnwoxznILVDFyLyx6xrJwCiGzfRRouuDWz77Vl_PqPuSB6wP-tek5n5q9Xc2B8RqSxzaGoCbs7O0wtz6Q4gLbZ7xYSCWzZWjq6B6UqLNnnr0evMXED_lMLjrDo6AS9e3qgaDjHwLMM6hJlanr6aUvmsvTz4R1l3tUykB0j2IHkHOYDvWEJtWsa8A7Cb6uQAewauhHzPYSJuyzxUuu5sZ-OWYi7F0ut09yqcmdeb50w0hBolBqKBkreg9edixx6j-Wla9xvF4hwx3CJ4xHW18Rg",
+    "expirationTime": 1629229962788
+  },
+  "redirectEventId": null,
+  "lastLoginAt": "1629226359539",
+  "createdAt": "1629141432635",
+  "multiFactor": { "enrolledFactors": [] }
+}
