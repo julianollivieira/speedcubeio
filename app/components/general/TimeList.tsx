@@ -14,9 +14,9 @@ import Time from '@/types/Time';
 
 const TimeList = (props: any): ReactElement => {
   const { boxId, ...other } = props;
-  const { currentUser } = useAuth();
-  const { times } = useTimes(currentUser, boxId);
-  console.log(times);
+  // const { currentUser } = useAuth();
+  // const { times } = useTimes(currentUser, boxId);
+  // console.log(times);
 
   return (
     <Box {...other}>
@@ -31,7 +31,7 @@ const TimeList = (props: any): ReactElement => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {times
+            {/* {times
               ?.map((time: Time, index: number) => {
                 return (
                   <TableRow key={index}>
@@ -42,7 +42,7 @@ const TimeList = (props: any): ReactElement => {
                   </TableRow>
                 );
               })
-              .reverse()}
+              .reverse()} */}
           </TableBody>
         </Table>
       </TableContainer>

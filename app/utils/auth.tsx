@@ -6,21 +6,27 @@ import {
   useEffect,
   ReactElement,
 } from 'react';
-import firebase from '@/utils/firebase';
+import {
+  getAuth,
+  User,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  UserCredential,
+  updateProfile,
+  Unsubscribe,
+} from 'firebase/auth';
+import app from '@/utils/firebase';
 
-const auth = firebase.app('client').auth();
+const auth = getAuth(app);
 
 interface Context {
-  currentUser: firebase.User | null | undefined;
+  currentUser: User | null | undefined;
   signup: (
     displayName: string,
     email: string,
     password: string
-  ) => Promise<void | firebase.auth.UserCredential | undefined>;
-  login: (
-    email: string,
-    password: string
-  ) => Promise<firebase.auth.UserCredential>;
+  ) => Promise<void | UserCredential | undefined>;
+  login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
 }
 
@@ -29,28 +35,24 @@ const AuthContext = createContext<Context>(undefined!);
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
-  const [currentUser, setCurrentUser] = useState<firebase.User | null>();
+  const [currentUser, setCurrentUser] = useState<User | null>();
 
   const signup = (
     displayName: string,
     email: string,
     password: string
-  ): Promise<void | firebase.auth.UserCredential | undefined> => {
-    return auth.createUserWithEmailAndPassword(email, password).then(() => {
-      const user: firebase.User | null = firebase
-        .app('client')
-        .auth().currentUser; // ?
-      return user?.updateProfile({
-        displayName: displayName,
-      });
+  ): Promise<void | UserCredential | undefined> => {
+    return createUserWithEmailAndPassword(auth, email, password).then(() => {
+      if (auth.currentUser) {
+        return updateProfile(auth.currentUser, {
+          displayName: displayName,
+        });
+      }
     });
   };
 
-  const login = (
-    email: string,
-    password: string
-  ): Promise<firebase.auth.UserCredential> => {
-    return auth.signInWithEmailAndPassword(email, password);
+  const login = (email: string, password: string): Promise<UserCredential> => {
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const logout = (): Promise<void> => {
@@ -58,12 +60,11 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
   };
 
   useEffect(() => {
-    const unsubscribe: firebase.Unsubscribe = auth.onAuthStateChanged(
-      (user: firebase.User | null) => {
+    const unsubscribe: Unsubscribe = auth.onAuthStateChanged(
+      (user: User | null) => {
         setCurrentUser(user);
       }
     );
-
     return unsubscribe;
   }, []);
 

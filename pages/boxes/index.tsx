@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
 import BoxCard from '@/components/boxes/BoxCard';
-import useBoxes from '@/hooks/useBoxes';
+// import useBoxes from '@/hooks/useBoxes';
 import CreateBoxDialog from '@/components/boxes/CreateBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/EditBoxDialog';
@@ -30,7 +30,23 @@ import Box from '@/types/Box';
 
 const Boxes: NextPage = (): ReactElement => {
   const { currentUser } = useAuth();
-  const { boxes, createBox, deleteBox, editBox } = useBoxes(currentUser);
+
+  const [boxes, setBoxes] = useState([]);
+
+  if (currentUser) {
+    const requestHeaders: HeadersInit = new Headers();
+    currentUser?.getIdToken().then((idToken) => {
+      requestHeaders.set('Authorization', idToken);
+      fetch('/api/boxes', { headers: requestHeaders })
+        .then((response: Response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    });
+  }
 
   const [view, setView] = useState<string | null>('grid');
   const handleChangeView = (_: any, newView: string | null) => {
@@ -63,7 +79,7 @@ const Boxes: NextPage = (): ReactElement => {
         pr: { xs: 0, md: '240px' },
       }}
     >
-      <CreateBoxDialog
+      {/* <CreateBoxDialog
         open={openCreateDialog}
         handleClose={handleCloseCreateDialog}
         createBox={createBox}
@@ -81,7 +97,7 @@ const Boxes: NextPage = (): ReactElement => {
       <ShareBoxDialog
         boxId={openShareDialog}
         handleClose={handleCloseShareDialog}
-      />
+      /> */}
       <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
         <AllInboxIcon sx={{ fontSize: '1em', mr: 2 }} />
         Your boxes
@@ -129,7 +145,7 @@ const Boxes: NextPage = (): ReactElement => {
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ mb: 2 }}>
-        {boxes?.map((box: Box) => (
+        {/* {boxes?.map((box: Box) => (
           <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
             <BoxCard
               box={box}
@@ -138,7 +154,7 @@ const Boxes: NextPage = (): ReactElement => {
               openShareDialog={handleOpenShareDialog}
             />
           </Grid>
-        ))}
+        ))} */}
       </Grid>
       <Fab
         color="primary"

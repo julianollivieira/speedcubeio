@@ -1,10 +1,4 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
-import 'firebase/storage';
-
-let apps = firebase.apps.map((e) => e.name);
-console.log('firebase.apps', apps);
+import { FirebaseApp, getApps, initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -16,8 +10,12 @@ const firebaseConfig = {
   databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
 };
 
-if (!apps.includes('client')) {
-  firebase.initializeApp(firebaseConfig, 'client');
-}
+const apps: FirebaseApp[] = getApps();
+const appNames = apps.map((app: FirebaseApp) => app.name);
+console.log('📔 App names:', appNames);
 
-export default firebase;
+const app: FirebaseApp =
+  apps.find((app: FirebaseApp) => app.name === 'client') ??
+  initializeApp(firebaseConfig, 'client');
+
+export default app;

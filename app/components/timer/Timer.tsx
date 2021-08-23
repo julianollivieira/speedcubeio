@@ -2,7 +2,11 @@ import { ReactElement, useEffect, useState } from 'react';
 import { Typography } from '@material-ui/core';
 import TimerClass from '@/classes/Timer';
 
-const Timer = (): ReactElement => {
+interface Props {
+  onTimeFinished: (time: number) => void;
+}
+
+const Timer = (props: Props): ReactElement => {
   const [time, setTime] = useState<number>(0);
   const [readying, setReadying] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
@@ -28,10 +32,7 @@ const Timer = (): ReactElement => {
         setReady(false);
         setReadying(false);
       },
-      onStop: (time: any) => {
-        // props.onTimeFinished(time);
-        console.log(time);
-      },
+      onStop: props.onTimeFinished,
     });
 
     const keyDown = (event: any) => {

@@ -21,7 +21,8 @@
       "@/classes/*": ["app/classes/*"],
       "@/public/*": ["public/*"],
       "@/hooks/*": ["app/hooks/*"],
-      "@/types/*": ["app/types/*"]
+      "@/types/*": ["app/types/*"],
+      "@/middleware/*": ["app/middleware/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

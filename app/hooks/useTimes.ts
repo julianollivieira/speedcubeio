@@ -18,30 +18,29 @@ const convertTimeObjectToTimeArray = (timeObject: any): Array<Time> => {
   return timeArray;
 };
 
-const useTimes = (
-  currentUser: firebase.User | null | undefined,
-  boxId: string
-) => {
+const useTimes = (currentUser: firebase.User | null | undefined) => {
   const [times, setTimes] = useState<Array<Time>>();
 
-  useEffect(() => {
-    if (currentUser) {
-      firebase
-        .app('client')
-        .database()
-        .ref(`/users/${currentUser.uid}/boxes/${boxId}/times`)
-        .on('value', (snapshot: firebase.database.DataSnapshot) => {
-          setTimes(convertTimeObjectToTimeArray(snapshot.val()));
-        });
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     firebase
+  //       .app('client')
+  //       .database()
+  //       .ref(`/users/${currentUser.uid}/boxes/${boxId}/times`)
+  //       .on('value', (snapshot: firebase.database.DataSnapshot) => {
+  //         setTimes(convertTimeObjectToTimeArray(snapshot.val()));
+  //       });
+  //   }
+  // }, [currentUser]);
 
   const createTime = (
+    boxId: string,
     time: number,
     scramble: string,
     puzzle: string
-  ): Promise<any> =>
-    firebase
+  ): Promise<any> => {
+    console.log(boxId);
+    return firebase
       .app('client')
       .database()
       .ref(`/users/${currentUser?.uid}/boxes/${boxId}/times`)
@@ -53,8 +52,9 @@ const useTimes = (
         comment: '',
         creationTime: dayjs().utc().format(),
       });
+  };
 
-  const deleteTime = (timeId: string): Promise<any> =>
+  const deleteTime = (boxId: string, timeId: string): Promise<any> =>
     firebase
       .app('client')
       .database()
@@ -62,6 +62,7 @@ const useTimes = (
       .remove();
 
   const editTime = (
+    boxId: string,
     timeId: string,
     time: number,
     scramble: string,
