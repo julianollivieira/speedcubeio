@@ -1,6 +1,6 @@
 import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import {
   Add as AddIcon,
   AllInbox as AllInboxIcon,
@@ -31,22 +31,20 @@ import Box from '@/types/Box';
 const Boxes: NextPage = (): ReactElement => {
   const { currentUser } = useAuth();
 
-  const [boxes, setBoxes] = useState([]);
+  const [boxes, setBoxes] = useState<Array<Box>>([]);
 
-  if (currentUser) {
+  useEffect(() => {
     const requestHeaders: HeadersInit = new Headers();
     currentUser?.getIdToken().then((idToken) => {
       requestHeaders.set('Authorization', idToken);
       fetch('/api/boxes', { headers: requestHeaders })
-        .then((response: Response) => {
-          console.log(response);
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
+        .then((response: Response) => response.json())
+        .then((boxes: Array<Box>) => {
+          setBoxes(boxes);
+          console.log('📦 Boxes:', boxes);
         });
     });
-  }
+  }, [currentUser]);
 
   const [view, setView] = useState<string | null>('grid');
   const handleChangeView = (_: any, newView: string | null) => {
