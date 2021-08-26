@@ -33,6 +33,12 @@ class TimeList {
     return Math.min(...this.times);
   }
 
+  // Get the worst time
+  public getWorstTime(): number | null {
+    if (this.times.length < 1) return null;
+    return Math.max(...this.times);
+  }
+
   // Get the last time
   public getLastTime(): number | null {
     if (this.times.length < 1) return null;
@@ -48,6 +54,15 @@ class TimeList {
     return Math.min(...timesWithoutNull);
   }
 
+  // Get the worst average of 5
+  public getWorstAverageOf5(): number | null {
+    if (this.ao5s.length < 4) return null;
+    let timesWithoutNull = <Array<number>>(
+      this.ao5s.filter((time) => time !== null)
+    );
+    return Math.max(...timesWithoutNull);
+  }
+
   // Get the last average of 5
   public getLastAverageOf5(): number | null {
     if (this.ao5s.length < 4) return null;
@@ -61,6 +76,15 @@ class TimeList {
       this.ao12s.filter((time) => time !== null)
     );
     return Math.min(...timesWithoutNull);
+  }
+
+  // Get the best average of 12
+  public getWorstAverageOf12(): number | null {
+    if (this.ao12s.length < 11) return null;
+    let timesWithoutNull = <Array<number>>(
+      this.ao12s.filter((time) => time !== null)
+    );
+    return Math.max(...timesWithoutNull);
   }
 
   // Get the last average of 12

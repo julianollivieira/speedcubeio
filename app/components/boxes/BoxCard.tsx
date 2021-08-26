@@ -5,12 +5,6 @@ import {
   CardHeader,
   CardContent,
   IconButton,
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
   Typography,
   CardActions,
   Box as MUIBox,
@@ -22,9 +16,9 @@ import {
 import Link from 'next/link';
 import { useAuth } from '@/utils/auth';
 import TimeList from '@/classes/TimeList';
-import { msToTime } from '@/utils/msToTime';
 import Box from '@/types/Box';
 import Time from '@/types/Time';
+import BoxSummaryTable from '@/components/boxes/BoxSummaryTable';
 
 import {
   Edit as EditIcon,
@@ -110,46 +104,7 @@ const BoxCard = (props: Props): ReactElement => {
             </IconButton>
           </MUIBox>
           <CardContent>
-            <TableContainer>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>#</TableCell>
-                    <TableCell>Last</TableCell>
-                    <TableCell>Best</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>Time</TableCell>
-                    <TableCell>
-                      {msToTime(timeList?.getLastTime(), true)}
-                    </TableCell>
-                    <TableCell>
-                      {msToTime(timeList?.getBestTime(), true)}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>AO5</TableCell>
-                    <TableCell>
-                      {msToTime(timeList?.getLastAverageOf5(), true)}
-                    </TableCell>
-                    <TableCell>
-                      {msToTime(timeList?.getBestAverageOf5(), true)}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>AO12</TableCell>
-                    <TableCell>
-                      {msToTime(timeList?.getLastAverageOf12(), true)}
-                    </TableCell>
-                    <TableCell>
-                      {msToTime(timeList?.getBestAverageOf12(), true)}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <BoxSummaryTable timeList={timeList} />
           </CardContent>
           {!props.isPreview ? (
             <CardActions

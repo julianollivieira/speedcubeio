@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { useAuth } from '@/utils/auth';
 import { useRouter } from 'next/router';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import {
   Typography,
   Divider,
@@ -13,7 +13,10 @@ import {
 import { FormatListNumbered as FormatListNumberedIcon } from '@material-ui/icons';
 import UserLayout from '@/components/layout/UserLayout';
 import useBox from '@/hooks/useBox';
-import TimeList from '@/components/general/TimeList';
+import TimeListComponent from '@/components/general/TimeList';
+import TimeList from '@/classes/TimeList';
+import Time from '@/types/Time';
+import BoxSummaryCard from '@/components/boxes/BoxSummaryCard';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
@@ -25,6 +28,15 @@ const Box: NextPage = (): ReactElement => {
   const { currentUser } = useAuth();
   const { id } = router.query;
   const { box } = useBox(currentUser, id as string);
+
+  const [timeList, setTimeList] = useState<TimeList | null>(null);
+  useEffect(() => {
+    // if (!box) return;
+    if (!box?.times) return;
+    const timesArray = box.times.map((time: Time) => time.time);
+    const timeList: TimeList = new TimeList(timesArray);
+    setTimeList(timeList);
+  }, [box]);
 
   return (
     <UserLayout
@@ -70,8 +82,13 @@ const Box: NextPage = (): ReactElement => {
       </MUIBox>
       <Divider sx={{ my: 3 }} />
       <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} md={12} xl={6}>
+          <BoxSummaryCard timeList={timeList} />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
-          <TimeList
+          <TimeListComponent
             boxId={id}
             sx={{
               position: 'absolute',
