@@ -21,12 +21,17 @@ interface Props {
 }
 
 const CreateBoxDialog = (props: Props): ReactElement => {
+  const handleClose = () => {
+    formik.resetForm();
+    props.handleClose();
+  };
+
   const formik = useFormik({
     initialValues: { name: '', icon: '', color: '#FFF' },
     validationSchema: boxSchema,
     onSubmit: async (values) => {
       try {
-        props.handleClose();
+        handleClose();
         props.createBox(values.name, values.icon, values.color);
       } catch (error) {
         console.log('error', error);
@@ -35,7 +40,7 @@ const CreateBoxDialog = (props: Props): ReactElement => {
   });
 
   return (
-    <Dialog open={props.open} onClose={props.handleClose}>
+    <Dialog open={props.open} onClose={handleClose}>
       <Box component="form" onSubmit={formik.handleSubmit}>
         <DialogTitle>Create a new box</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -43,7 +48,6 @@ const CreateBoxDialog = (props: Props): ReactElement => {
             <Grid
               item
               xs={12}
-              lg={6}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -87,34 +91,10 @@ const CreateBoxDialog = (props: Props): ReactElement => {
                 }}
               />
             </Grid>
-            <Grid
-              xs={12}
-              lg={6}
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                // justifyContent: 'center',
-                pt: { xs: 2, lg: 0 },
-                pl: { xs: 0, lg: 3 },
-                mt: 1,
-              }}
-            >
-              {/* <Typography variant="subtitle1">Preview</Typography> */}
-              {/* <BoxCard
-                id="testid"
-                box={{
-                  name: formik.values.name,
-                  color: formik.values.color,
-                  icon: formik.values.icon,
-                }}
-                noActions
-              /> */}
-            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Cancel</Button>
           <Button type="submit">Create</Button>
         </DialogActions>
       </Box>

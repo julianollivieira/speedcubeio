@@ -24,7 +24,7 @@ const Box: NextPage = (): ReactElement => {
   const router = useRouter();
   const { currentUser } = useAuth();
   const { id } = router.query;
-  const { box } = useBox(currentUser, id);
+  const { box } = useBox(currentUser, id as string);
 
   return (
     <UserLayout

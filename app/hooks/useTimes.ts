@@ -1,6 +1,5 @@
 import { getDatabase, push, ref, remove, update } from 'firebase/database';
 import { User } from 'firebase/auth';
-import Time from '@/types/Time';
 import app from '@/utils/firebase/client';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -8,11 +7,16 @@ dayjs.extend(utc);
 
 const database = getDatabase(app);
 
-const useTimes = (currentUser: User | null | undefined, boxId: string) => {
-  const createTime = (time: number, puzzle: string, comment: string): void => {
+const useTimes = (currentUser: User | null | undefined) => {
+  const createTime = (
+    boxId: string,
+    time: number,
+    puzzle: string,
+    comment: string
+  ): void => {
     const reference = ref(
       database,
-      `/users/${currentUser?.uid}/boxes/${boxId}`
+      `/users/${currentUser?.uid}/boxes/${boxId}/times`
     );
     push(reference, {
       time: time,

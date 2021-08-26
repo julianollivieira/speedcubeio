@@ -57,8 +57,8 @@ const BoxCard = (props: Props): ReactElement => {
 
   const [timeList, setTimeList] = useState<TimeList | null>(null);
   useEffect(() => {
-    if (!box) return;
-    if (!box.times) return;
+    // if (!box) return;
+    if (!box?.times) return;
     const timesArray = box.times.map((time: Time) => time.time);
     const timeList: TimeList = new TimeList(timesArray);
     setTimeList(timeList);

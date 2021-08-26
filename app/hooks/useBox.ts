@@ -3,13 +3,15 @@ import { User } from 'firebase/auth';
 import app from '@/utils/firebase/client';
 import Box from '@/types/Box';
 import { useEffect, useState } from 'react';
-import Time from '@/types/Time';
 import { convertTimeObjectToTimeArray } from '@/utils/convert';
 
 const database = getDatabase(app);
 
-const useBox = (currentUser: User | null | undefined, initialBoxId: string) => {
-  const [boxId, setBoxId] = useState<string>(initialBoxId);
+const useBox = (
+  currentUser: User | null | undefined,
+  initialBoxId: string | null
+) => {
+  const [boxId, setBoxId] = useState<string | null>(initialBoxId);
   const [box, setBox] = useState<Box>();
 
   useEffect(() => {
@@ -26,7 +28,9 @@ const useBox = (currentUser: User | null | undefined, initialBoxId: string) => {
       );
       onValue(reference, (snapshot: DataSnapshot) => {
         const box = snapshot.val();
-        box.times = convertTimeObjectToTimeArray(box.times);
+        if (box) {
+          box.times = convertTimeObjectToTimeArray(box.times);
+        }
         setBox(box);
       });
     }

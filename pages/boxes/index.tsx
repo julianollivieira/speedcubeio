@@ -30,7 +30,7 @@ import useBoxes from '@/hooks/useBoxes';
 
 const Boxes: NextPage = (): ReactElement => {
   const { currentUser } = useAuth();
-  const { boxes } = useBoxes(currentUser);
+  const { boxes, createBox, editBox, deleteBox } = useBoxes(currentUser);
 
   const [view, setView] = useState<string | null>('grid');
   const handleChangeView = (_: any, newView: string | null) => {
@@ -63,7 +63,7 @@ const Boxes: NextPage = (): ReactElement => {
         pr: { xs: 0, md: '240px' },
       }}
     >
-      {/* <CreateBoxDialog
+      <CreateBoxDialog
         open={openCreateDialog}
         handleClose={handleCloseCreateDialog}
         createBox={createBox}
@@ -81,7 +81,7 @@ const Boxes: NextPage = (): ReactElement => {
       <ShareBoxDialog
         boxId={openShareDialog}
         handleClose={handleCloseShareDialog}
-      /> */}
+      />
       <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
         <AllInboxIcon sx={{ fontSize: '1em', mr: 2 }} />
         Your boxes

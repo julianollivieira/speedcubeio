@@ -11,8 +11,8 @@ import {
   OutlinedInput,
 } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
-
 import useBoxes from '@/hooks/useBoxes';
+import useTimes from '@/hooks/useTimes';
 import { useAuth } from '@/utils/auth';
 import TimeList from '@/components/general/TimeList';
 import Timer from '@/components/timer/Timer';
@@ -23,28 +23,29 @@ import { useEffect } from 'react';
 dayjs.extend(utc);
 
 const TimerPage: NextPage = (): ReactElement => {
+  const [currentBoxId, setCurrentBoxId] = useState<string>('');
   const { currentUser } = useAuth();
   const { boxes } = useBoxes(currentUser);
-  console.log('📦', boxes);
 
-  const [currentBoxId, setCurrentBoxId] = useState<string | null>(null);
+  console.log(`[RR 💫]   USER = ${currentUser?.uid}   BOX = ${currentBoxId}`);
+
+  const { createTime } = useTimes(currentUser);
 
   useEffect(() => {
     if (currentUser && boxes !== undefined) {
-      if (currentBoxId === null) {
+      if (currentBoxId === '') {
         setCurrentBoxId(boxes[0].id);
       }
     }
   }, [boxes]);
 
   const handleCurrentBoxIdChange = (event: any) => {
-    console.log('🆔 BOX CHANGE', event.target.value);
     setCurrentBoxId(event.target.value);
   };
 
   const handleTimeSave = (time: number) => {
     console.log(time);
-    console.log('currentBoxId: ', currentBoxId);
+    createTime('test', time, '3b3b3', 'comment');
   };
 
   return (
@@ -94,7 +95,9 @@ const TimerPage: NextPage = (): ReactElement => {
               }
             >
               {boxes?.map((box: Box) => (
-                <MenuItem value={box.id}>{box.name}</MenuItem>
+                <MenuItem value={box.id} key={box.id}>
+                  {box.name}
+                </MenuItem>
               ))}
               {/* <MenuItem value={10}>Example 10</MenuItem>
               <MenuItem value={20}>Example 20</MenuItem> */}

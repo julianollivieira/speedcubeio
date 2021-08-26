@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useAuth } from '@/utils/auth';
 import {
   Box,
@@ -9,13 +9,24 @@ import {
   TableRow,
   TableCell,
 } from '@material-ui/core';
+import TimeList from '@/classes/TimeList';
 import useBox from '@/hooks/useBox';
 import Time from '@/types/Time';
+import { msToTime } from '@/utils/msToTime';
 
-const TimeList = (props: any): ReactElement => {
+const TimeListComponent = (props: any): ReactElement => {
   const { boxId, ...other } = props;
   const { currentUser } = useAuth();
   const { box } = useBox(currentUser, boxId);
+
+  const [timeList, setTimeList] = useState<TimeList | null>(null);
+  useEffect(() => {
+    // if (!box) return;
+    if (!box?.times) return;
+    const timesArray = box.times.map((time: Time) => time.time);
+    const timeList: TimeList = new TimeList(timesArray);
+    setTimeList(timeList);
+  }, [box]);
 
   return (
     <Box {...other}>
@@ -30,14 +41,18 @@ const TimeList = (props: any): ReactElement => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {box?.times
-              ?.map((time: Time, index: number) => {
+            {timeList?.times
+              ?.map((time: number, index: number) => {
                 return (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{time.time}</TableCell>
-                    <TableCell>00.00</TableCell>
-                    <TableCell>00.00</TableCell>
+                    <TableCell>{msToTime(time, true)}</TableCell>
+                    <TableCell>
+                      {msToTime(timeList.ao5s[index], true)}
+                    </TableCell>
+                    <TableCell>
+                      {msToTime(timeList.ao12s[index], true)}
+                    </TableCell>
                   </TableRow>
                 );
               })
@@ -49,4 +64,4 @@ const TimeList = (props: any): ReactElement => {
   );
 };
 
-export default TimeList;
+export default TimeListComponent;
