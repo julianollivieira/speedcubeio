@@ -3,4 +3,5 @@ export default interface Time {
   time: number;
   puzzle: string;
   comment: string;
+  creationTime: string;
 }

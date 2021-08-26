@@ -21,30 +21,16 @@ import {
 } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
 import BoxCard from '@/components/boxes/BoxCard';
-// import useBoxes from '@/hooks/useBoxes';
 import CreateBoxDialog from '@/components/boxes/CreateBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/EditBoxDialog';
 import ShareBoxDialog from '@/components/boxes/ShareBoxDialog';
 import Box from '@/types/Box';
+import useBoxes from '@/hooks/useBoxes';
 
 const Boxes: NextPage = (): ReactElement => {
   const { currentUser } = useAuth();
-
-  const [boxes, setBoxes] = useState<Array<Box>>([]);
-
-  useEffect(() => {
-    const requestHeaders: HeadersInit = new Headers();
-    currentUser?.getIdToken().then((idToken) => {
-      requestHeaders.set('Authorization', idToken);
-      fetch('/api/boxes', { headers: requestHeaders })
-        .then((response: Response) => response.json())
-        .then((boxes: Array<Box>) => {
-          setBoxes(boxes);
-          console.log('📦 Boxes:', boxes);
-        });
-    });
-  }, [currentUser]);
+  const { boxes } = useBoxes(currentUser);
 
   const [view, setView] = useState<string | null>('grid');
   const handleChangeView = (_: any, newView: string | null) => {
@@ -143,7 +129,7 @@ const Boxes: NextPage = (): ReactElement => {
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ mb: 2 }}>
-        {/* {boxes?.map((box: Box) => (
+        {boxes?.map((box: Box) => (
           <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
             <BoxCard
               box={box}
@@ -152,7 +138,7 @@ const Boxes: NextPage = (): ReactElement => {
               openShareDialog={handleOpenShareDialog}
             />
           </Grid>
-        ))} */}
+        ))}
       </Grid>
       <Fab
         color="primary"

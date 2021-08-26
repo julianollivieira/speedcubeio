@@ -1,26 +1,38 @@
-import { useState, useEffect } from 'react';
-import firebase from '@/utils/firebase';
+import { DataSnapshot, getDatabase, onValue, ref } from 'firebase/database';
+import { User } from 'firebase/auth';
+import app from '@/utils/firebase/client';
 import Box from '@/types/Box';
+import { useEffect, useState } from 'react';
+import Time from '@/types/Time';
+import { convertTimeObjectToTimeArray } from '@/utils/convert';
 
-const useBoxes = (
-  currentUser: firebase.User | null | undefined,
-  boxId: string | string[] | undefined
-) => {
+const database = getDatabase(app);
+
+const useBox = (currentUser: User | null | undefined, initialBoxId: string) => {
+  const [boxId, setBoxId] = useState<string>(initialBoxId);
   const [box, setBox] = useState<Box>();
 
   useEffect(() => {
-    if (currentUser) {
-      firebase
-        .app('client')
-        .database()
-        .ref(`/users/${currentUser.uid}/boxes/${boxId}`)
-        .on('value', (snapshot: firebase.database.DataSnapshot) => {
-          setBox(snapshot.val());
-        });
+    if (initialBoxId) {
+      setBoxId(initialBoxId);
     }
-  }, [currentUser]);
+  }, [currentUser, initialBoxId]);
 
-  return { box };
+  useEffect(() => {
+    if (currentUser && boxId) {
+      const reference = ref(
+        database,
+        `/users/${currentUser.uid}/boxes/${boxId}`
+      );
+      onValue(reference, (snapshot: DataSnapshot) => {
+        const box = snapshot.val();
+        box.times = convertTimeObjectToTimeArray(box.times);
+        setBox(box);
+      });
+    }
+  }, [currentUser, boxId]);
+
+  return { box, setBoxId };
 };
 
-export default useBoxes;
+export default useBox;

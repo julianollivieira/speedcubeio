@@ -1,6 +1,11 @@
-import { FirebaseApp, getApps, initializeApp } from 'firebase/app';
+import {
+  FirebaseApp,
+  FirebaseOptions,
+  getApps,
+  initializeApp,
+} from 'firebase/app';
 
-const firebaseConfig = {
+const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -11,8 +16,6 @@ const firebaseConfig = {
 };
 
 const apps: FirebaseApp[] = getApps();
-const appNames = apps.map((app: FirebaseApp) => app.name);
-console.log('📔 App names:', appNames);
 
 const app: FirebaseApp =
   apps.find((app: FirebaseApp) => app.name === 'client') ??

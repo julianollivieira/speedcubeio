@@ -1,4 +1,3 @@
-import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
 import { ReactElement, useState } from 'react';
 import { FormatListNumbered as FormatListNumberedIcon } from '@material-ui/icons';
@@ -9,47 +8,39 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  OutlinedInput,
 } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
+
 import useBoxes from '@/hooks/useBoxes';
-import useTimes from '@/hooks/useTimes';
+import { useAuth } from '@/utils/auth';
 import TimeList from '@/components/general/TimeList';
 import Timer from '@/components/timer/Timer';
 import Box from '@/types/Box';
-// import { useEffect } from 'react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { useEffect } from 'react';
 dayjs.extend(utc);
 
-// const convertBoxObjectToBoxArray = (boxObject: any): Array<Box> => {
-//   let boxArray: Array<Box> = [];
-//   for (const property in boxObject) {
-//     boxArray.push({
-//       id: property,
-//       name: boxObject[property].name,
-//       icon: boxObject[property].icon,
-//       color: boxObject[property].color,
-//       creationTime: boxObject[property].creationTime,
-//       times: boxObject[property].times,
-//     });
-//   }
-//   return boxArray;
-// };
-
-// import firebase from '@/utils/firebase';
-
 const TimerPage: NextPage = (): ReactElement => {
-  const [currentBoxId, setCurrentBoxId] = useState(10);
+  const { currentUser } = useAuth();
+  const { boxes } = useBoxes(currentUser);
+  console.log('📦', boxes);
 
-  const handleCurrentBoxIdChange = (event: any) => {
-    console.log('new id', event.target.value);
-    setCurrentBoxId(event.target.value);
-  };
+  const [currentBoxId, setCurrentBoxId] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('KKZ', currentBoxId);
-  }, [currentBoxId]);
+    if (currentUser && boxes !== undefined) {
+      if (currentBoxId === null) {
+        setCurrentBoxId(boxes[0].id);
+      }
+    }
+  }, [boxes]);
+
+  const handleCurrentBoxIdChange = (event: any) => {
+    console.log('🆔 BOX CHANGE', event.target.value);
+    setCurrentBoxId(event.target.value);
+  };
 
   const handleTimeSave = (time: number) => {
     console.log(time);
@@ -87,23 +78,30 @@ const TimerPage: NextPage = (): ReactElement => {
       >
         <MUIBox sx={{ width: 1, bgcolor: '#151C24', p: 2 }}>
           <FormControl fullWidth>
-            <InputLabel id="box-select-label">Current box</InputLabel>
+            <InputLabel id="box-select-label" shrink={true}>
+              Current box
+            </InputLabel>
             <Select
               labelId="box-select-label"
               id="box-select"
               value={currentBoxId}
-              label="Current box"
               onChange={handleCurrentBoxIdChange}
+              input={
+                <OutlinedInput
+                  notched={true}
+                  label="Current box"
+                ></OutlinedInput>
+              }
             >
-              {/* {boxes?.map((box: Box) => (
+              {boxes?.map((box: Box) => (
                 <MenuItem value={box.id}>{box.name}</MenuItem>
-              ))} */}
-              <MenuItem value={10}>Example 10</MenuItem>
-              <MenuItem value={20}>Example 20</MenuItem>
+              ))}
+              {/* <MenuItem value={10}>Example 10</MenuItem>
+              <MenuItem value={20}>Example 20</MenuItem> */}
             </Select>
           </FormControl>
         </MUIBox>
-        <TimeList sx={{ width: 1, height: 1 }} />
+        <TimeList boxId={currentBoxId} sx={{ width: 1, height: 1 }} />
       </MUIBox>
       <Fab
         color="primary"

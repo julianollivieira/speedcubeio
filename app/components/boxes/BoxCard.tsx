@@ -21,7 +21,6 @@ import {
 } from '@material-ui/core';
 import Link from 'next/link';
 import { useAuth } from '@/utils/auth';
-import useTimes from '@/hooks/useTimes';
 import TimeList from '@/classes/TimeList';
 import { msToTime } from '@/utils/msToTime';
 import Box from '@/types/Box';
@@ -33,6 +32,7 @@ import {
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
 } from '@material-ui/icons';
+import useBox from '@/hooks/useBox';
 
 interface Props {
   box: Box;
@@ -53,16 +53,16 @@ const BoxCard = (props: Props): ReactElement => {
   const handleMenuClose = () => setAnchorEl(null);
 
   const { currentUser } = useAuth();
-  const { times } = useTimes(currentUser, props.box.id);
+  const { box } = useBox(currentUser, props.box.id);
 
   const [timeList, setTimeList] = useState<TimeList | null>(null);
-
   useEffect(() => {
-    if (!times) return;
-    const timesArray = times?.map((time: Time) => time.time);
+    if (!box) return;
+    if (!box.times) return;
+    const timesArray = box.times.map((time: Time) => time.time);
     const timeList: TimeList = new TimeList(timesArray);
     setTimeList(timeList);
-  }, [times]);
+  }, [box]);
 
   return (
     <Card onMouseEnter={handleShowMenu} onMouseLeave={handleHideMenu}>

@@ -9,14 +9,13 @@ import {
   TableRow,
   TableCell,
 } from '@material-ui/core';
-import useTimes from '@/hooks/useTimes';
+import useBox from '@/hooks/useBox';
 import Time from '@/types/Time';
 
 const TimeList = (props: any): ReactElement => {
   const { boxId, ...other } = props;
-  // const { currentUser } = useAuth();
-  // const { times } = useTimes(currentUser, boxId);
-  // console.log(times);
+  const { currentUser } = useAuth();
+  const { box } = useBox(currentUser, boxId);
 
   return (
     <Box {...other}>
@@ -31,7 +30,7 @@ const TimeList = (props: any): ReactElement => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* {times
+            {box?.times
               ?.map((time: Time, index: number) => {
                 return (
                   <TableRow key={index}>
@@ -42,7 +41,7 @@ const TimeList = (props: any): ReactElement => {
                   </TableRow>
                 );
               })
-              .reverse()} */}
+              .reverse()}
           </TableBody>
         </Table>
       </TableContainer>
