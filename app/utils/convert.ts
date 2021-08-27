@@ -42,7 +42,7 @@ export const convertTimeObjectToTimeArray = (timeObject: any): Array<Time> => {
       creationTime: timeObject[property].creationTime,
     });
   }
-  timeArray = sortTimeArrayByCreationTime(timeArray, 'asc');
+  timeArray = sortTimeArrayByCreationTime(timeArray);
   return timeArray;
 };
 

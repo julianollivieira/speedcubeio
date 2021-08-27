@@ -41,14 +41,14 @@ const Boxes: NextPage = (): ReactElement => {
   };
 
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<string | null>(null);
-  const [openEditDialog, setOpenEditDialog] = useState<string | null>(null);
-  const [openShareDialog, setOpenShareDialog] = useState<string | null>(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<Box | null>(null);
+  const [openEditDialog, setOpenEditDialog] = useState<Box | null>(null);
+  const [openShareDialog, setOpenShareDialog] = useState<Box | null>(null);
 
   const handleOpenCreateDialog = () => setOpenCreateDialog(true);
-  const handleOpenDeleteDialog = (boxId: string) => setOpenDeleteDialog(boxId);
-  const handleOpenEditDialog = (boxId: string) => setOpenEditDialog(boxId);
-  const handleOpenShareDialog = (boxId: string) => setOpenShareDialog(boxId);
+  const handleOpenDeleteDialog = (box: Box) => setOpenDeleteDialog(box);
+  const handleOpenEditDialog = (box: Box) => setOpenEditDialog(box);
+  const handleOpenShareDialog = (box: Box) => setOpenShareDialog(box);
 
   const handleCloseCreateDialog = () => setOpenCreateDialog(false);
   const handleCloseDeleteDialog = () => setOpenDeleteDialog(null);
@@ -70,17 +70,17 @@ const Boxes: NextPage = (): ReactElement => {
         createBox={createBox}
       />
       <DeleteBoxDialog
-        boxId={openDeleteDialog}
+        box={openDeleteDialog}
         handleClose={handleCloseDeleteDialog}
         deleteBox={deleteBox}
       />
       <EditBoxDialog
-        boxId={openEditDialog}
+        box={openEditDialog}
         handleClose={handleCloseEditDialog}
         editBox={editBox}
       />
       <ShareBoxDialog
-        boxId={openShareDialog}
+        box={openShareDialog}
         handleClose={handleCloseShareDialog}
       />
       <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>

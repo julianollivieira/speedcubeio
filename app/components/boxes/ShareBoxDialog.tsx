@@ -1,15 +1,16 @@
 import { ReactElement } from 'react';
 import { Dialog, DialogTitle } from '@material-ui/core';
+import Box from '@/types/Box';
 
 interface Props {
-  boxId: string | null;
+  box: Box | null;
   handleClose: () => void;
 }
 
 const ShareBoxDialog = (props: Props): ReactElement => {
   return (
-    <Dialog open={Boolean(props.boxId)} onClose={props.handleClose}>
-      <DialogTitle>{props.boxId}</DialogTitle>
+    <Dialog open={Boolean(props.box?.id)} onClose={props.handleClose}>
+      <DialogTitle>{props.box?.id}</DialogTitle>
     </Dialog>
   );
 };

@@ -6,32 +6,41 @@ import {
   DialogActions,
   TextField,
   Button,
-  Box,
+  Box as MUIBox,
   Grid,
 } from '@material-ui/core';
 import ColorPicker from '@/components/general/ColorPicker';
 import boxSchema from '@/validation/box';
 import { useFormik } from 'formik';
+import Box from '@/types/Box';
 
 interface Props {
-  boxId: string | null;
+  box: Box | null;
   handleClose: () => void;
   editBox: any;
 }
 
-const EditBoxDialog = (props: Props): ReactElement => {
+const EditBoxDialog = (props: Props): ReactElement | null => {
   const handleClose = () => {
     formik.resetForm();
     props.handleClose();
   };
 
+  if (!props.box) {
+    return null;
+  }
+
   const formik = useFormik({
-    initialValues: { name: '', icon: '', color: '#FFF' },
+    initialValues: {
+      name: props.box?.name,
+      icon: props.box?.icon,
+      color: props.box?.color,
+    },
     validationSchema: boxSchema,
     onSubmit: async (values) => {
       try {
         handleClose();
-        props.editBox(values.name, values.icon, values.color);
+        props.editBox(props.box?.id, values.name, values.icon, values.color);
       } catch (error) {
         console.log('error', error);
       }
@@ -39,8 +48,8 @@ const EditBoxDialog = (props: Props): ReactElement => {
   });
 
   return (
-    <Dialog open={Boolean(props.boxId)} onClose={handleClose}>
-      <Box component="form" onSubmit={formik.handleSubmit}>
+    <Dialog open={Boolean(props.box?.id)} onClose={handleClose}>
+      <MUIBox component="form" onSubmit={formik.handleSubmit}>
         <DialogTitle>Create a new box</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'row' }}>
           <Grid container>
@@ -96,7 +105,7 @@ const EditBoxDialog = (props: Props): ReactElement => {
           <Button onClick={handleClose}>Cancel</Button>
           <Button type="submit">Create</Button>
         </DialogActions>
-      </Box>
+      </MUIBox>
     </Dialog>
   );
 };

@@ -36,9 +36,9 @@ import useBox from '@/hooks/useBox';
 
 interface Props {
   box: Box;
-  openDeleteDialog: (boxId: string) => void;
-  openEditDialog: (boxId: string) => void;
-  openShareDialog: (boxId: string) => void;
+  openDeleteDialog: (box: Box) => void;
+  openEditDialog: (box: Box) => void;
+  openShareDialog: (box: Box) => void;
   isPreview?: boolean;
 }
 
@@ -147,7 +147,7 @@ const BoxCard = (props: Props): ReactElement => {
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            props.openEditDialog(props.box.id);
+            props.openEditDialog(props.box);
           }}
         >
           <ListItemIcon>
@@ -158,7 +158,7 @@ const BoxCard = (props: Props): ReactElement => {
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            props.openDeleteDialog(props.box.id);
+            props.openDeleteDialog(props.box);
           }}
         >
           <ListItemIcon>
@@ -169,7 +169,7 @@ const BoxCard = (props: Props): ReactElement => {
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            props.openShareDialog(props.box.id);
+            props.openShareDialog(props.box);
           }}
         >
           <ListItemIcon>

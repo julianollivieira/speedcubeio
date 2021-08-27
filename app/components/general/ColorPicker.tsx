@@ -4,7 +4,7 @@ import { CirclePicker } from 'react-color';
 
 const ColorPicker = (props: any): ReactElement => {
   const { handleColorPickerChange, onChange, ...other } = props;
-  const [color, setColor] = useState<string>('#FFF');
+  const [color, setColor] = useState<string>(props.value);
 
   const handlePickerColorChange = (color: any) => {
     props.handleColorPickerChange(color);

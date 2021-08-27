@@ -7,9 +7,10 @@ import {
   DialogContentText,
   Button,
 } from '@material-ui/core';
+import Box from '@/types/Box';
 
 interface Props {
-  boxId: string | null;
+  box: Box | null;
   handleClose: () => void;
   deleteBox: any;
 }
@@ -17,10 +18,10 @@ interface Props {
 const DeleteBoxDialog = (props: Props): ReactElement => {
   const handleDelete = () => {
     props.handleClose();
-    props.deleteBox(props.boxId);
+    props.deleteBox(props.box?.id);
   };
   return (
-    <Dialog open={Boolean(props.boxId)} onClose={props.handleClose}>
+    <Dialog open={Boolean(props.box?.id)} onClose={props.handleClose}>
       <DialogTitle>Delete box</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
