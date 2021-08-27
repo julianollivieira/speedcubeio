@@ -4,9 +4,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  DialogContentText,
+  TextField,
   Button,
+  Box,
+  Grid,
 } from '@material-ui/core';
+import ColorPicker from '@/components/general/ColorPicker';
+import boxSchema from '@/validation/box';
+import { useFormik } from 'formik';
 
 interface Props {
   boxId: string | null;
@@ -15,24 +20,83 @@ interface Props {
 }
 
 const EditBoxDialog = (props: Props): ReactElement => {
-  // const handleDelete = () => {
-  //   props.handleClose();
-  //   props.deleteBox('id_here');
-  // };
+  const handleClose = () => {
+    formik.resetForm();
+    props.handleClose();
+  };
+
+  const formik = useFormik({
+    initialValues: { name: '', icon: '', color: '#FFF' },
+    validationSchema: boxSchema,
+    onSubmit: async (values) => {
+      try {
+        handleClose();
+        props.editBox(values.name, values.icon, values.color);
+      } catch (error) {
+        console.log('error', error);
+      }
+    },
+  });
+
   return (
-    <Dialog open={Boolean(props.boxId)} onClose={props.handleClose}>
-      <DialogTitle>{props.boxId}</DialogTitle>
-      {/* <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Are you sure you want to delete your box?
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleClose}>Cancel</Button>
-        <Button onClick={handleDelete} autoFocus>
-          Delete
-        </Button>
-      </DialogActions> */}
+    <Dialog open={Boolean(props.boxId)} onClose={handleClose}>
+      <Box component="form" onSubmit={formik.handleSubmit}>
+        <DialogTitle>Create a new box</DialogTitle>
+        <DialogContent sx={{ display: 'flex', flexDirection: 'row' }}>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <TextField
+                autoFocus
+                name="name"
+                id="name"
+                label="Name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
+                fullWidth
+                sx={{ mb: 2, mt: 1 }}
+              />
+              <TextField
+                name="icon"
+                id="icon"
+                label="Icon"
+                fullWidth
+                sx={{ mb: 2 }}
+                value={formik.values.icon}
+                onChange={formik.handleChange}
+                error={formik.touched.icon && Boolean(formik.errors.icon)}
+                helperText={formik.touched.icon && formik.errors.icon}
+              />
+              <ColorPicker
+                name="color"
+                id="color"
+                label="Color (HEX)"
+                value={formik.values.color}
+                onChange={formik.handleChange}
+                error={formik.touched.color && Boolean(formik.errors.color)}
+                helperText={formik.touched.color && formik.errors.color}
+                handleColorPickerChange={(color: any) => {
+                  console.log(color);
+                  formik.setFieldValue('color', color.hex);
+                }}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit">Create</Button>
+        </DialogActions>
+      </Box>
     </Dialog>
   );
 };

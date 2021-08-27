@@ -34,17 +34,23 @@ const TimerPage: NextPage = (): ReactElement => {
   useEffect(() => {
     if (currentUser && boxes !== undefined) {
       if (currentBoxId === '') {
+        console.log('currentBoxId = empty');
         setCurrentBoxId(boxes[0].id);
       }
     }
   }, [boxes]);
 
+  useEffect(() => {
+    console.log('AAAAAA', currentBoxId);
+  }, [currentBoxId]);
+
   const handleCurrentBoxIdChange = (event: any) => {
+    console.log('setCurrentBoxId', event.target.value);
     setCurrentBoxId(event.target.value);
   };
 
   const handleTimeSave = (time: number) => {
-    console.log(time);
+    console.log('🟦', time, currentBoxId);
     createTime('test', time, '3b3b3', 'comment');
   };
 
@@ -62,7 +68,12 @@ const TimerPage: NextPage = (): ReactElement => {
           justifyContent: 'center',
         }}
       >
-        <Timer onTimeFinished={handleTimeSave} />
+        <Timer
+          onTimeFinished={(e: any) => {
+            handleTimeSave(e);
+            console.log(currentUser);
+          }}
+        />
       </MUIBox>
       <MUIBox
         sx={{

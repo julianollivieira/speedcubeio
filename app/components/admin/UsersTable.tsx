@@ -12,7 +12,7 @@ import {
 import { Clear as ClearIcon, Check as CheckIcon } from '@material-ui/icons';
 import useSWR from 'swr';
 import ProfilePicture from '@/components/general/ProfilePicture';
-import firebase from '@/utils/firebase';
+import { User } from 'firebase/auth';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -32,7 +32,7 @@ const UsersTable = (): ReactElement => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.users.map((user: firebase.User) => (
+          {data?.users.map((user: User) => (
             <TableRow
               key={user.uid}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

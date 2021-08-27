@@ -19,6 +19,12 @@ import TimeList from '@/classes/TimeList';
 import Box from '@/types/Box';
 import Time from '@/types/Time';
 import BoxSummaryTable from '@/components/boxes/BoxSummaryTable';
+import { getBoxLastUseOrCreationTime } from '@/utils/convert';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 import {
   Edit as EditIcon,
@@ -75,7 +81,11 @@ const BoxCard = (props: Props): ReactElement => {
               }}
               title={props.box.name}
               titleTypographyProps={{ noWrap: true }}
-              subheader={`Last used yesterday`}
+              subheader={`Last used ${dayjs(
+                getBoxLastUseOrCreationTime(props.box)
+              )
+                .utc()
+                .fromNow()}`}
               avatar={
                 <Avatar sx={{ bgcolor: props.box.color }} variant="rounded">
                   {props.box.icon}

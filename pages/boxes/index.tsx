@@ -27,6 +27,7 @@ import EditBoxDialog from '@/components/boxes/EditBoxDialog';
 import ShareBoxDialog from '@/components/boxes/ShareBoxDialog';
 import Box from '@/types/Box';
 import useBoxes from '@/hooks/useBoxes';
+import { sortBoxArrayByLastUse } from '@/utils/convert';
 
 const Boxes: NextPage = (): ReactElement => {
   const { currentUser } = useAuth();
@@ -129,16 +130,18 @@ const Boxes: NextPage = (): ReactElement => {
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ mb: 2 }}>
-        {boxes?.map((box: Box) => (
-          <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
-            <BoxCard
-              box={box}
-              openDeleteDialog={handleOpenDeleteDialog}
-              openEditDialog={handleOpenEditDialog}
-              openShareDialog={handleOpenShareDialog}
-            />
-          </Grid>
-        ))}
+        {sortBoxArrayByLastUse(boxes)
+          ?.reverse()
+          .map((box: Box) => (
+            <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
+              <BoxCard
+                box={box}
+                openDeleteDialog={handleOpenDeleteDialog}
+                openEditDialog={handleOpenEditDialog}
+                openShareDialog={handleOpenShareDialog}
+              />
+            </Grid>
+          ))}
       </Grid>
       <Fab
         color="primary"
