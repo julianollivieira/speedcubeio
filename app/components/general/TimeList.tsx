@@ -12,10 +12,10 @@ import {
 import TimeList from '@/classes/TimeList';
 import useBox from '@/hooks/useBox';
 import Time from '@/types/Time';
-import { msToTime } from '@/utils/msToTime';
+import { msToTime } from '@/utils/convert';
 
 const TimeListComponent = (props: any): ReactElement => {
-  const { boxId, ...other } = props;
+  const { boxId, boxContainerProps, ...other } = props;
   const { currentUser } = useAuth();
   const { box } = useBox(currentUser, boxId);
 
@@ -30,7 +30,7 @@ const TimeListComponent = (props: any): ReactElement => {
 
   return (
     <Box {...other}>
-      <TableContainer>
+      <TableContainer {...boxContainerProps}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>

@@ -1,3 +1,5 @@
+import { msToTimeNull } from '@/utils/convert';
+
 class TimeList {
   times: Array<number> = [];
   ao5s: Array<number | null> = [];
@@ -15,6 +17,15 @@ class TimeList {
       const twelve = this.times.slice(index - 11, index);
       return this.average(this.removeWorstAndBest(twelve));
     });
+  }
+
+  public getGraphObject(): Array<any> {
+    return this.times.map((item, index) => ({
+      name: index + 1,
+      time: msToTimeNull(this.times[index]),
+      ao5: msToTimeNull(this.ao5s[index]),
+      ao12: msToTimeNull(this.ao12s[index]),
+    }));
   }
 
   public getAverageOf5(index: number): number | null {

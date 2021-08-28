@@ -4,7 +4,7 @@ import AppNavigationBar from '@/components/navigation/AppNavigationBar';
 import NavigationDrawer from '@/components/navigation/AppNavigationDrawer';
 import { useAuth } from '@/utils/auth';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 interface Props {
   title?: string | null;
@@ -15,12 +15,12 @@ interface Props {
 const Layout = (props: Props): ReactElement => {
   const { title, children, ...other } = props;
   const { currentUser } = useAuth();
-  const router = useRouter();
+  // const router = useRouter();
 
   if (!currentUser) {
-    if (process.browser) {
-      router.push('/login');
-    }
+    // if (process.browser) {
+    //   router.push('/login');
+    // }
 
     return (
       <Box

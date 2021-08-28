@@ -51,7 +51,7 @@ const TimerPage: NextPage = (): ReactElement => {
 
   const handleTimeSave = (time: number) => {
     console.log('🟦', time, currentBoxId);
-    createTime('test', time, '3b3b3', 'comment');
+    createTime('-MhgsIW03Md9YLZT9hWT', time, '3b3b3', 'comment');
   };
 
   return (
@@ -88,7 +88,16 @@ const TimerPage: NextPage = (): ReactElement => {
           flexDirection: 'column',
         }}
       >
-        <MUIBox sx={{ width: 1, bgcolor: '#151C24', p: 2 }}>
+        <MUIBox
+          sx={{
+            width: 1,
+            height: 100,
+            display: 'flex',
+            alignItems: 'center',
+            bgcolor: '#151C24',
+            p: 2,
+          }}
+        >
           <FormControl fullWidth>
             <InputLabel id="box-select-label" shrink={true}>
               Current box
@@ -115,7 +124,16 @@ const TimerPage: NextPage = (): ReactElement => {
             </Select>
           </FormControl>
         </MUIBox>
-        <TimeList boxId={currentBoxId} sx={{ width: 1, height: 1 }} />
+        <TimeList
+          boxId={currentBoxId}
+          sx={{ width: 1 }}
+          boxContainerProps={{
+            sx: {
+              height: 'calc(calc(100vh - 100px) - 64px)',
+              overflowX: 'auto',
+            },
+          }}
+        />
       </MUIBox>
       <Fab
         color="primary"

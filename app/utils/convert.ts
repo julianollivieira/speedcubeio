@@ -1,6 +1,30 @@
 import Box from '@/types/Box';
 import Time from '@/types/Time';
 
+// Return a good formatted time string from input time (ms)
+export const msToTime = (
+  ms: number | null = null,
+  dash: boolean = false
+): string => {
+  if (dash && ms === null) return '-';
+  if (ms === null) return '';
+  const num = ms / 1000; // from ms to s
+  const fixed = num.toFixed(2); // to string with 2 decimals
+  return fixed;
+};
+
+// Return a good formatted time string from input time (ms) and return null // FIX
+export const msToTimeNull = (
+  ms: number | null = null,
+  dash: boolean = false
+): string | null => {
+  if (dash && ms === null) return null;
+  if (ms === null) return null;
+  const num = ms / 1000; // from ms to s
+  const fixed = num.toFixed(2); // to string with 2 decimals
+  return fixed;
+};
+
 export const getBoxLastUseOrCreationTime = (box: Box): string => {
   if (box.times?.length) {
     return box.times[box.times.length - 1].creationTime;

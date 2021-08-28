@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
-import { msToTime } from '@/utils/msToTime';
+import { msToTime } from '@/utils/convert';
 import TimeList from '@/classes/TimeList';
 
 interface Props {

@@ -17,11 +17,18 @@ import TimeListComponent from '@/components/general/TimeList';
 import TimeList from '@/classes/TimeList';
 import Time from '@/types/Time';
 import BoxSummaryCard from '@/components/boxes/BoxSummaryCard';
+// import TimesGraphCard from '@/components/stat/TimesGraphCard';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
+import dynamic from 'next/dynamic';
+
+const TimesGraphCard = dynamic(
+  () => import('@/components/stat/TimesGraphCard'),
+  { ssr: false }
+);
 
 const Box: NextPage = (): ReactElement => {
   const router = useRouter();
@@ -84,6 +91,9 @@ const Box: NextPage = (): ReactElement => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={12} xl={6}>
           <BoxSummaryCard timeList={timeList} />
+        </Grid>
+        <Grid item xs={12}>
+          <TimesGraphCard timeList={timeList} />
         </Grid>
       </Grid>
       <Grid container spacing={2}>
