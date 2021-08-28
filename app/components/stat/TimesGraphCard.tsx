@@ -44,23 +44,26 @@ const TimesGraphCard = (props: Props): ReactElement => {
             <CartesianGrid strokeDasharray="3 3" stroke="#151C24" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip labelStyle={{ color: '#000' }} />
+            <Tooltip
+              labelStyle={{ color: '#000' }}
+              wrapperStyle={{ textAlign: 'right', backgroundColor: '#151C24' }}
+            />
             <Legend wrapperStyle={{ paddingTop: '10px' }} />
             <Line
-              type="monotone"
+              type="linear"
               dataKey="time"
               stroke="#8884d8"
               activeDot={{ r: 8 }}
               strokeWidth={2}
             />
             <Line
-              type="monotone"
+              type="linear"
               dataKey="ao5"
               stroke="#82ca9d"
               strokeWidth={2}
             />
             <Line
-              type="monotone"
+              type="linear"
               dataKey="ao12"
               stroke="#ff7369"
               strokeWidth={2}
