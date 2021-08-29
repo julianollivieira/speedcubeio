@@ -25,11 +25,13 @@ export const msToTimeNull = (
   return fixed;
 };
 
-export const getBoxLastUseOrCreationTime = (box: Box): string => {
-  if (box.times?.length) {
-    return box.times[box.times.length - 1].creationTime;
+export const getBoxLastUseOrCreationTime = (
+  box: Box | undefined
+): string | undefined => {
+  if (box?.times?.length) {
+    return box?.times[box.times.length - 1].creationTime;
   } else {
-    return box.creationTime;
+    return box?.creationTime;
   }
 };
 

@@ -17,7 +17,7 @@ import TimeListComponent from '@/components/general/TimeList';
 import TimeList from '@/classes/TimeList';
 import Time from '@/types/Time';
 import BoxSummaryCard from '@/components/boxes/BoxSummaryCard';
-// import TimesGraphCard from '@/components/stat/TimesGraphCard';
+import { getBoxLastUseOrCreationTime } from '@/utils/convert';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
@@ -83,7 +83,8 @@ const Box: NextPage = (): ReactElement => {
               justifyContent: { xs: 'center', lg: 'flex-start' },
             }}
           >
-            Created {dayjs(box?.creationTime).utc().fromNow()}
+            Created {dayjs(box?.creationTime).utc().fromNow()} / Last used{' '}
+            {dayjs(getBoxLastUseOrCreationTime(box)).utc().fromNow()}
           </Typography>
         </MUIBox>
       </MUIBox>
