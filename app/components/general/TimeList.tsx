@@ -44,7 +44,7 @@ const TimeListComponent = (props: any): ReactElement => {
             {timeList?.times
               ?.map((time: number, index: number) => {
                 return (
-                  <TableRow key={index}>
+                  <TableRow hover key={index}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{msToTime(time, true)}</TableCell>
                     <TableCell>

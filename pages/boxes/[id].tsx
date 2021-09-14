@@ -93,6 +93,9 @@ const Box: NextPage = (): ReactElement => {
         <Grid item xs={12} sm={6} md={12} xl={6}>
           <BoxSummaryCard timeList={timeList} />
         </Grid>
+        <Grid item xs={12} sm={6} md={12} xl={6}>
+          <BoxSummaryCard timeList={timeList} />
+        </Grid>
         <Grid item xs={12}>
           <TimesGraphCard timeList={timeList} />
         </Grid>
@@ -102,7 +105,7 @@ const Box: NextPage = (): ReactElement => {
           <TimeListComponent
             boxId={id}
             sx={{
-              position: 'absolute',
+              position: 'fixed',
               top: 64,
               right: 0,
               width: 360,

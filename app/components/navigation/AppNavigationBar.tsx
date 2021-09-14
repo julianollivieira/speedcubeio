@@ -64,7 +64,8 @@ const AppNavigationBar = (): ReactElement => {
             onClose={handleClose}
             onClick={handleClose}
           >
-            <MenuItem component={Link} href={`/users/${currentUser?.uid}`}>
+            {/* <MenuItem component={Link} href={`/users/${currentUser?.uid}`}> */}
+            <MenuItem component={Link} href="/profile">
               <ListItemIcon>
                 <PersonIcon fontSize="small" />
               </ListItemIcon>

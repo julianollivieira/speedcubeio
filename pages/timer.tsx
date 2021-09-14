@@ -16,6 +16,7 @@ import useTimes from '@/hooks/useTimes';
 import { useAuth } from '@/utils/auth';
 import TimeList from '@/components/general/TimeList';
 import Timer from '@/components/timer/Timer';
+import Scramble from '@/components/timer/Scramble';
 import Box from '@/types/Box';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -65,10 +66,11 @@ const TimerPage: NextPage = (): ReactElement => {
           height: '100vh',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'center', // remove these
         }}
       >
-        <Timer
+        {/* <Scramble /> */}
+        <Timer // make absolute
           onTimeFinished={(e: any) => {
             handleTimeSave(e);
             console.log(currentUser);
