@@ -32,7 +32,7 @@ const UsersTable = (): ReactElement => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.users.map((user: User) => (
+          {data?.map((user: User) => (
             <TableRow
               key={user.uid}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
