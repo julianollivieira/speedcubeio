@@ -14,7 +14,9 @@ class PreferenceManager {
   }
 
   private loadPreferences(): void {
-    const storedPreferences = JSON.parse(localStorage.getItem('preferences'));
+    const storageData: string | null = localStorage.getItem('preferences');
+    const storedPreferences =
+      storageData !== null ? JSON.parse(storageData) : null;
     this.preferences = <Array<PreferenceValue>>storedPreferences ?? [];
   }
 
@@ -64,6 +66,7 @@ class PreferenceManager {
     } catch (e) {
       return found;
     }
+    return found;
   }
 }
 

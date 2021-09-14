@@ -49,8 +49,8 @@ export const sortBoxArrayByLastUse = (
   if (boxArray) {
     return boxArray.sort(
       (a: Box, b: Box) =>
-        <any>new Date(getBoxLastUseOrCreationTime(a)) -
-        <any>new Date(getBoxLastUseOrCreationTime(b))
+        <any>new Date(getBoxLastUseOrCreationTime(a) ?? 0) -
+        <any>new Date(getBoxLastUseOrCreationTime(b) ?? 0) // TODO: VALID FIX?
     );
   } else {
     return null;

@@ -12,13 +12,10 @@ export default function handler(
 ) {
   admin
     .app('admin')
-    .auth()
-    .listUsers()
-    .then((listUsersResult: admin.auth.ListUsersResult) => {
-      res.status(200).json(<any>listUsersResult.users);
-    })
-    .catch((error: any) => {
-      console.log('Error fetching user data:', error);
-      res.status(200).json({ name: 'John Doe' });
+    .database()
+    .ref('/users/')
+    .once('value')
+    .then((snapshot) => {
+      res.status(200).json(<any>snapshot.val());
     });
 }

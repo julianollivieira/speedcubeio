@@ -3,10 +3,21 @@ import type { NextPage } from 'next';
 import { ReactElement } from 'react';
 import { Grid, Card, CardContent, Typography } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
+import useSWR from 'swr';
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Admin: NextPage = (): ReactElement => {
-  const { currentUser } = useAuth();
+  const { data: users, error: usersError } = useSWR(
+    '/api/admin/getUsers',
+    fetcher
+  );
+  // const { data: usersWithData, error: usersDataError } = useSWR(
+  //   '/api/admin/getUsersWithData',
+  //   fetcher
+  // );
 
+  console.log(users);
   return (
     <UserLayout
       title="Admin"
@@ -17,7 +28,37 @@ const Admin: NextPage = (): ReactElement => {
       }}
     >
       <Grid container spacing={2}>
-        {[1, 2, 3, 4].map((item) => (
+        <Grid item xs={12} md={4} key={1}>
+          <Card sx={{ p: 2 }}>
+            <Typography color="text.secondary" gutterBottom>
+              Total amount of users signed up
+            </Typography>
+            <Typography variant="h3" color="text.secondary" gutterBottom>
+              {users?.length}
+            </Typography>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4} key={2}>
+          <Card sx={{ p: 2 }}>
+            <Typography color="text.secondary" gutterBottom>
+              Total amount of users with data
+            </Typography>
+            <Typography variant="h3" color="text.secondary" gutterBottom>
+              {/* {Object.keys(usersWithData).length} */}-
+            </Typography>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4} key={3}>
+          <Card sx={{ p: 2 }}>
+            <Typography color="text.secondary" gutterBottom>
+              Total amount of users that logged in this week
+            </Typography>
+            <Typography variant="h3" color="text.secondary" gutterBottom>
+              -
+            </Typography>
+          </Card>
+        </Grid>
+        {/* {[1, 2, 3, 4].map((item) => (
           <Grid item xs={12} md={4} key={item}>
             <Card sx={{ p: 2 }}>
               <Typography color="text.secondary" gutterBottom>
@@ -28,7 +69,7 @@ const Admin: NextPage = (): ReactElement => {
               </Typography>
             </Card>
           </Grid>
-        ))}
+        ))} */}
       </Grid>
     </UserLayout>
   );
