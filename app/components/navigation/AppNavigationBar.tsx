@@ -12,6 +12,7 @@ import {
   Person as PersonIcon,
   Logout as LogoutIcon,
   Settings as SettingsIcon,
+  Menu as MenuIcon,
 } from '@material-ui/icons';
 import Logo from '@/components/general/Logo';
 import ProfilePicture from '@/components/general/ProfilePicture';
@@ -19,7 +20,11 @@ import { useAuth } from '@/utils/auth';
 import { useRouter } from 'next/router';
 import Link from '@/components/general/Link';
 
-const AppNavigationBar = (): ReactElement => {
+interface Props {
+  toggleNavigationDrawer: any; // TODO: FIX
+}
+
+const AppNavigationBar = (props: Props): ReactElement => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -27,7 +32,7 @@ const AppNavigationBar = (): ReactElement => {
   const handleClose = () => setAnchorEl(null);
 
   const router = useRouter();
-  const { currentUser, logout } = useAuth();
+  const { logout } = useAuth();
   const handleLogout = async () => {
     try {
       await logout();
@@ -50,6 +55,14 @@ const AppNavigationBar = (): ReactElement => {
           sx={{ justifyContent: 'space-between', height: '64px' }}
           disableGutters
         >
+          <IconButton
+            aria-label="delete"
+            size="large"
+            onClick={props.toggleNavigationDrawer}
+            sx={{ display: { sx: 'flex', md: 'none' } }}
+          >
+            <MenuIcon fontSize="inherit" />
+          </IconButton>
           <Logo expanded sx={{ pl: 2, py: 1, height: 1 }} />
           <Box sx={{ height: 1, p: 0.5 }}>
             <IconButton sx={{ height: 1 }} onClick={handleClick}>

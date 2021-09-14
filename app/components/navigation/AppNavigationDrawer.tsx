@@ -43,20 +43,11 @@ const closedMixin = (theme: any) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
+  width: `0px`,
+  [theme.breakpoints.up('md')]: {
     width: `calc(${theme.spacing(9)} + 1px)`,
   },
 });
-
-const DrawerHeader = styled('div')((theme: any) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -76,12 +67,9 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const AppNavigationDrawer = (props: any): ReactElement => {
-  const [open, setOpen] = useState(false);
-  const handleDrawerOpen = () => setOpen(true);
-  const handleDrawerClose = () => setOpen(false);
-
   const [adminPanelOpen, setAdminPanelOpen] = useState(false);
   const toggleAdminPanelOpen = () => setAdminPanelOpen(!adminPanelOpen);
+  const { open, handleDrawerOpen, handleDrawerClose, ...other } = props;
 
   return (
     <Drawer
@@ -89,7 +77,7 @@ const AppNavigationDrawer = (props: any): ReactElement => {
       open={open}
       onMouseEnter={handleDrawerOpen}
       onMouseLeave={handleDrawerClose}
-      {...props}
+      {...other}
     >
       <Toolbar />
       <Divider />

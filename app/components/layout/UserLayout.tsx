@@ -1,4 +1,4 @@
-import { ReactNode, ReactElement } from 'react';
+import { ReactNode, ReactElement, useState } from 'react';
 import { Box, CircularProgress } from '@material-ui/core';
 import AppNavigationBar from '@/components/navigation/AppNavigationBar';
 import NavigationDrawer from '@/components/navigation/AppNavigationDrawer';
@@ -37,14 +37,27 @@ const Layout = (props: Props): ReactElement => {
     );
   }
 
+  const [open, setOpen] = useState(false);
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
+
+  const toggleNavigationDrawer = () => {
+    console.log('toggle 🧨', !open);
+    setOpen(!open);
+  };
+
   return (
     <>
       <Head>
         <title>{title ? `${title} | ` : ''}Speedcube.io</title>
       </Head>
-      <AppNavigationBar />
-      <NavigationDrawer sx={{ display: { xs: 'none', md: 'flex' } }} />
-      <Box {...other}>
+      <AppNavigationBar toggleNavigationDrawer={toggleNavigationDrawer} />
+      <NavigationDrawer
+        open={open}
+        handleDrawerOpen={handleDrawerOpen}
+        handleDrawerClose={handleDrawerClose}
+      />
+      <Box {...other} onClick={handleDrawerClose}>
         <Box sx={{ pt: 5, px: 2 }}>{children}</Box>
       </Box>
     </>
