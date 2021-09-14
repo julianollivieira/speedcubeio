@@ -30,17 +30,9 @@ const TimesGraphCard = (props: Props): ReactElement => {
         subheader="some text here"
         titleTypographyProps={{ variant: 'subtitle1' }}
       />
-      <CardContent>
+      <CardContent sx={{ pl: 0 }}>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart
-            data={timeList?.getGraphObject()}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
+          <LineChart data={timeList?.getGraphObject()}>
             <CartesianGrid strokeDasharray="3 3" stroke="#151C24" />
             <XAxis dataKey="name" />
             <YAxis />

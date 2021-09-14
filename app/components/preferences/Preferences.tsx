@@ -1,11 +1,12 @@
 import { ReactElement, useState } from 'react';
-import { Box, Tabs, Tab, Typography } from '@material-ui/core';
+import { Box, Tabs, Tab, Typography, useMediaQuery } from '@material-ui/core';
 import preferences, { PreferenceCategory } from '@/utils/preferences';
 import PreferenceTabPanel from '@/components/preferences/PreferenceTabPanel';
 import PreferenceSettingTab from '@/components/preferences/PreferenceSettingTab';
 import PreferenceManager from '@/classes/PreferenceManager';
 
 const Preferences = (props: any): ReactElement => {
+  const matches: boolean = useMediaQuery('(min-width:1200px)');
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -18,9 +19,9 @@ const Preferences = (props: any): ReactElement => {
     preferenceManager.changePreference(id, value);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' } }}>
       <Tabs
-        orientation="vertical"
+        orientation={matches ? 'vertical' : 'horizontal'}
         indicatorColor="primary"
         value={value}
         onChange={handleChange}

@@ -13,7 +13,7 @@ const PreferenceTabPanel = (props: PreferenceTabPanelProps): ReactElement => {
   return (
     <Box hidden={value !== index} {...other} sx={{ flexGrow: 1 }}>
       {value === index && (
-        <Box p={3}>
+        <Box sx={{ pt: 3, px: { xs: 0, lg: 3 }, pb: { xs: 0, lg: 3 } }}>
           <Typography>{children}</Typography>
         </Box>
       )}
