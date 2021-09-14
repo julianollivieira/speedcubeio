@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
-import { Typography, Divider, Card } from '@material-ui/core';
+import { Card, Divider } from '@material-ui/core';
+import { People as PeopleIcon } from '@material-ui/icons';
+import PageHeader from '@/components/general/PageHeader';
 import UserLayout from '@/components/layout/UserLayout';
 import UsersTable from '@/components/admin/UsersTable';
 
@@ -14,7 +16,7 @@ const Users: NextPage = (): ReactElement => {
         pr: { xs: 0, md: '240px' },
       }}
     >
-      <Typography variant="h3">Manage users</Typography>
+      <PageHeader title="Users" icon={PeopleIcon} />
       <Divider sx={{ my: 3 }} />
       <Card>
         <UsersTable />

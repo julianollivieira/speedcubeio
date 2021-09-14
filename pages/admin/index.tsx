@@ -1,7 +1,8 @@
-import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
-import { Grid, Card, CardContent, Typography } from '@material-ui/core';
+import { Divider, Grid, Card, Typography } from '@material-ui/core';
+import { MultilineChart as MultilineChartIcon } from '@material-ui/icons';
+import PageHeader from '@/components/general/PageHeader';
 import UserLayout from '@/components/layout/UserLayout';
 import useSWR from 'swr';
 
@@ -27,6 +28,8 @@ const Admin: NextPage = (): ReactElement => {
         pr: { xs: 0, md: '240px' },
       }}
     >
+      <PageHeader title="Overview" icon={MultilineChartIcon} />
+      <Divider sx={{ my: 3 }} />
       <Grid container spacing={2}>
         <Grid item xs={12} md={4} key={1}>
           <Card sx={{ p: 2 }}>

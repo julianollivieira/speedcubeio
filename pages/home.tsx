@@ -1,7 +1,9 @@
 import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
-import { Typography, Divider } from '@material-ui/core';
+import { Divider } from '@material-ui/core';
+import { Home as HomeIcon } from '@material-ui/icons';
+import PageHeader from '@/components/general/PageHeader';
 import UserLayout from '@/components/layout/UserLayout';
 import { getDaypart } from '@/utils/time';
 
@@ -17,9 +19,10 @@ const Home: NextPage = (): ReactElement => {
         pr: { xs: 0, md: '240px' },
       }}
     >
-      <Typography variant="h3">
-        {`Good${getDaypart()}`}, {currentUser?.displayName}
-      </Typography>
+      <PageHeader
+        title={`Good${getDaypart()} , ${currentUser?.displayName}`}
+        icon={HomeIcon}
+      />
       <Divider sx={{ my: 3 }} />
     </UserLayout>
   );

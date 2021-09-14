@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
-import { Box, Typography, Divider } from '@material-ui/core';
+import { Divider } from '@material-ui/core';
+import { Settings as SettingsIcon } from '@material-ui/icons';
+import PageHeader from '@/components/general/PageHeader';
 import UserLayout from '@/components/layout/UserLayout';
 import Preferences from '@/components/preferences/Preferences';
 
@@ -14,7 +16,7 @@ const PreferencesPage: NextPage = (): ReactElement => {
         pr: { xs: 0, md: '240px' },
       }}
     >
-      <Typography variant="h3">Preferences</Typography>
+      <PageHeader title="Preferences" icon={SettingsIcon} />
       <Divider sx={{ my: 3 }} />
       <Preferences />
     </UserLayout>

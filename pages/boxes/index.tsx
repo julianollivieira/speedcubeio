@@ -1,6 +1,6 @@
 import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
-import { ReactElement, useState, useEffect } from 'react';
+import { ReactElement, useState } from 'react';
 import {
   Add as AddIcon,
   AllInbox as AllInboxIcon,
@@ -9,7 +9,6 @@ import {
   Search as SearchIcon,
 } from '@material-ui/icons';
 import {
-  Typography,
   Divider,
   Grid,
   Box as MUIBox,
@@ -21,6 +20,7 @@ import {
 } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
 import BoxCard from '@/components/boxes/BoxCard';
+import PageHeader from '@/components/general/PageHeader';
 import CreateBoxDialog from '@/components/boxes/CreateBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/EditBoxDialog';
@@ -83,10 +83,7 @@ const Boxes: NextPage = (): ReactElement => {
         box={openShareDialog}
         handleClose={handleCloseShareDialog}
       />
-      <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
-        <AllInboxIcon sx={{ fontSize: '1em', mr: 2 }} />
-        Your boxes
-      </Typography>
+      <PageHeader title="Your boxes" icon={AllInboxIcon} />
       <Divider sx={{ my: 3 }} />
       <Grid container sx={{ my: 3 }}>
         <Grid
