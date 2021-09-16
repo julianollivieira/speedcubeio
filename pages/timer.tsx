@@ -1,67 +1,24 @@
 import type { NextPage } from 'next';
 import { ReactElement, useState } from 'react';
-import {
-  FormatListNumbered as FormatListNumberedIcon,
-  Timer as TimerIcon,
-} from '@material-ui/icons';
-import {
-  Box as MUIBox,
-  Fab,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  OutlinedInput,
-  Typography,
-} from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
-import useBoxes from '@/hooks/useBoxes';
-import useTimes from '@/hooks/useTimes';
-import { useAuth } from '@/utils/auth';
-import PageHeader from '@/components/general/PageHeader';
-import TimeList from '@/components/general/TimeList';
+import { Box as MUIBox, Fab } from '@material-ui/core';
+import { FormatListNumbered as FormatListNumberedIcon } from '@material-ui/icons';
 import Timer from '@/components/timer/Timer';
-import Scramble from '@/components/timer/Scramble';
-import Box from '@/types/Box';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import { useEffect } from 'react';
-dayjs.extend(utc);
+import TimeList from '@/components/general/TimeList';
+import BoxSelect from '@/components/timer/BoxSelect';
+import PuzzleSelect from '@/components/timer/PuzzleSelect';
 
 const TimerPage: NextPage = (): ReactElement => {
   const [currentBoxId, setCurrentBoxId] = useState<string>('');
-  const { currentUser } = useAuth();
-  const { boxes } = useBoxes(currentUser);
 
-  console.log(`[RR 💫]   USER = ${currentUser?.uid}   BOX = ${currentBoxId}`);
-
-  const { createTime } = useTimes(currentUser);
-
-  useEffect(() => {
-    if (currentUser && boxes !== undefined) {
-      if (currentBoxId === '') {
-        console.log('currentBoxId = empty');
-        setCurrentBoxId(boxes[0].id);
-      }
-    }
-  }, [boxes]);
-
-  useEffect(() => {
-    console.log('AAAAAA', currentBoxId);
-  }, [currentBoxId]);
-
-  const handleCurrentBoxIdChange = (event: any) => {
-    console.log('setCurrentBoxId', event.target.value);
-    setCurrentBoxId(event.target.value);
-  };
-
-  const handleTimeSave = (time: number) => {
-    console.log('🟦', time, currentBoxId);
-    createTime('-MhgsIW03Md9YLZT9hWT', time, '3b3b3', 'comment');
+  const handleBoxChange = (boxId: string) => {
+    console.log(boxId, '1');
+    setCurrentBoxId(boxId);
   };
 
   return (
     <UserLayout
+      disablePadding
       title="Timer"
       sx={{
         pt: '64px',
@@ -69,26 +26,24 @@ const TimerPage: NextPage = (): ReactElement => {
         pr: { xs: 0, md: '240px' },
       }}
     >
+      <MUIBox>
+        <MUIBox sx={{ width: 360, p: 2 }}>
+          <PuzzleSelect />
+        </MUIBox>
+      </MUIBox>
       <MUIBox
         sx={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100vh', // FIX
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center', // remove these
+          justifyContent: 'center',
         }}
       >
-        {/* <Scramble /> */}
-        <Timer // make absolute
-          onTimeFinished={(e: any) => {
-            handleTimeSave(e);
-            console.log(currentUser);
-          }}
-          boxId={currentBoxId}
-        />
+        <Timer boxId={currentBoxId} />
       </MUIBox>
       <MUIBox
         sx={{
@@ -113,29 +68,7 @@ const TimerPage: NextPage = (): ReactElement => {
             p: 2,
           }}
         >
-          <FormControl fullWidth>
-            <InputLabel id="box-select-label" shrink={true}>
-              Current box
-            </InputLabel>
-            <Select
-              labelId="box-select-label"
-              id="box-select"
-              value={currentBoxId}
-              onChange={handleCurrentBoxIdChange}
-              input={
-                <OutlinedInput
-                  notched={true}
-                  label="Current box"
-                ></OutlinedInput>
-              }
-            >
-              {boxes?.map((box: Box) => (
-                <MenuItem value={box.id} key={box.id}>
-                  {box.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <BoxSelect onBoxChange={handleBoxChange} />
         </MUIBox>
         <TimeList
           boxId={currentBoxId}

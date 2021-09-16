@@ -7,6 +7,7 @@ import Head from 'next/head';
 // import { useRouter } from 'next/router';
 
 interface Props {
+  disablePadding?: boolean;
   title?: string | null;
   children: ReactNode;
   sx?: any;
@@ -40,11 +41,7 @@ const Layout = (props: Props): ReactElement => {
   const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
-
-  const toggleNavigationDrawer = () => {
-    console.log('toggle 🧨', !open);
-    setOpen(!open);
-  };
+  const toggleNavigationDrawer = () => setOpen(!open);
 
   return (
     <>
@@ -58,7 +55,7 @@ const Layout = (props: Props): ReactElement => {
         handleDrawerClose={handleDrawerClose}
       />
       <Box {...other} onClick={handleDrawerClose}>
-        <Box sx={{ pt: 5, px: 2 }}>{children}</Box>
+        <Box sx={props.disablePadding ? {} : { pt: 5, px: 2 }}>{children}</Box>
       </Box>
     </>
   );
