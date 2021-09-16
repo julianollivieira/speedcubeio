@@ -1,15 +1,29 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Typography } from '@material-ui/core';
 import TimerClass from '@/classes/Timer';
+import { useAuth } from '@/utils/auth';
+import useTimes from '@/hooks/useTimes';
 
 interface Props {
   onTimeFinished: (time: number) => void;
+  boxId: string;
 }
 
 const Timer = (props: Props): ReactElement => {
   const [time, setTime] = useState<number>(0);
   const [readying, setReadying] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
+
+  const { currentUser } = useAuth();
+
+  const { createTime } = useTimes(currentUser);
+
+  console.log('🎊', props.boxId);
+
+  const handleTimeSave = (e) => {
+    console.log('🎈', e, time);
+    createTime(e, time, '3b3b3', 'comment');
+  };
 
   useEffect(() => {
     let timer = new TimerClass();
@@ -32,7 +46,13 @@ const Timer = (props: Props): ReactElement => {
         setReady(false);
         setReadying(false);
       },
-      onStop: props.onTimeFinished,
+      // onStop: props.onTimeFinished,
+      onStop: () => {
+        // console.log(props.boxId);
+        // props.onTimeFinished(props.boxId);
+        console.log('🛒', props.boxId);
+        handleTimeSave(props.boxId);
+      },
     });
 
     const keyDown = (event: any) => {

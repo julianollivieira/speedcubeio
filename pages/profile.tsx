@@ -140,6 +140,7 @@ const Profile: NextPage = (): ReactElement => {
           sx={{
             display: 'flex',
             alignItems: 'center',
+            flexWrap: 'wrap',
             mb: 3,
             justifyContent: { xs: 'center', lg: 'flex-start' },
           }}

@@ -1,6 +1,9 @@
 import type { NextPage } from 'next';
 import { ReactElement, useState } from 'react';
-import { FormatListNumbered as FormatListNumberedIcon } from '@material-ui/icons';
+import {
+  FormatListNumbered as FormatListNumberedIcon,
+  Timer as TimerIcon,
+} from '@material-ui/icons';
 import {
   Box as MUIBox,
   Fab,
@@ -9,11 +12,13 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
+  Typography,
 } from '@material-ui/core';
 import UserLayout from '@/components/layout/UserLayout';
 import useBoxes from '@/hooks/useBoxes';
 import useTimes from '@/hooks/useTimes';
 import { useAuth } from '@/utils/auth';
+import PageHeader from '@/components/general/PageHeader';
 import TimeList from '@/components/general/TimeList';
 import Timer from '@/components/timer/Timer';
 import Scramble from '@/components/timer/Scramble';
@@ -56,7 +61,14 @@ const TimerPage: NextPage = (): ReactElement => {
   };
 
   return (
-    <UserLayout title="Timer">
+    <UserLayout
+      title="Timer"
+      sx={{
+        pt: '64px',
+        pl: { xs: 0, md: '240px' },
+        pr: { xs: 0, md: '240px' },
+      }}
+    >
       <MUIBox
         sx={{
           position: 'absolute',
@@ -75,6 +87,7 @@ const TimerPage: NextPage = (): ReactElement => {
             handleTimeSave(e);
             console.log(currentUser);
           }}
+          boxId={currentBoxId}
         />
       </MUIBox>
       <MUIBox
@@ -121,8 +134,6 @@ const TimerPage: NextPage = (): ReactElement => {
                   {box.name}
                 </MenuItem>
               ))}
-              {/* <MenuItem value={10}>Example 10</MenuItem>
-              <MenuItem value={20}>Example 20</MenuItem> */}
             </Select>
           </FormControl>
         </MUIBox>

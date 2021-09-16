@@ -52,7 +52,7 @@ const Logo = (props: any): ReactElement => {
       href={href}
       label={type}
       size="small"
-      sx={{ mx: 0.5, px: 1, bgcolor: color, color: '#FFF' }}
+      sx={{ my: 1, mx: 0.5, px: 1, bgcolor: color, color: '#FFF' }}
       icon={
         <SvgIcon
           {...other}
