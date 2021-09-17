@@ -26,7 +26,8 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
 const Profile: NextPage = (): ReactElement => {
-  const { currentUser } = useAuth();
+  const { currentUser, currentUserData } = useAuth();
+
   return (
     <UserLayout
       title="Your profile"
@@ -148,13 +149,69 @@ const Profile: NextPage = (): ReactElement => {
             justifyContent: { xs: 'center', lg: 'flex-start' },
           }}
         >
-          <SocialChip type="YouTube" color="#FF0000" href="#" />
-          <SocialChip type="Twitter" color="#1DA1F2" href="#" />
-          <SocialChip type="Instagram" color="#405DE6" href="#" />
-          <SocialChip type="Facebook" color="#4267B2" href="#" />
-          <SocialChip type="Reddit" color="#FF5700" href="#" />
-          <SocialChip type="Discord" color="#5865F2" href="#" />
-          <SocialChip type="Twitch" color="#6441a5 " href="#" />
+          {currentUserData?.socials.youtube ? (
+            <SocialChip
+              type="YouTube"
+              color="#FF0000"
+              href={currentUserData?.socials.youtube}
+            />
+          ) : (
+            ''
+          )}
+          {currentUserData?.socials.twitter ? (
+            <SocialChip
+              type="Twitter"
+              color="#1DA1F2"
+              href={currentUserData?.socials.twitter}
+            />
+          ) : (
+            ''
+          )}
+          {currentUserData?.socials.instagram ? (
+            <SocialChip
+              type="Instagram"
+              color="#405DE6"
+              href={currentUserData?.socials.instagram}
+            />
+          ) : (
+            ''
+          )}
+          {currentUserData?.socials.facebook ? (
+            <SocialChip
+              type="Facebook"
+              color="#4267B2"
+              href={currentUserData?.socials.facebook}
+            />
+          ) : (
+            ''
+          )}
+          {currentUserData?.socials.reddit ? (
+            <SocialChip
+              type="Reddit"
+              color="#FF5700"
+              href={currentUserData?.socials.reddit}
+            />
+          ) : (
+            ''
+          )}
+          {currentUserData?.socials.discord ? (
+            <SocialChip
+              type="Discord"
+              color="#5865F2"
+              href={currentUserData?.socials.discord}
+            />
+          ) : (
+            ''
+          )}
+          {currentUserData?.socials.twitch ? (
+            <SocialChip
+              type="Twitch"
+              color="#6441a5 "
+              href={currentUserData?.socials.twitch}
+            />
+          ) : (
+            ''
+          )}
         </Box>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
@@ -166,7 +223,7 @@ const Profile: NextPage = (): ReactElement => {
           <Grid item xs={12} md={6}>
             <Card>
               <CardHeader title="Bio" />
-              <CardContent></CardContent>
+              <CardContent>{currentUserData?.bio}</CardContent>
             </Card>
           </Grid>
         </Grid>

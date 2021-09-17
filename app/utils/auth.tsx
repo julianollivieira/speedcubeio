@@ -15,12 +15,17 @@ import {
   updateProfile,
   Unsubscribe,
 } from 'firebase/auth';
+import { getDatabase, ref, get, DataSnapshot } from 'firebase/database';
 import app from '@/utils/firebase/client';
+import UserData from '@/types/UserData';
 
 const auth = getAuth(app);
 
+const database = getDatabase(app);
+
 interface Context {
   currentUser: User | null | undefined;
+  currentUserData: UserData | null | undefined;
   signup: (
     displayName: string,
     email: string,
@@ -36,11 +41,16 @@ const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
   const [currentUser, setCurrentUser] = useState<User | null>();
+  const [currentUserData, setCurrentUserData] = useState<UserData | null>();
 
   useEffect(() => {
     const unsubscribe: Unsubscribe = auth.onAuthStateChanged(
       (user: User | null) => {
         setCurrentUser(user);
+        const reference = ref(database, `/users/${user?.uid}`);
+        get(reference).then((snapshot: DataSnapshot) => {
+          setCurrentUserData(snapshot.val());
+        });
       }
     );
     return unsubscribe;
@@ -68,7 +78,13 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
     return auth.signOut();
   };
 
-  const value: Context = { currentUser, signup, login, logout };
+  const value: Context = {
+    currentUserData,
+    currentUser,
+    signup,
+    login,
+    logout,
+  };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

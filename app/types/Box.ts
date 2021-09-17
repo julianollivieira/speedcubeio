@@ -6,5 +6,5 @@ export default interface Box {
   icon: string;
   color: string;
   creationTime: string;
-  times: Array<Time> | null;
+  times: Time[] | null;
 }

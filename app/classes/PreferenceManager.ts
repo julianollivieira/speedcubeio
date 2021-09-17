@@ -7,7 +7,7 @@ interface PreferenceValue {
 }
 
 class PreferenceManager {
-  preferences: Array<PreferenceValue> = [];
+  preferences: PreferenceValue[] = [];
 
   public constructor() {
     this.loadPreferences();
@@ -17,7 +17,7 @@ class PreferenceManager {
     const storageData: string | null = localStorage.getItem('preferences');
     const storedPreferences =
       storageData !== null ? JSON.parse(storageData) : null;
-    this.preferences = <Array<PreferenceValue>>storedPreferences ?? [];
+    this.preferences = <PreferenceValue[]>storedPreferences ?? [];
   }
 
   private storePreferences(): void {

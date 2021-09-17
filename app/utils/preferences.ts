@@ -3,7 +3,7 @@ import { SvgIconProps } from '@mui/material/SvgIcon';
 import { Timer, Extension } from '@mui/icons-material';
 
 export interface Preferences {
-  categories: Array<PreferenceCategory>;
+  categories: PreferenceCategory[];
 }
 
 export interface Preference {
@@ -17,7 +17,7 @@ export interface PreferenceCategory {
   id: string;
   icon: ComponentType<SvgIconProps>;
   name: string;
-  preferences: Array<Preference>;
+  preferences: Preference[];
 }
 
 export default {

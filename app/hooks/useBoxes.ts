@@ -22,7 +22,7 @@ dayjs.extend(utc);
 const database = getDatabase(app);
 
 const useBoxes = (currentUser: User | null | undefined) => {
-  const [boxes, setBoxes] = useState<Array<Box>>();
+  const [boxes, setBoxes] = useState<Box[]>();
 
   useEffect(() => {
     if (currentUser) {

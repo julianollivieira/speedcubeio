@@ -35,17 +35,15 @@ export const getBoxLastUseOrCreationTime = (
   }
 };
 
-export const sortTimeArrayByCreationTime = (
-  timeArray: Array<Time>
-): Array<Time> =>
+export const sortTimeArrayByCreationTime = (timeArray: Time[]): Time[] =>
   timeArray.sort(
     (a: Time, b: Time) =>
       <any>new Date(a.creationTime) - <any>new Date(b.creationTime)
   );
 
 export const sortBoxArrayByLastUse = (
-  boxArray: Array<Box> | undefined
-): Array<Box> | null => {
+  boxArray: Box[] | undefined
+): Box[] | null => {
   if (boxArray) {
     return boxArray.sort(
       (a: Box, b: Box) =>
@@ -57,8 +55,8 @@ export const sortBoxArrayByLastUse = (
   }
 };
 
-export const convertTimeObjectToTimeArray = (timeObject: any): Array<Time> => {
-  let timeArray: Array<Time> = [];
+export const convertTimeObjectToTimeArray = (timeObject: any): Time[] => {
+  let timeArray: Time[] = [];
   for (const property in timeObject) {
     timeArray.push({
       id: property,
@@ -72,8 +70,8 @@ export const convertTimeObjectToTimeArray = (timeObject: any): Array<Time> => {
   return timeArray;
 };
 
-export const convertBoxObjectToBoxArray = (boxObject: any): Array<Box> => {
-  let boxArray: Array<Box> = [];
+export const convertBoxObjectToBoxArray = (boxObject: any): Box[] => {
+  let boxArray: Box[] = [];
   for (const property in boxObject) {
     boxArray.push({
       id: property,
