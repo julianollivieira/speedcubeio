@@ -23,8 +23,7 @@ const TimeListComponent = (props: any): ReactElement => {
   useEffect(() => {
     // if (!box) return;
     if (!box?.times) return;
-    const timesArray = box.times.map((time: Time) => time.time);
-    const timeList: TimeList = new TimeList(timesArray);
+    const timeList: TimeList = new TimeList(box);
     setTimeList(timeList);
   }, [box]);
 

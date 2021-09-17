@@ -30,6 +30,11 @@ const TimesGraphCard = dynamic(
   { ssr: false }
 );
 
+const PuzzlesPieChartCard = dynamic(
+  () => import('@/components/stat/PuzzlesPieChartCard'),
+  { ssr: false }
+);
+
 const Box: NextPage = (): ReactElement => {
   const router = useRouter();
   const { currentUser } = useAuth();
@@ -40,8 +45,7 @@ const Box: NextPage = (): ReactElement => {
   useEffect(() => {
     // if (!box) return;
     if (!box?.times) return;
-    const timesArray = box.times.map((time: Time) => time.time);
-    const timeList: TimeList = new TimeList(timesArray);
+    const timeList: TimeList = new TimeList(box);
     setTimeList(timeList);
   }, [box]);
 
@@ -98,6 +102,9 @@ const Box: NextPage = (): ReactElement => {
         </Grid>
         <Grid item xs={12}>
           <TimesGraphCard timeList={timeList} />
+        </Grid>
+        <Grid item xs={12} xl={6}>
+          <PuzzlesPieChartCard timeList={timeList} />
         </Grid>
       </Grid>
       <Grid container spacing={2}>

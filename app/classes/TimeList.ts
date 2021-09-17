@@ -1,12 +1,16 @@
 import { msToTimeNull } from '@/utils/convert';
+import Time from '@/types/Time';
+import Box from '@/types/Box';
 
 class TimeList {
+  timesRaw: Time[] | null = null;
   times: number[] = [];
   ao5s: (number | null)[] = [];
   ao12s: (number | null)[] = [];
 
-  public constructor(times: number[]) {
-    this.times = times;
+  public constructor(box: Box) {
+    this.timesRaw = box.times;
+    this.times = (box.times ?? []).map((time: Time) => time.time);
     this.ao5s = this.times.map((item, index) => {
       if (index < 4) return null;
       const five = this.times.slice(index - 4, index);
@@ -26,6 +30,19 @@ class TimeList {
       ao5: msToTimeNull(this.ao5s[index]),
       ao12: msToTimeNull(this.ao12s[index]),
     }));
+  }
+
+  public getPuzzlesPieChartObject(): any[] {
+    let data: any = [];
+    this.timesRaw?.forEach((time) => {
+      let found = data.find((element: any) => element.name == time.puzzle);
+      if (found) {
+        found.value += 1;
+      } else {
+        data.push({ name: time.puzzle, value: 1 });
+      }
+    });
+    return data;
   }
 
   public getAverageOf5(index: number): number | null {
