@@ -25,6 +25,8 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 const Profile: NextPage = (): ReactElement => {
   const { currentUser, currentUserData } = useAuth();
 

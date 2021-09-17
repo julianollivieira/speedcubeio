@@ -13,12 +13,6 @@ const Admin: NextPage = (): ReactElement => {
     '/api/admin/getUsers',
     fetcher
   );
-  // const { data: usersWithData, error: usersDataError } = useSWR(
-  //   '/api/admin/getUsersWithData',
-  //   fetcher
-  // );
-
-  console.log(users);
   return (
     <UserLayout
       title="Admin"

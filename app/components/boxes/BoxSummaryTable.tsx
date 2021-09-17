@@ -25,7 +25,7 @@ const BoxSummaryTable = (props: Props): ReactElement => {
             <TableCell>#</TableCell>
             <TableCell>Last</TableCell>
             <TableCell>Best</TableCell>
-            {showWorst ? <TableCell>Worst</TableCell> : ''}
+            {showWorst ? <TableCell>Worst</TableCell> : <></>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -36,7 +36,7 @@ const BoxSummaryTable = (props: Props): ReactElement => {
             {showWorst ? (
               <TableCell>{msToTime(timeList?.getWorstTime(), true)}</TableCell>
             ) : (
-              ''
+              <></>
             )}
           </TableRow>
           <TableRow>
@@ -52,7 +52,7 @@ const BoxSummaryTable = (props: Props): ReactElement => {
                 {msToTime(timeList?.getWorstAverageOf5(), true)}
               </TableCell>
             ) : (
-              ''
+              <></>
             )}
           </TableRow>
           <TableRow>
@@ -68,7 +68,7 @@ const BoxSummaryTable = (props: Props): ReactElement => {
                 {msToTime(timeList?.getWorstAverageOf12(), true)}
               </TableCell>
             ) : (
-              ''
+              <></>
             )}
           </TableRow>
         </TableBody>

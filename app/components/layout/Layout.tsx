@@ -4,13 +4,16 @@ import { Box } from '@mui/material';
 
 interface Props {
   children: ReactNode;
+  sx?: any;
 }
 
-const Layout = ({ children }: Props): ReactElement => {
+const Layout = ({ children, sx }: Props): ReactElement => {
   return (
     <>
       <NavigationBar />
-      <Box sx={{ pt: '64px' }}>{children}</Box>
+      <Box sx={{ pt: '64px' }}>
+        <Box sx={sx}>{children}</Box>
+      </Box>
     </>
   );
 };

@@ -86,7 +86,6 @@ const CreateBoxDialog = (props: Props): ReactElement => {
                 error={formik.touched.color && Boolean(formik.errors.color)}
                 helperText={formik.touched.color && formik.errors.color}
                 handleColorPickerChange={(color: any) => {
-                  console.log(color);
                   formik.setFieldValue('color', color.hex);
                 }}
               />

@@ -12,7 +12,6 @@ const TimerPage: NextPage = (): ReactElement => {
   const [currentBoxId, setCurrentBoxId] = useState<string>('');
 
   const handleBoxChange = (boxId: string) => {
-    console.log(boxId, '1');
     setCurrentBoxId(boxId);
   };
 

@@ -47,10 +47,12 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
     const unsubscribe: Unsubscribe = auth.onAuthStateChanged(
       (user: User | null) => {
         setCurrentUser(user);
-        const reference = ref(database, `/users/${user?.uid}`);
-        get(reference).then((snapshot: DataSnapshot) => {
-          setCurrentUserData(snapshot.val());
-        });
+        if (user) {
+          const reference = ref(database, `/users/${user?.uid}`);
+          get(reference).then((snapshot: DataSnapshot) => {
+            setCurrentUserData(snapshot.val());
+          });
+        }
       }
     );
     return unsubscribe;
