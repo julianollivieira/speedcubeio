@@ -84,7 +84,7 @@ const AppNavigationBar = (props: Props): ReactElement => {
               </ListItemIcon>
               Profile
             </MenuItem>
-            <MenuItem component={Link} href="/settings">
+            <MenuItem component={Link} href="/account">
               <ListItemIcon>
                 <SettingsIcon fontSize="small" />
               </ListItemIcon>
