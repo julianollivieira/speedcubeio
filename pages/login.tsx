@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { ReactElement } from 'react';
-import { Container, Box, Button } from '@material-ui/core';
+import { Container, Box, Button } from '@mui/material';
 import LoginForm from '@/components/login/LoginForm';
 import Link from '@/components/general/Link';
 import Logo from '@/components/general/Logo';

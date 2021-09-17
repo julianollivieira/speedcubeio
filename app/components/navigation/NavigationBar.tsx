@@ -1,6 +1,6 @@
 import { ReactElement, cloneElement } from 'react';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import { AppBar, Container, Toolbar, Box, Button } from '@material-ui/core';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import { AppBar, Container, Toolbar, Box, Button } from '@mui/material';
 import Logo from '@/components/general/Logo';
 import Link from '@/components/general/Link';
 

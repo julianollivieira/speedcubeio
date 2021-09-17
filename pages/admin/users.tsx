@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
-import { Card, Divider } from '@material-ui/core';
-import { People as PeopleIcon } from '@material-ui/icons';
+import { Card, Divider } from '@mui/material';
+import { People as PeopleIcon } from '@mui/icons-material';
 import PageHeader from '@/components/general/PageHeader';
 import UserLayout from '@/components/layout/UserLayout';
 import UsersTable from '@/components/admin/UsersTable';

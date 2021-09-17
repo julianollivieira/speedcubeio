@@ -5,7 +5,7 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useAuth } from '@/utils/auth';
 import useBoxes from '@/hooks/useBoxes';
 import Box from '@/types/Box';

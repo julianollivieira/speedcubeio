@@ -12,7 +12,7 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
-} from '@material-ui/core';
+} from '@mui/material';
 import Link from 'next/link';
 import { useAuth } from '@/utils/auth';
 import TimeList from '@/classes/TimeList';
@@ -31,7 +31,7 @@ import {
   Delete as DeleteIcon,
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import useBox from '@/hooks/useBox';
 
 interface Props {

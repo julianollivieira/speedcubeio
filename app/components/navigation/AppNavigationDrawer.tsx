@@ -10,7 +10,7 @@ import {
   Toolbar,
   Badge,
   Collapse,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   Home as HomeIcon,
   Timer as TimerIcon,
@@ -23,8 +23,8 @@ import {
   ExpandMore as ExpandMoreIcon,
   MultilineChart as MultilineChartIcon,
   People as PeopleIcon,
-} from '@material-ui/icons';
-import { styled } from '@material-ui/core/styles';
+} from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
 
 const drawerWidth = 240;
 

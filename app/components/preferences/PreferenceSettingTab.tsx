@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Typography, List } from '@material-ui/core';
+import { Typography, List } from '@mui/material';
 import { Preference, PreferenceCategory } from '@/utils/preferences';
 import PreferenceSettingItem from '@/components/preferences/PreferenceSettingItem';
 

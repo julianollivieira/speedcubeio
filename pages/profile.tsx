@@ -13,8 +13,11 @@ import {
   CardContent,
   Grid,
   Fab,
-} from '@material-ui/core';
-import { Edit as EditIcon, Verified as VerifiedIcon } from '@material-ui/icons';
+} from '@mui/material';
+import {
+  Edit as EditIcon,
+  Verified as VerifiedIcon,
+} from '@mui/icons-material';
 import UserLayout from '@/components/layout/UserLayout';
 import ProfilePicture from '@/components/general/ProfilePicture';
 import SocialChip from '@/components/general/SocialChip';

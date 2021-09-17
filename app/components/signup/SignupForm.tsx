@@ -11,7 +11,7 @@ import {
   Snackbar,
   Alert,
   LinearProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import Link from '@/components/general/Link';
 import signupSchema from '@/validation/signup';
 import { useRouter } from 'next/router';
@@ -43,7 +43,7 @@ const SignupForm = (): ReactElement => {
       try {
         await signup(values.displayName, values.email, values.password);
         router.push('/home');
-      } catch (error) {
+      } catch (error: any) {
         setError(error.message);
         setLoading(false);
       }

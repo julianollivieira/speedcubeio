@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
-import { Card, CardHeader, CardContent } from '@material-ui/core';
-import ShowChartIcon from '@material-ui/icons/ShowChart';
+import { Card, CardHeader, CardContent } from '@mui/material';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
 import {
   LineChart,
   Line,
@@ -19,8 +19,6 @@ interface Props {
 
 const TimesGraphCard = (props: Props): ReactElement => {
   const { timeList } = { ...props };
-
-  console.log(timeList);
 
   return (
     <Card>

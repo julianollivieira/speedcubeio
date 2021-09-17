@@ -1,6 +1,6 @@
 import { ReactElement, ComponentType } from 'react';
-import { SvgIconProps } from '@material-ui/core/SvgIcon';
-import { Box, Typography } from '@material-ui/core';
+import { SvgIconProps } from '@mui/material/SvgIcon';
+import { Box, Typography } from '@mui/material';
 
 interface Props {
   title: string;

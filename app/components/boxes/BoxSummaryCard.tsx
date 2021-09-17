@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { Card, CardHeader, CardContent } from '@material-ui/core';
+import { Card, CardHeader, CardContent } from '@mui/material';
 import BoxSummaryTable from '@/components/boxes/BoxSummaryTable';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import TimeList from '@/classes/TimeList';
 
 interface Props {

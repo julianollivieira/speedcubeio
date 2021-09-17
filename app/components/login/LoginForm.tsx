@@ -8,7 +8,7 @@ import {
   Snackbar,
   Alert,
   LinearProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import Link from '@/components/general/Link';
 import loginSchema from '@/validation/login';
 import { useRouter } from 'next/router';
@@ -34,7 +34,7 @@ const LoginForm = (): ReactElement => {
       try {
         await login(values.email, values.password);
         router.push('/home');
-      } catch (error) {
+      } catch (error: any) {
         setError(error.message);
         setLoading(false);
       }

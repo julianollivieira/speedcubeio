@@ -4,7 +4,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Switch,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Preference } from '@/utils/preferences';
 
 interface Props {

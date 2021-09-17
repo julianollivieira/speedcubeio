@@ -9,8 +9,8 @@ import {
   Grid,
   Fab,
   Box as MUIBox,
-} from '@material-ui/core';
-import { FormatListNumbered as FormatListNumberedIcon } from '@material-ui/icons';
+} from '@mui/material';
+import { FormatListNumbered as FormatListNumberedIcon } from '@mui/icons-material';
 import UserLayout from '@/components/layout/UserLayout';
 import useBox from '@/hooks/useBox';
 import TimeListComponent from '@/components/general/TimeList';

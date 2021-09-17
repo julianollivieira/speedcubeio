@@ -1,6 +1,6 @@
 import { ReactNode, ReactElement } from 'react';
 import NavigationBar from '@/components/navigation/NavigationBar';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 
 interface Props {
   children: ReactNode;

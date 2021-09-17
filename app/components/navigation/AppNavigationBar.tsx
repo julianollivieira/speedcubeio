@@ -7,13 +7,13 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   Person as PersonIcon,
   Logout as LogoutIcon,
   Settings as SettingsIcon,
   Menu as MenuIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import Logo from '@/components/general/Logo';
 import ProfilePicture from '@/components/general/ProfilePicture';
 import { useAuth } from '@/utils/auth';

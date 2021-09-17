@@ -8,8 +8,8 @@ import {
   TableCell,
   Typography,
   Box,
-} from '@material-ui/core';
-import { Clear as ClearIcon, Check as CheckIcon } from '@material-ui/icons';
+} from '@mui/material';
+import { Clear as ClearIcon, Check as CheckIcon } from '@mui/icons-material';
 import useSWR from 'swr';
 import ProfilePicture from '@/components/general/ProfilePicture';
 import { User } from 'firebase/auth';

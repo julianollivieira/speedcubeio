@@ -6,7 +6,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@material-ui/core';
+} from '@mui/material';
 import { msToTime } from '@/utils/convert';
 import TimeList from '@/classes/TimeList';
 

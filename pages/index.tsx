@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
 import Layout from '@/components/layout/Layout';
-import { Container, Grid, Typography, Button, Paper } from '@material-ui/core';
-import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons';
+import { Container, Grid, Typography, Button, Paper } from '@mui/material';
+import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@mui/icons-material';
 
 const Home: NextPage = (): ReactElement => {
   return (

@@ -8,7 +8,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from '@material-ui/core';
+} from '@mui/material';
 import TimeList from '@/classes/TimeList';
 import useBox from '@/hooks/useBox';
 import Time from '@/types/Time';

@@ -7,7 +7,7 @@ import {
   Apps as AppsIcon,
   FormatListBulleted as FormatListBulletedIcon,
   Search as SearchIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import {
   Divider,
   Grid,
@@ -17,7 +17,7 @@ import {
   ToggleButton,
   TextField,
   Fab,
-} from '@material-ui/core';
+} from '@mui/material';
 import UserLayout from '@/components/layout/UserLayout';
 import BoxCard from '@/components/boxes/BoxCard';
 import PageHeader from '@/components/general/PageHeader';

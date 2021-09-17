@@ -1,8 +1,8 @@
 import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
-import { Divider } from '@material-ui/core';
-import { Home as HomeIcon } from '@material-ui/icons';
+import { Divider } from '@mui/material';
+import { Home as HomeIcon } from '@mui/icons-material';
 import PageHeader from '@/components/general/PageHeader';
 import UserLayout from '@/components/layout/UserLayout';
 import { getDaypart } from '@/utils/time';

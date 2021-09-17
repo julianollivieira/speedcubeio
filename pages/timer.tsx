@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import { ReactElement, useState } from 'react';
 import UserLayout from '@/components/layout/UserLayout';
-import { Box as MUIBox, Fab } from '@material-ui/core';
-import { FormatListNumbered as FormatListNumberedIcon } from '@material-ui/icons';
+import { Box as MUIBox, Fab } from '@mui/material';
+import { FormatListNumbered as FormatListNumberedIcon } from '@mui/icons-material';
 import Timer from '@/components/timer/Timer';
 import TimeList from '@/components/general/TimeList';
 import BoxSelect from '@/components/timer/BoxSelect';

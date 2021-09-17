@@ -1,6 +1,6 @@
 import { ComponentType } from 'react';
-import { SvgIconProps } from '@material-ui/core/SvgIcon';
-import { Timer, Extension } from '@material-ui/icons';
+import { SvgIconProps } from '@mui/material/SvgIcon';
+import { Timer, Extension } from '@mui/icons-material';
 
 export interface Preferences {
   categories: Array<PreferenceCategory>;

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
-import { Divider, Grid, Card, Typography } from '@material-ui/core';
-import { MultilineChart as MultilineChartIcon } from '@material-ui/icons';
+import { Divider, Grid, Card, Typography } from '@mui/material';
+import { MultilineChart as MultilineChartIcon } from '@mui/icons-material';
 import PageHeader from '@/components/general/PageHeader';
 import UserLayout from '@/components/layout/UserLayout';
 import useSWR from 'swr';

@@ -5,7 +5,7 @@ import {
   CssBaseline,
   ThemeProvider,
   useMediaQuery,
-} from '@material-ui/core';
+} from '@mui/material';
 import type { AppProps } from 'next/app';
 import { ReactElement, useMemo } from 'react';
 import '@fontsource/roboto/300.css';

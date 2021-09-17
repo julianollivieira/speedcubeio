@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
-import { Divider } from '@material-ui/core';
-import { Settings as SettingsIcon } from '@material-ui/icons';
+import { Divider } from '@mui/material';
+import { Settings as SettingsIcon } from '@mui/icons-material';
 import PageHeader from '@/components/general/PageHeader';
 import UserLayout from '@/components/layout/UserLayout';
 import Preferences from '@/components/preferences/Preferences';

@@ -5,7 +5,7 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
-} from '@material-ui/core';
+} from '@mui/material';
 import puzzles, { Puzzle } from '@/utils/puzzles';
 
 const PuzzleSelect = (): ReactElement => {

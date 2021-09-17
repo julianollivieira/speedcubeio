@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import TimerClass from '@/classes/Timer';
 import { useAuth } from '@/utils/auth';
 import useTimes from '@/hooks/useTimes';

@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
-import { Chip, SvgIcon } from '@material-ui/core';
+import { Chip, SvgIcon } from '@mui/material';
 
-import YouTubeIcon from '@material-ui/icons/YouTube';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import RedditIcon from '@material-ui/icons/Reddit';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import RedditIcon from '@mui/icons-material/Reddit';
 import DiscordIcon from '@/public/images/icons/discord.svg';
 import TwitchIcon from '@/public/images/icons/twitch.svg';
 

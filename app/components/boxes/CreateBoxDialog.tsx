@@ -8,7 +8,7 @@ import {
   Button,
   Box,
   Grid,
-} from '@material-ui/core';
+} from '@mui/material';
 import ColorPicker from '@/components/general/ColorPicker';
 import boxSchema from '@/validation/box';
 import { useFormik } from 'formik';

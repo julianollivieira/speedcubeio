@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Dialog, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogTitle } from '@mui/material';
 import Box from '@/types/Box';
 
 interface Props {

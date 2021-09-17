@@ -6,7 +6,7 @@ import {
   DialogActions,
   DialogContentText,
   Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import Box from '@/types/Box';
 
 interface Props {

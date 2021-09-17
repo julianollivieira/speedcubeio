@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Avatar } from '@material-ui/core';
+import { Avatar } from '@mui/material';
 import { useAuth } from '@/utils/auth';
 
 const ProfilePicture = (props: any): ReactElement => {

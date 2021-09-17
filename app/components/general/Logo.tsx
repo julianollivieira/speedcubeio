@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 
 const Logo = (props: any): ReactElement => {
   const { expanded, ...other } = props;

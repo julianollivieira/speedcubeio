@@ -1,5 +1,5 @@
 import { ReactNode, ReactElement, useState } from 'react';
-import { Box, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress } from '@mui/material';
 import AppNavigationBar from '@/components/navigation/AppNavigationBar';
 import NavigationDrawer from '@/components/navigation/AppNavigationDrawer';
 import { useAuth } from '@/utils/auth';

@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react';
-import { Box, Tabs, Tab, Typography, useMediaQuery } from '@material-ui/core';
+import { Box, Tabs, Tab, Typography, useMediaQuery } from '@mui/material';
 import preferences, { PreferenceCategory } from '@/utils/preferences';
 import PreferenceTabPanel from '@/components/preferences/PreferenceTabPanel';
 import PreferenceSettingTab from '@/components/preferences/PreferenceSettingTab';
