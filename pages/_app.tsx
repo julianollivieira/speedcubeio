@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import type { NextPage } from 'next';
+import '../public/styles/globals.css';
 import {
   createTheme,
   CssBaseline,
@@ -13,6 +14,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { AuthProvider } from '@/utils/auth';
+import { SnackbarProvider } from 'notistack';
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -68,7 +70,6 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Public+Sans:300,400,500,700&display=swap"
         />
-        <link rel="stylesheet" href="/styles/globals.css" />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -77,7 +78,9 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AuthProvider>
-          <Component {...pageProps} />
+          <SnackbarProvider maxSnack={3}>
+            <Component {...pageProps} />
+          </SnackbarProvider>
         </AuthProvider>
       </ThemeProvider>
     </>

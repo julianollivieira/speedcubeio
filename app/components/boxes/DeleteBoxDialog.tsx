@@ -6,8 +6,11 @@ import {
   DialogActions,
   DialogContentText,
   Button,
+  IconButton,
 } from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
 import Box from '@/types/Box';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   box: Box | null;
@@ -16,9 +19,31 @@ interface Props {
 }
 
 const DeleteBoxDialog = (props: Props): ReactElement => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const handleDelete = () => {
-    props.handleClose();
-    props.deleteBox(props.box?.id);
+    try {
+      props.handleClose();
+      props.deleteBox(props.box?.id);
+      enqueueSnackbar('Box deleted successfully', {
+        variant: 'success',
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)}>
+            <CloseIcon />
+          </IconButton>
+        ),
+      });
+    } catch (error) {
+      console.log('error', error);
+      enqueueSnackbar("Something wen't wrong, please try again", {
+        variant: 'error',
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)}>
+            <CloseIcon />
+          </IconButton>
+        ),
+      });
+    }
   };
   return (
     <Dialog open={Boolean(props.box?.id)} onClose={props.handleClose}>

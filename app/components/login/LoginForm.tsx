@@ -5,26 +5,25 @@ import {
   Box,
   TextField,
   Button,
-  Snackbar,
-  Alert,
+  IconButton,
   LinearProgress,
 } from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
 import Link from '@/components/general/Link';
 import loginSchema from '@/validation/login';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import { useAuth } from '@/utils/auth';
+import { useSnackbar } from 'notistack';
+import convertAuthCodeToMessage from '@/utils/convertAuthCodeToMessage';
 
 const LoginForm = (): ReactElement => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const router = useRouter();
   const { login } = useAuth();
-
-  const handleAlertClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') return;
-    setError(null);
-  };
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -33,10 +32,26 @@ const LoginForm = (): ReactElement => {
       setLoading(true);
       try {
         await login(values.email, values.password);
+        enqueueSnackbar('Login succesful', {
+          variant: 'success',
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)}>
+              <CloseIcon />
+            </IconButton>
+          ),
+        });
         router.push('/home');
       } catch (error: any) {
-        setError(error.message);
+        setError(error.code);
         setLoading(false);
+        enqueueSnackbar(convertAuthCodeToMessage(error.code), {
+          variant: 'error',
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)}>
+              <CloseIcon />
+            </IconButton>
+          ),
+        });
       }
     },
   });
@@ -104,20 +119,6 @@ const LoginForm = (): ReactElement => {
           ''
         )}
       </Paper>
-      <Snackbar
-        open={Boolean(error)}
-        autoHideDuration={10000}
-        onClose={handleAlertClose}
-      >
-        <Alert
-          elevation={6}
-          variant="filled"
-          onClose={handleAlertClose}
-          severity="error"
-        >
-          {error}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

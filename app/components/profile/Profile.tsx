@@ -10,14 +10,17 @@ import {
   CardContent,
   Grid,
   Fab,
+  Chip,
 } from '@mui/material';
 import {
   Share as ShareIcon,
   Edit as EditIcon,
   Verified as VerifiedIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';
 import ProfilePicture from '@/components/general/ProfilePicture';
 import SocialChip from '@/components/general/SocialChip';
+import { useSnackbar } from 'notistack';
 import { FullUser } from '@/types/User';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -29,6 +32,38 @@ interface Props {
 
 const Profile = (props: Props): ReactElement => {
   const { user } = props;
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const copyProfileLinkToClipboard = () => {
+    navigator.clipboard
+      .writeText(`https://speedcube.io/users/${user?.uid}`)
+      .then(
+        () => {
+          enqueueSnackbar('Profile link copied to clipboard', {
+            variant: 'success',
+            action: (key) => (
+              <IconButton onClick={() => closeSnackbar(key)}>
+                <CloseIcon />
+              </IconButton>
+            ),
+          });
+        },
+        () => {
+          enqueueSnackbar(
+            "Something wen't wrong, profile link not copied to clipboard",
+            {
+              variant: 'error',
+              action: (key) => (
+                <IconButton onClick={() => closeSnackbar(key)}>
+                  <CloseIcon />
+                </IconButton>
+              ),
+            }
+          );
+        }
+      );
+  };
+
   return (
     <>
       <Container>
@@ -56,7 +91,7 @@ const Profile = (props: Props): ReactElement => {
           <Grid
             item
             xs={12}
-            lg={10}
+            lg={8}
             sx={{ display: 'flex', alignItems: 'center' }}
           >
             <Box
@@ -107,29 +142,49 @@ const Profile = (props: Props): ReactElement => {
                   }}
                 >
                   <Box>
-                    {/* <Chip
-                    label="PRO MEMBER"
-                    color="error"
-                    size="small"
-                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                  />
-                  <Chip
-                    label="BETA TESTER"
-                    color="warning"
-                    size="small"
-                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                  /> */}
+                    <Chip
+                      label="PRO MEMBER"
+                      color="error"
+                      size="small"
+                      sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+                    />
+                    <Chip
+                      label="BETA TESTER"
+                      color="warning"
+                      size="small"
+                      sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+                    />
                   </Box>
                 </Box>
               </Box>
-              <Box sx={{ pr: 4, display: { xs: 'none', lg: 'flex' } }}>
-                <IconButton size="large">
-                  <ShareIcon />
-                </IconButton>
-                <IconButton size="large">
-                  <EditIcon />
-                </IconButton>
-              </Box>
+            </Box>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            lg={2}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              pt: { xs: 3, lg: 0 },
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <IconButton onClick={copyProfileLinkToClipboard} size="large">
+                <ShareIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                sx={{ display: { xs: 'none', lg: 'flex' } }}
+              >
+                <EditIcon />
+              </IconButton>
             </Box>
           </Grid>
         </Grid>
@@ -148,12 +203,12 @@ const Profile = (props: Props): ReactElement => {
           ))}
         </Box>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             <Card>
               <CardHeader title="Socials" />
               <CardContent></CardContent>
             </Card>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} md={6}>
             <Card>
               <CardHeader title="Bio" />

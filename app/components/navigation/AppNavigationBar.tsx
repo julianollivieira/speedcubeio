@@ -13,12 +13,14 @@ import {
   Logout as LogoutIcon,
   Settings as SettingsIcon,
   Menu as MenuIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';
 import Logo from '@/components/general/Logo';
 import ProfilePicture from '@/components/general/ProfilePicture';
 import { useAuth } from '@/utils/auth';
 import { useRouter } from 'next/router';
 import Link from '@/components/general/Link';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   toggleNavigationDrawer: any; // TODO: FIX
@@ -33,12 +35,31 @@ const AppNavigationBar = (props: Props): ReactElement => {
 
   const router = useRouter();
   const { logout } = useAuth();
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const handleLogout = async () => {
     try {
       await logout();
       router.push('/login');
+      enqueueSnackbar('Logout succesful', {
+        variant: 'success',
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)}>
+            <CloseIcon />
+          </IconButton>
+        ),
+      });
     } catch (error) {
       console.log('error', error);
+      enqueueSnackbar("Something wen't wrong, please try again", {
+        variant: 'error',
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)}>
+            <CloseIcon />
+          </IconButton>
+        ),
+      });
     }
   };
 

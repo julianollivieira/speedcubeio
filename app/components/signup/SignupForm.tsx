@@ -5,29 +5,28 @@ import {
   Box,
   TextField,
   Button,
+  IconButton,
   FormControlLabel,
   Checkbox,
   Link as MUILink,
-  Snackbar,
-  Alert,
   LinearProgress,
 } from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
 import Link from '@/components/general/Link';
 import signupSchema from '@/validation/signup';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import { useAuth } from '@/utils/auth';
+import { useSnackbar } from 'notistack';
+import convertAuthCodeToMessage from '@/utils/convertAuthCodeToMessage';
 
 const SignupForm = (): ReactElement => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const router = useRouter();
   const { signup } = useAuth();
-
-  const handleAlertClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') return;
-    setError(null);
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -42,10 +41,26 @@ const SignupForm = (): ReactElement => {
       setLoading(true);
       try {
         await signup(values.displayName, values.email, values.password);
+        enqueueSnackbar('Signup succesful', {
+          variant: 'success',
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)}>
+              <CloseIcon />
+            </IconButton>
+          ),
+        });
         router.push('/home');
       } catch (error: any) {
-        setError(error.message);
+        setError(error.code);
         setLoading(false);
+        enqueueSnackbar(convertAuthCodeToMessage(error.code), {
+          variant: 'error',
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)}>
+              <CloseIcon />
+            </IconButton>
+          ),
+        });
       }
     },
   });
@@ -168,20 +183,6 @@ const SignupForm = (): ReactElement => {
           ''
         )}
       </Paper>
-      <Snackbar
-        open={Boolean(error)}
-        autoHideDuration={10000}
-        onClose={handleAlertClose}
-      >
-        <Alert
-          elevation={6}
-          variant="filled"
-          onClose={handleAlertClose}
-          severity="error"
-        >
-          {error}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

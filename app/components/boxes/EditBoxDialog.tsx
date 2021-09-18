@@ -6,13 +6,16 @@ import {
   DialogActions,
   TextField,
   Button,
+  IconButton,
   Box as MUIBox,
   Grid,
 } from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
 import ColorPicker from '@/components/general/ColorPicker';
 import boxSchema from '@/validation/box';
 import { useFormik } from 'formik';
 import Box from '@/types/Box';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   box: Box | null;
@@ -21,6 +24,8 @@ interface Props {
 }
 
 const EditBoxDialog = (props: Props): ReactElement | null => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const handleClose = () => {
     formik.resetForm();
     props.handleClose();
@@ -41,8 +46,24 @@ const EditBoxDialog = (props: Props): ReactElement | null => {
       try {
         handleClose();
         props.editBox(props.box?.id, values.name, values.icon, values.color);
+        enqueueSnackbar('Box saved successfully', {
+          variant: 'success',
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)}>
+              <CloseIcon />
+            </IconButton>
+          ),
+        });
       } catch (error) {
         console.log('error', error);
+        enqueueSnackbar("Something wen't wrong, please try again", {
+          variant: 'error',
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)}>
+              <CloseIcon />
+            </IconButton>
+          ),
+        });
       }
     },
   });

@@ -7,13 +7,13 @@ export const convertUserToFullUser = (
   user: User | null | undefined,
   data: UserData
 ): FullUser | null => {
-  if (!user || !data) return null;
+  if (!user) return null;
   return {
     uid: user.uid,
     displayName: user.displayName,
     joinDate: user.metadata.creationTime,
-    bio: data.bio,
-    socials: getSocialObjects(data.socials),
+    bio: data?.bio,
+    socials: data ? getSocialObjects(data.socials) : [],
   };
 };
 
@@ -26,8 +26,8 @@ export const convertUserRecordToFullUser = (
     uid: userRecord.uid,
     displayName: userRecord.displayName,
     joinDate: userRecord.metadata.creationTime,
-    bio: data.bio,
-    socials: getSocialObjects(data.socials),
+    bio: data?.bio,
+    socials: data ? getSocialObjects(data.socials) : [],
   };
 };
 
