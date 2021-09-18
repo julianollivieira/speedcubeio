@@ -7,11 +7,10 @@ import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@mui/icons-materia
 const Home: NextPage = (): ReactElement => {
   return (
     <>
-      <Layout sx={{ pt: '64px' }}>
-        <Container
-          maxWidth="lg"
-          sx={{ minHeight: 700, display: 'flex', alignItems: 'center' }}
-        >
+      <Layout
+        sx={{ mt: '64px', height: 'calc(100vh - 64px)', overflowY: 'scroll' }}
+      >
+        <Container maxWidth="lg" sx={{ display: 'flex', alignItems: 'center' }}>
           <Grid container spacing={2}>
             <Grid
               item

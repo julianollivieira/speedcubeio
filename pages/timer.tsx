@@ -20,7 +20,7 @@ const TimerPage: NextPage = (): ReactElement => {
       disablePadding
       title="Timer"
       sx={{
-        pt: '64px',
+        mt: '64px',
         pl: { xs: 0, md: '240px' },
         pr: { xs: 0, md: '240px' },
       }}

@@ -17,9 +17,11 @@ const ProfilePage: NextPage = (): ReactElement => {
     <UserLayout
       title="Your profile"
       sx={{
-        pt: '64px',
+        mt: '64px',
         pl: { xs: 0, md: '240px' },
         pr: { xs: 0, md: '240px' },
+        height: 'calc(100vh - 64px)',
+        overflowY: 'scroll',
       }}
     >
       <Profile user={fullUser} />

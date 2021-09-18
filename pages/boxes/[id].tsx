@@ -15,7 +15,6 @@ import UserLayout from '@/components/layout/UserLayout';
 import useBox from '@/hooks/useBox';
 import TimeListComponent from '@/components/general/TimeList';
 import TimeList from '@/classes/TimeList';
-import Time from '@/types/Time';
 import BoxSummaryCard from '@/components/boxes/BoxSummaryCard';
 import { getBoxLastUseOrCreationTime } from '@/utils/convert';
 import dayjs from 'dayjs';
@@ -53,9 +52,11 @@ const Box: NextPage = (): ReactElement => {
     <UserLayout
       title="Home"
       sx={{
-        pt: '64px',
+        mt: '64px',
         pl: { xs: 0, md: '240px' },
         pr: { xs: 0, md: '240px', lg: '480px' },
+        height: 'calc(100vh - 64px)',
+        overflowY: 'scroll',
       }}
     >
       <MUIBox sx={{ display: 'flex', alignItems: 'center' }}>
@@ -114,7 +115,7 @@ const Box: NextPage = (): ReactElement => {
             sx={{
               position: 'fixed',
               top: 64,
-              right: 0,
+              right: 20,
               width: 360,
               height: 'calc(100vh - 64px)',
               bgcolor: 'background.paper',

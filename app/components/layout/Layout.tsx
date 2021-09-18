@@ -18,9 +18,7 @@ const Layout = (props: Props): ReactElement => {
         <title>{title ? `${title} | ` : ''}Speedcube.io</title>
       </Head>
       <NavigationBar />
-      <Box sx={{ pt: '64px' }}>
-        <Box sx={sx}>{children}</Box>
-      </Box>
+      <Box sx={sx}>{children}</Box>
     </>
   );
 };
