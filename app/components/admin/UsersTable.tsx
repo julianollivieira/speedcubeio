@@ -13,6 +13,7 @@ import { Clear as ClearIcon, Check as CheckIcon } from '@mui/icons-material';
 import useSWR from 'swr';
 import ProfilePicture from '@/components/general/ProfilePicture';
 import { User } from 'firebase/auth';
+import { FullUser } from '@/types/User';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -32,14 +33,17 @@ const UsersTable = (): ReactElement => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map((user: User) => (
+          {data?.users.map((user: FullUser) => (
             <TableRow
               key={user.uid}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell scope="row" sx={{ width: 300 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', width: 300 }}>
-                  <ProfilePicture sx={{ height: 1, borderRadius: '50%' }} />
+                  <ProfilePicture
+                    src={user.profilePicture}
+                    sx={{ height: 1, borderRadius: '50%' }}
+                  />
                   <Typography variant="body2" sx={{ ml: 1 }} noWrap>
                     {user.displayName}
                   </Typography>
@@ -51,11 +55,11 @@ const UsersTable = (): ReactElement => {
                 </Typography>
               </TableCell>
               <TableCell scope="row">
-                {user.emailVerified ? (
+                {/* {user.emailVerified ? (
                   <CheckIcon color="success" />
                 ) : (
                   <ClearIcon color="error" />
-                )}
+                )} */}
               </TableCell>
               <TableCell scope="row">
                 {false ? (
@@ -64,8 +68,8 @@ const UsersTable = (): ReactElement => {
                   <ClearIcon color="error" />
                 )}
               </TableCell>
-              <TableCell>{user.metadata.lastSignInTime}</TableCell>
-              <TableCell>{user.metadata.creationTime}</TableCell>
+              <TableCell>{user.lastSignInTime}</TableCell>
+              <TableCell>{user.joinDate}</TableCell>
             </TableRow>
           ))}
         </TableBody>

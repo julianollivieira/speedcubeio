@@ -18,8 +18,11 @@ export interface UserData {
 
 export interface FullUser {
   uid: string;
+  email: string | null | undefined;
   displayName: string | null | undefined;
   joinDate: string | undefined;
+  lastSignInTime: string | undefined;
   bio: string | undefined;
   socials: Social[];
+  profilePicture: string | undefined;
 }

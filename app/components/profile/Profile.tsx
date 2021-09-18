@@ -79,6 +79,7 @@ const Profile = (props: Props): ReactElement => {
             }}
           >
             <ProfilePicture
+              src={user?.profilePicture}
               sx={{
                 height: 150,
                 width: 150,

@@ -12,9 +12,15 @@ const useUser = (user: any) => {
       if (user) {
         if (user.user) {
           if (!user?.user?.hasOwnProperty('accessToken')) {
-            setFullUser(convertUserRecordToFullUser(user.user, user.data));
+            convertUserRecordToFullUser(user.user, user.data).then(
+              (fullUser) => {
+                setFullUser(fullUser);
+              }
+            );
           } else {
-            setFullUser(convertUserToFullUser(user.user, user.data));
+            convertUserToFullUser(user.user, user.data).then((fullUser) => {
+              setFullUser(fullUser);
+            });
           }
         }
       }

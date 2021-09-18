@@ -1,14 +1,18 @@
 import { ReactElement } from 'react';
 import { Avatar } from '@mui/material';
-import { useAuth } from '@/utils/auth';
 
-const ProfilePicture = (props: any): ReactElement => {
-  const { currentUser } = useAuth();
+interface Props {
+  src?: string | undefined;
+  sx?: any;
+}
+
+const ProfilePicture = (props: Props): ReactElement => {
+  console.log('⬛ [RR] ProfilePicture');
   return (
     <Avatar
-      alt={`${currentUser?.displayName}'s profile picture`}
-      src={false ? '' : '/images/default_user_profile.jpg'}
-      {...props}
+      alt="Your profile picture"
+      src={props.src ?? '/images/default_user_profile.jpg'}
+      sx={props.sx}
     />
   );
 };

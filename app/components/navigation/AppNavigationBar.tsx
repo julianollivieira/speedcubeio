@@ -21,6 +21,7 @@ import { useAuth } from '@/utils/auth';
 import { useRouter } from 'next/router';
 import Link from '@/components/general/Link';
 import { useSnackbar } from 'notistack';
+import useUser from '@/hooks/useUser';
 
 interface Props {
   toggleNavigationDrawer: any; // TODO: FIX
@@ -37,6 +38,13 @@ const AppNavigationBar = (props: Props): ReactElement => {
   const { logout } = useAuth();
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const { currentUser, currentUserData } = useAuth();
+
+  const { fullUser } = useUser({
+    user: currentUser,
+    data: currentUserData,
+  });
 
   const handleLogout = async () => {
     try {
@@ -88,6 +96,7 @@ const AppNavigationBar = (props: Props): ReactElement => {
           <Box sx={{ height: 1, p: 0.5 }}>
             <IconButton sx={{ height: 1 }} onClick={handleClick}>
               <ProfilePicture
+                src={fullUser?.profilePicture}
                 sx={{ height: 1, borderRadius: '50%', border: 1 }}
               />
             </IconButton>
@@ -98,7 +107,6 @@ const AppNavigationBar = (props: Props): ReactElement => {
             onClose={handleClose}
             onClick={handleClose}
           >
-            {/* <MenuItem component={Link} href={`/users/${currentUser?.uid}`}> */}
             <MenuItem component={Link} href="/profile">
               <ListItemIcon>
                 <PersonIcon fontSize="small" />
