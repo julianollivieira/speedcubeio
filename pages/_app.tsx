@@ -37,6 +37,24 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
         typography: {
           fontFamily: 'Public Sans',
         },
+        components: {
+          MuiCssBaseline: {
+            styleOverrides: {
+              body: {
+                scrollbarColor: '#6b6b6b #2b2b2b',
+                '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+                  backgroundColor: '#151C24',
+                },
+                '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+                  borderRadius: 8,
+                  backgroundColor: 'rgb(29, 36, 46)',
+                  minHeight: 24,
+                  border: '3px solid #151C24',
+                },
+              },
+            },
+          },
+        },
       }),
     [prefersDarkMode]
   );
