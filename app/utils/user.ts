@@ -13,7 +13,7 @@ export const convertUserToFullUser = (
     displayName: user.displayName,
     joinDate: user.metadata.creationTime,
     bio: data?.bio,
-    socials: data ? getSocialObjects(data.socials) : [],
+    socials: data?.socials ? getSocialObjects(data.socials) : [],
   };
 };
 
@@ -27,7 +27,7 @@ export const convertUserRecordToFullUser = (
     displayName: userRecord.displayName,
     joinDate: userRecord.metadata.creationTime,
     bio: data?.bio,
-    socials: data ? getSocialObjects(data.socials) : [],
+    socials: data?.socials ? getSocialObjects(data.socials) : [],
   };
 };
 

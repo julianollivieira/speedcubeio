@@ -27,7 +27,7 @@ const BoxSelect = (props: Props): ReactElement => {
   useEffect(() => {
     if (currentUser && boxes !== undefined) {
       if (currentBoxId === '') {
-        handleCurrentBoxIdChange(boxes[0].id);
+        handleCurrentBoxIdChange(boxes[0]?.id);
       }
     }
   }, [boxes]);
@@ -38,6 +38,7 @@ const BoxSelect = (props: Props): ReactElement => {
         Current box
       </InputLabel>
       <Select
+        disabled={boxes?.length == 0}
         labelId="box-select-label"
         id="box-select"
         value={currentBoxId}
