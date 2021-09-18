@@ -1,6 +1,7 @@
 import Box from '@/types/Box';
+import { Social } from '@/utils/socials';
 
-export default interface UserData {
+export interface UserData {
   id: string;
   bio: string;
   socials: {
@@ -13,4 +14,12 @@ export default interface UserData {
     youtube: string;
   };
   boxes: Box[];
+}
+
+export interface FullUser {
+  uid: string;
+  displayName: string | null | undefined;
+  joinDate: string | undefined;
+  bio: string | undefined;
+  socials: Social[];
 }

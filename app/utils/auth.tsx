@@ -17,7 +17,7 @@ import {
 } from 'firebase/auth';
 import { getDatabase, ref, get, DataSnapshot } from 'firebase/database';
 import app from '@/utils/firebase/client';
-import UserData from '@/types/UserData';
+import { UserData } from '@/types/User';
 
 const auth = getAuth(app);
 
