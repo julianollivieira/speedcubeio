@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { ReactElement } from 'react';
-import { Card, Divider } from '@mui/material';
+import { Divider } from '@mui/material';
 import { People as PeopleIcon } from '@mui/icons-material';
 import PageHeader from '@/components/general/PageHeader';
 import UserLayout from '@/components/layout/UserLayout';
@@ -18,9 +18,7 @@ const Users: NextPage = (): ReactElement => {
     >
       <PageHeader title="Users" icon={PeopleIcon} />
       <Divider sx={{ my: 3 }} />
-      <Card>
-        <UsersTable />
-      </Card>
+      <UsersTable />
     </UserLayout>
   );
 };
