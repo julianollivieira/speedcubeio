@@ -17,9 +17,9 @@ import Link from 'next/link';
 import { useAuth } from '@/utils/auth';
 import TimeList from '@/classes/TimeList';
 import Box from '@/types/Box';
-import Time from '@/types/Time';
 import BoxSummaryTable from '@/components/boxes/BoxSummaryTable';
 import { getBoxLastUseOrCreationTime } from '@/utils/convert';
+import { useSnackbar } from 'notistack';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
@@ -31,6 +31,7 @@ import {
   Delete as DeleteIcon,
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';
 import useBox from '@/hooks/useBox';
 
@@ -38,7 +39,6 @@ interface Props {
   box: Box;
   openDeleteDialog: (box: Box) => void;
   openEditDialog: (box: Box) => void;
-  openShareDialog: (box: Box) => void;
   isPreview?: boolean;
 }
 
@@ -62,6 +62,40 @@ const BoxCard = (props: Props): ReactElement => {
     const timeList: TimeList = new TimeList(box);
     setTimeList(timeList);
   }, [box]);
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const copyBoxLinkToClipboard = () => {
+    navigator.clipboard
+      .writeText(
+        `https://speedcube.io/users/${currentUser?.uid}/boxes/${props.box.id}`
+      )
+      .then(
+        () => {
+          enqueueSnackbar('Box link copied to clipboard', {
+            variant: 'success',
+            action: (key) => (
+              <IconButton onClick={() => closeSnackbar(key)}>
+                <CloseIcon />
+              </IconButton>
+            ),
+          });
+        },
+        () => {
+          enqueueSnackbar(
+            "Something wen't wrong, profile link not copied to clipboard",
+            {
+              variant: 'error',
+              action: (key) => (
+                <IconButton onClick={() => closeSnackbar(key)}>
+                  <CloseIcon />
+                </IconButton>
+              ),
+            }
+          );
+        }
+      );
+  };
 
   return (
     <Card onMouseEnter={handleShowMenu} onMouseLeave={handleHideMenu}>
@@ -168,7 +202,7 @@ const BoxCard = (props: Props): ReactElement => {
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            props.openShareDialog(props.box);
+            copyBoxLinkToClipboard();
           }}
         >
           <ListItemIcon>

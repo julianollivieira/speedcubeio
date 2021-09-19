@@ -24,7 +24,6 @@ import PageHeader from '@/components/general/PageHeader';
 import CreateBoxDialog from '@/components/boxes/CreateBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/EditBoxDialog';
-import ShareBoxDialog from '@/components/boxes/ShareBoxDialog';
 import Box from '@/types/Box';
 import useBoxes from '@/hooks/useBoxes';
 import { sortBoxArrayByLastUse } from '@/utils/convert';
@@ -43,17 +42,14 @@ const Boxes: NextPage = (): ReactElement => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState<Box | null>(null);
   const [openEditDialog, setOpenEditDialog] = useState<Box | null>(null);
-  const [openShareDialog, setOpenShareDialog] = useState<Box | null>(null);
 
   const handleOpenCreateDialog = () => setOpenCreateDialog(true);
   const handleOpenDeleteDialog = (box: Box) => setOpenDeleteDialog(box);
   const handleOpenEditDialog = (box: Box) => setOpenEditDialog(box);
-  const handleOpenShareDialog = (box: Box) => setOpenShareDialog(box);
 
   const handleCloseCreateDialog = () => setOpenCreateDialog(false);
   const handleCloseDeleteDialog = () => setOpenDeleteDialog(null);
   const handleCloseEditDialog = () => setOpenEditDialog(null);
-  const handleCloseShareDialog = () => setOpenShareDialog(null);
 
   return (
     <UserLayout
@@ -80,10 +76,6 @@ const Boxes: NextPage = (): ReactElement => {
         box={openEditDialog}
         handleClose={handleCloseEditDialog}
         editBox={editBox}
-      />
-      <ShareBoxDialog
-        box={openShareDialog}
-        handleClose={handleCloseShareDialog}
       />
       <PageHeader title="Your boxes" icon={AllInboxIcon} />
       <Divider sx={{ my: 3 }} />
@@ -137,7 +129,6 @@ const Boxes: NextPage = (): ReactElement => {
                 box={box}
                 openDeleteDialog={handleOpenDeleteDialog}
                 openEditDialog={handleOpenEditDialog}
-                openShareDialog={handleOpenShareDialog}
               />
             </Grid>
           ))}
