@@ -1,9 +1,4 @@
-import {
-  FirebaseApp,
-  FirebaseOptions,
-  getApps,
-  initializeApp,
-} from 'firebase/app';
+import { FirebaseApp, FirebaseOptions, getApps, initializeApp } from 'firebase/app';
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,

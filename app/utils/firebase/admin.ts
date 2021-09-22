@@ -8,8 +8,7 @@ const serviceAccount: admin.ServiceAccount = {
 
 const adminConfig = {
   credential: admin.credential.cert(serviceAccount),
-  databaseURL:
-    'https://speedcubeio-dev-default-rtdb.europe-west1.firebasedatabase.app',
+  databaseURL: 'https://speedcubeio-dev-default-rtdb.europe-west1.firebasedatabase.app',
 };
 
 let appNames = admin.apps.map((app: admin.app.App | null) => app?.name);

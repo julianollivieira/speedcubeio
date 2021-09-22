@@ -1,10 +1,10 @@
 interface Options {
-  onTick: Function;
-  onReadying: Function;
-  onReady: Function;
-  onStart: Function;
-  onCancelReady: Function;
-  onStop: Function;
+  onTick: (time: number) => void;
+  onReadying: () => void;
+  onReady: () => void;
+  onStart: () => void;
+  onCancelReady: () => void;
+  onStop: (time: number) => void;
 }
 
 class Timer {
@@ -34,7 +34,6 @@ class Timer {
 
   startReadying() {
     if (!this.justStopped) {
-      console.log('🟢 Readying');
       this.isReadying = true;
       this.readyTime = 0;
       this.readyingInterval = setInterval(this.readyTick.bind(this), 10);
@@ -46,7 +45,6 @@ class Timer {
     this.isReadying = false;
     this.onCancelReady();
     clearInterval(this.readyingInterval);
-    console.log('🔴 Cancelled readying');
   }
 
   readyTick() {
@@ -65,7 +63,6 @@ class Timer {
     this.onReady();
     this.isReady = true;
     clearInterval(this.readyingInterval);
-    console.log('🔵 Ready');
   }
 
   start() {
@@ -76,14 +73,12 @@ class Timer {
     this.time = 0;
     clearInterval(this.readyingInterval);
     this.timerInterval = setInterval(this.timerTick.bind(this), 10);
-    console.log('🟣 Started');
   }
 
   stop() {
     this.justStopped = true;
     this.isRunning = false;
     clearInterval(this.timerInterval);
-    console.log(`🟠 Stopped ${this.time / 1000}`);
     this.onStop(this.time);
   }
 }

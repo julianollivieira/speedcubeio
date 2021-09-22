@@ -1,67 +1,65 @@
 import type { NextPage } from 'next';
+import Router from 'next/router';
 import Head from 'next/head';
-import { ReactElement } from 'react';
-import { Container, Box, Button } from '@mui/material';
-import LoginForm from '@/components/login/LoginForm';
-import Link from '@/components/general/Link';
-import Logo from '@/components/general/Logo';
+import { useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { Box, CircularProgress, Container, Button } from '@mui/material';
+import LoginForm from '@/components/auth/LoginForm';
+import Logo from '@/components/misc/Logo';
+import Link from '@/components/misc/Link';
 
-const Login: NextPage = (): ReactElement => {
+const LoginPage: NextPage = () => {
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user !== null && user !== undefined) {
+      Router.push('/home');
+    }
+  }, [user]);
+
   return (
     <>
-      <Head>
-        <title>Log in | Speedcube.io</title>
-      </Head>
-      <Box
-        sx={{
-          position: 'absolute',
-          width: '100vw',
-          display: 'flex',
-          justifyContent: 'center',
-          my: 2,
-        }}
-      >
-        <Link href="/">
-          <Logo sx={{ height: 200 }} />
-        </Link>
-      </Box>
-      <Container
-        maxWidth="xs"
-        sx={{
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <LoginForm />
-      </Container>
-
-      {/* <Container
-        maxWidth="xs"
-        sx={{
-          height: '75vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Link href="/">
-          <Logo sx={{ height: 200, mb: 10 }} />
-        </Link>
-        <LoginForm />
-        <Button
-          component={Link}
-          href="/forgot-my-password"
-          sx={{ mt: 3 }}
-          color="primary"
+      {user === null ? (
+        <>
+          <Head>
+            <title>Log in | Speedcube.io</title>
+          </Head>
+          <Container
+            maxWidth="xs"
+            sx={{
+              height: { xs: '90vh', sm: '80vh' },
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Box sx={{ py: 7, display: { xs: 'none', sm: 'flex' } }}>
+              <Link href="/" passHref>
+                <Logo sx={{ height: { xs: 150, sm: 200 } }} />
+              </Link>
+            </Box>
+            <LoginForm />
+            <Link href="/forgot-password" passHref sx={{ mt: 3, textDecoration: 'none' }}>
+              <Button color="primary">Forgot your password?</Button>
+            </Link>
+          </Container>
+        </>
+      ) : (
+        <Box
+          sx={{
+            height: '100vh',
+            width: '100vw',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
         >
-          Forgot your password?
-        </Button>
-      </Container> */}
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
 };
 
-export default Login;
+export default LoginPage;

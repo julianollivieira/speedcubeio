@@ -1,23 +1,23 @@
-import { ReactElement, useEffect, useState } from 'react';
-import { Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Box as MUIBox, Typography } from '@mui/material';
 import TimerClass from '@/classes/Timer';
-import { useAuth } from '@/utils/auth';
-import useTimes from '@/hooks/useTimes';
+import { useAuth } from '@/hooks/useAuth';
+import { createTime } from '@/utils/data/times';
+import { Box } from '@/types';
 
 interface Props {
-  boxId: string;
+  box: Box | undefined;
 }
 
-const Timer = (props: Props): ReactElement => {
-  const { boxId } = props;
-  const [time, setTime] = useState<number>(0);
-  const [readying, setReadying] = useState<boolean>(false);
-  const [ready, setReady] = useState<boolean>(false);
-  const { currentUser } = useAuth();
-  const { createTime } = useTimes(currentUser);
+const Timer = ({ box }: Props) => {
+  const [time, setTime] = useState(0);
+  const [readying, setReadying] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  const { user, addTime: addTimeToState } = useAuth();
 
   useEffect(() => {
-    let timer = new TimerClass();
+    const timer = new TimerClass();
 
     timer.init({
       onTick: (time: any) => {
@@ -37,8 +37,17 @@ const Timer = (props: Props): ReactElement => {
         setReady(false);
         setReadying(false);
       },
-      onStop: (time: number) => {
-        createTime(boxId, time, '3b3b3', 'comment');
+      onStop: async (time: number) => {
+        if (user && box?.id) {
+          const timeObject = await createTime(
+            user?.id,
+            box?.id,
+            time,
+            '3x3x3',
+            'U R L F B F B'
+          );
+          addTimeToState(box?.id, timeObject);
+        }
       },
     });
 
@@ -74,23 +83,23 @@ const Timer = (props: Props): ReactElement => {
     document.addEventListener('keyup', keyUp);
 
     return () => {
-      // Clean up event listeners
       document.removeEventListener('keydown', keyDown);
       document.removeEventListener('keyup', keyUp);
     };
-  }, [boxId]);
+  }, [box]);
 
   return (
-    <Typography
-      variant="h1"
-      sx={{
-        fontFamily: 'Digit',
-        fontSize: { xs: '8em', lg: '16em' },
-        color: readying ? '#D17777' : ready ? '#79D177' : '',
-      }}
-    >
-      {(time / 1000).toFixed(2)}
-    </Typography>
+    <MUIBox>
+      <Typography
+        color={readying ? '#D17777' : ready ? '#79D177' : 'textPrimary'}
+        sx={{
+          fontSize: { xs: '8em', xl: '16em' },
+          fontFamily: 'Digit',
+        }}
+      >
+        {(time / 1000).toFixed(2)}
+      </Typography>
+    </MUIBox>
   );
 };
 

@@ -1,38 +1,62 @@
 import type { NextPage } from 'next';
+import Router from 'next/router';
 import Head from 'next/head';
-import { ReactElement } from 'react';
-import { Container, Box } from '@mui/material';
-import SignupForm from '@/components/signup/SignupForm';
-import Link from '@/components/general/Link';
+import { useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { Box, CircularProgress, Container } from '@mui/material';
+import SignupForm from '@/components/auth/SignupForm';
+import Logo from '@/components/misc/Logo';
+import Link from '@/components/misc/Link';
 
-const Signup: NextPage = (): ReactElement => {
+const SignupPage: NextPage = () => {
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user !== null && user !== undefined) {
+      Router.push('/home');
+    }
+  }, [user]);
+
   return (
     <>
-      <Head>
-        <title>Sign up | Speedcube.io</title>
-      </Head>
-      <Container
-        maxWidth="xs"
-        sx={{
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Link href="/">
-          <Box
-            component="img"
-            src="/images/logos/black_logo_big.png"
-            alt="Speedcube.io logo"
-            sx={{ width: 1, mb: 5 }}
-          />
-        </Link>
-        <SignupForm />
-      </Container>
+      {user === null ? (
+        <>
+          <Head>
+            <title>Sign up | Speedcube.io</title>
+          </Head>
+          <Container
+            maxWidth="xs"
+            sx={{
+              height: { xs: '100vh', sm: '80vh' },
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Box sx={{ py: 7, display: { xs: 'none', sm: 'flex' } }}>
+              <Link href="/" passHref>
+                <Logo sx={{ height: { xs: 150, sm: 200 } }} />
+              </Link>
+            </Box>
+            <SignupForm />
+          </Container>
+        </>
+      ) : (
+        <Box
+          sx={{
+            height: '100vh',
+            width: '100vw',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
 };
 
-export default Signup;
+export default SignupPage;

@@ -1,63 +1,15 @@
 import type { NextPage } from 'next';
-import { ReactElement } from 'react';
 import Layout from '@/components/layout/Layout';
-import { Container, Grid, Typography, Button, Paper } from '@mui/material';
-import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@mui/icons-material';
+import { Typography, Container } from '@mui/material';
 
-const Home: NextPage = (): ReactElement => {
+const LandingPage: NextPage = () => {
   return (
-    <>
-      <Layout
-        sx={{ mt: '64px', height: 'calc(100vh - 64px)', overflowY: 'scroll' }}
-      >
-        <Container maxWidth="lg" sx={{ display: 'flex', alignItems: 'center' }}>
-          <Grid container spacing={2}>
-            <Grid
-              item
-              xs={12}
-              lg={6}
-              sx={{
-                textAlign: { xs: 'center', lg: 'left' },
-              }}
-            >
-              <Typography variant="h2" fontWeight="bold">
-                The most advanced speedcubing timer, trainer and analytics
-              </Typography>
-              <Typography variant="h5" sx={{ my: 3 }}>
-                Join thousands of people who have switched to Speedcube.io for
-                free
-              </Typography>
-              <Button
-                color="primary"
-                variant="contained"
-                endIcon={<KeyboardArrowRightIcon />}
-              >
-                Sign up for free
-              </Button>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              lg={6}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: { xs: 'center', lg: 'flex-end' },
-              }}
-            >
-              <Paper
-                component="img"
-                src="/images/screenshots/timer.png"
-                alt="Timer screenshot"
-                elevation={24}
-                sx={{ width: 500 }}
-              />
-            </Grid>
-          </Grid>
-        </Container>
-      </Layout>
-    </>
+    <Layout allowUnauthenticated>
+      <Container maxWidth="lg">
+        <Typography>Landing page</Typography>
+      </Container>
+    </Layout>
   );
 };
 
-export default Home;
+export default LandingPage;

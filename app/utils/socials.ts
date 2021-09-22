@@ -3,18 +3,8 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import RedditIcon from '@mui/icons-material/Reddit';
-import DiscordIcon from '@/public/images/icons/discord.svg';
-import TwitchIcon from '@/public/images/icons/twitch.svg';
-
-export interface Social {
-  id: string;
-  name: string;
-  color: string;
-  icon: any; // TODO: fix?
-  viewBox?: string;
-  padding?: number;
-  href?: string;
-}
+import DiscordIcon from '../../public/images/icons/discord.svg';
+import TwitchIcon from '../../public/images/icons/twitch.svg';
 
 export default [
   {

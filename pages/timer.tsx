@@ -1,97 +1,64 @@
 import type { NextPage } from 'next';
-import { ReactElement, useState } from 'react';
-import UserLayout from '@/components/layout/UserLayout';
-import { Box as MUIBox, Fab } from '@mui/material';
-import { FormatListNumbered as FormatListNumberedIcon } from '@mui/icons-material';
+import { useState } from 'react';
+import { Box as MUIBox } from '@mui/material';
+import Layout from '@/components/layout/Layout';
+import BoxSelector from '@/components/misc/BoxSelector';
+import TimeList from '@/components/misc/TimeList';
 import Timer from '@/components/timer/Timer';
-import TimeList from '@/components/general/TimeList';
-import BoxSelect from '@/components/timer/BoxSelect';
-import PuzzleSelect from '@/components/timer/PuzzleSelect';
+import { Box } from '@/types';
+import { useAuth } from '@/hooks/useAuth';
 
-const TimerPage: NextPage = (): ReactElement => {
-  const [currentBoxId, setCurrentBoxId] = useState<string>('');
-
-  const handleBoxChange = (boxId: string) => {
-    setCurrentBoxId(boxId);
-  };
+const TimerPage: NextPage = () => {
+  const [box, setBox] = useState<Box>();
+  const { user } = useAuth();
 
   return (
-    <UserLayout
-      disablePadding
-      title="Timer"
-      sx={{
-        mt: '64px',
-        pl: { xs: 0, md: '240px' },
-        pr: { xs: 0, md: '240px' },
-      }}
-    >
-      <MUIBox>
-        <MUIBox sx={{ width: 360, p: 2 }}>
-          <PuzzleSelect />
+    <Layout title="Timer" isApp>
+      <MUIBox sx={{ display: 'flex', pt: '64px', width: '100vw', height: '100vh' }}>
+        <MUIBox
+          sx={{ flex: 1, pl: { md: '240px', lg: '360px' }, pr: { md: '240px', lg: 0 } }}
+        >
+          <MUIBox
+            sx={{
+              height: 1,
+              color: 'black',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Timer box={box} />
+          </MUIBox>
         </MUIBox>
-      </MUIBox>
-      <MUIBox
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh', // FIX
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Timer boxId={currentBoxId} />
-      </MUIBox>
-      <MUIBox
-        sx={{
-          position: 'absolute',
-          top: 64,
-          right: 0,
-          width: 360,
-          height: 'calc(100vh - 64px)',
-          bgcolor: 'background.paper',
-          borderLeft: '1px solid rgba(255, 255, 255, 0.12)',
-          display: { xs: 'none', lg: 'flex' },
-          flexDirection: 'column',
-        }}
-      >
         <MUIBox
           sx={{
-            width: 1,
-            height: 100,
-            display: 'flex',
-            alignItems: 'center',
-            bgcolor: '#151C24',
-            p: 2,
+            width: 360,
+            display: { xs: 'none', lg: 'flex' },
+            flexDirection: 'column',
+            borderLeft: 1,
+            borderColor: (theme) =>
+              theme.palette.mode === 'dark'
+                ? 'rgba(255, 255, 255, 0.12)'
+                : 'rgba(0, 0, 0, 0.12)',
           }}
         >
-          <BoxSelect onBoxChange={handleBoxChange} />
+          <MUIBox sx={{ p: 2 }}>
+            <BoxSelector
+              onChange={(boxId) => {
+                setBox(user?.boxes.find((box: Box) => box.id === boxId));
+              }}
+            />
+          </MUIBox>
+          <TimeList
+            boxId={box?.id}
+            sx={{
+              height: 1,
+              bgcolor: 'background.paper',
+            }}
+          />
         </MUIBox>
-        <TimeList
-          boxId={currentBoxId}
-          sx={{ width: 1 }}
-          boxContainerProps={{
-            sx: {
-              height: 'calc(calc(100vh - 100px) - 64px)',
-              overflowX: 'auto',
-            },
-          }}
-        />
       </MUIBox>
-      <Fab
-        color="primary"
-        sx={{
-          position: 'fixed',
-          right: 25,
-          bottom: 25,
-          display: { xs: 'flex', lg: 'none' },
-        }}
-      >
-        <FormatListNumberedIcon />
-      </Fab>
-    </UserLayout>
+    </Layout>
   );
 };
 

@@ -1,61 +1,51 @@
-import Head from 'next/head';
-import type { NextPage } from 'next';
-import '../public/styles/globals.css';
-import {
-  createTheme,
-  CssBaseline,
-  ThemeProvider,
-  useMediaQuery,
-} from '@mui/material';
-import type { AppProps } from 'next/app';
-import { ReactElement, useMemo } from 'react';
+import '../styles/globals.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { AuthProvider } from '@/utils/auth';
+import type { AppProps } from 'next/app';
+import Head from 'next/head';
+import type { NextPage } from 'next';
+import {
+  createTheme,
+  CssBaseline,
+  PaletteOptions,
+  useMediaQuery,
+  ThemeProvider,
+} from '@mui/material';
+import { useMemo } from 'react';
+import { AuthProvider } from '@/hooks/useAuth';
 import { SnackbarProvider } from 'notistack';
 
-const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
+const darkModePalette: PaletteOptions = {
+  background: {
+    default: '#151C24',
+    paper: '#1D242E',
+  },
+};
+
+const lightModePalette: PaletteOptions = {
+  background: {
+    default: '#F2F2F2',
+    paper: '#FFFFFF',
+  },
+};
+
+const App: NextPage<AppProps> = ({ Component, pageProps }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
           mode: prefersDarkMode ? 'dark' : 'light',
-          background: {
-            // default: '#21252B',
-            default: '#151C24',
-            paper: 'rgb(29, 36, 46)',
-          },
           primary: {
-            // main: '#3834C7',
-            main: '#2d9c93',
+            main: '#2D9C93',
           },
           secondary: {
             main: '#873FAD',
           },
-        },
-        typography: {
-          fontFamily: 'Public Sans',
-        },
-        components: {
-          MuiCssBaseline: {
-            styleOverrides: {
-              body: {
-                scrollbarColor: '#6b6b6b #2b2b2b',
-                '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
-                  backgroundColor: '#151C24',
-                },
-                '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
-                  borderRadius: 8,
-                  backgroundColor: 'rgb(29, 36, 46)',
-                  minHeight: 24,
-                  border: '3px solid #151C24',
-                },
-              },
-            },
-          },
+          ...(prefersDarkMode ? darkModePalette : lightModePalette),
         },
       }),
     [prefersDarkMode]
@@ -66,10 +56,6 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
       <Head>
         <title>Speedcube.io</title>
         <link rel="icon" href="/favicon.ico" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Public+Sans:300,400,500,700&display=swap"
-        />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -87,4 +73,4 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
   );
 };
 
-export default MyApp;
+export default App;
