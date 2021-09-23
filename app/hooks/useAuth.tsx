@@ -27,6 +27,7 @@ interface Context {
   deleteBox: (box: Box) => void;
   editBox: (box: Box, name: string, icon: string, color: string) => void;
   addTime: (boxId: string, time: Time) => void;
+  deleteTime: (boxId: string, timeId: string) => void;
 }
 
 const AuthContext = createContext<Context>(undefined!);
@@ -118,6 +119,28 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(newUser);
   };
 
+  const deleteTime = (boxId: string, timeId: string): void => {
+    const newUser = { ...user } as User;
+    const boxToDeleteFrom = newUser.boxes?.find(
+      (existingBox) => existingBox.id === boxId
+    );
+
+    if (!boxToDeleteFrom) throw "Couldn't find box to delete time from in state";
+
+    const boxIndex = newUser.boxes?.indexOf(boxToDeleteFrom);
+    const timeToDelete = boxToDeleteFrom.times.find(
+      (existingTime) => existingTime.id === timeId
+    );
+
+    if (!timeToDelete) throw "Couldn't find time in state";
+
+    const timeInBoxIndex = boxToDeleteFrom.times.indexOf(timeToDelete);
+    boxToDeleteFrom.times.splice(timeInBoxIndex, 1);
+    newUser.boxes[boxIndex] = boxToDeleteFrom;
+
+    setUser(newUser);
+  };
+
   const value: Context = {
     user,
     signup,
@@ -127,6 +150,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     deleteBox,
     editBox,
     addTime,
+    deleteTime,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

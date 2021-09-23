@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Box as MUIBox } from '@mui/material';
 import Layout from '@/components/layout/Layout';
 import BoxSelector from '@/components/misc/BoxSelector';
-import TimeList from '@/components/misc/TimeList';
+import TimeList from '@/components/timer/TimeList';
 import Timer from '@/components/timer/Timer';
 import { Box } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
@@ -42,7 +42,7 @@ const TimerPage: NextPage = () => {
                 : 'rgba(0, 0, 0, 0.12)',
           }}
         >
-          <MUIBox sx={{ p: 2 }}>
+          <MUIBox sx={{ p: 2, height: 100 }}>
             <BoxSelector
               onChange={(boxId) => {
                 setBox(user?.boxes.find((box: Box) => box.id === boxId));
@@ -52,8 +52,13 @@ const TimerPage: NextPage = () => {
           <TimeList
             boxId={box?.id}
             sx={{
-              height: 1,
               bgcolor: 'background.paper',
+            }}
+            tableProps={{
+              sx: {
+                height: 'calc(100vh - 164px)',
+                overflowY: 'auto',
+              },
             }}
           />
         </MUIBox>

@@ -13,7 +13,7 @@ import { User, Box } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
-import TimeListComponent from '@/components/misc/TimeList';
+import TimeListComponent from '@/components/timer/TimeList';
 import { editBox } from '@/utils/data/boxes';
 import { useState } from 'react';
 

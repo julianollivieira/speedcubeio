@@ -5,7 +5,6 @@ import {
   addDoc,
   serverTimestamp,
   doc,
-  getDocs,
   getDoc,
   updateDoc,
   DocumentData,
@@ -32,20 +31,8 @@ const createBox = async (
 };
 
 const deleteBox = async (userId: string, box: Box): Promise<void> => {
-  const timesCollection = collection(db, 'users', userId, 'boxes', box.id, 'times');
-  const timesSnapshot = await getDocs(timesCollection);
-
-  let deletedCount = 0;
-  for (const timeDocument of timesSnapshot.docs) {
-    await deleteDoc(timeDocument.ref);
-    deletedCount++;
-  }
-
-  if (deletedCount !== timesSnapshot.docs.length)
-    throw "Couldn't delete all times from box";
-
-  const boxDocument = doc(db, 'users', userId, 'boxes', box.id);
-  return deleteDoc(boxDocument);
+  const boxReference = doc(db, 'users', userId, 'boxes', box.id);
+  return deleteDoc(boxReference);
 };
 
 const editBox = async (
@@ -54,14 +41,13 @@ const editBox = async (
   name: string,
   icon: string,
   color: string
-): Promise<DocumentSnapshot<DocumentData>> => {
-  const boxRef = doc(db, 'users', userId, 'boxes', box.id);
-  updateDoc(boxRef, {
+): Promise<void> => {
+  const boxReference = doc(db, 'users', userId, 'boxes', box.id);
+  updateDoc(boxReference, {
     name: name,
     icon: icon,
     color: color,
   });
-  return getDoc(boxRef);
 };
 
 export { createBox, deleteBox, editBox };

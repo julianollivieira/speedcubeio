@@ -47,6 +47,24 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
           },
           ...(prefersDarkMode ? darkModePalette : lightModePalette),
         },
+        components: {
+          MuiCssBaseline: {
+            styleOverrides: {
+              body: {
+                scrollbarColor: '#6b6b6b #2b2b2b',
+                '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+                  backgroundColor: prefersDarkMode ? '#151C24' : '#f2f2f2',
+                },
+                '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+                  borderRadius: 8,
+                  backgroundColor: prefersDarkMode ? 'rgb(29, 36, 46)' : '#adadad',
+                  minHeight: 24,
+                  border: `3px solid ${prefersDarkMode ? '#151C24' : '#f2f2f2'}`,
+                },
+              },
+            },
+          },
+        },
       }),
     [prefersDarkMode]
   );

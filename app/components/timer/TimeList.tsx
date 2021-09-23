@@ -1,4 +1,4 @@
-import { Box } from '@/types';
+import { Box, Time } from '@/types';
 import { msToTime, UnixEpochToUTC } from '@/utils/helpers';
 import {
   Box as MUIBox,
@@ -14,29 +14,38 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Divider,
+  IconButton,
 } from '@mui/material';
 import {
   Extension as ExtensionIcon,
   FormatListNumbered as FormatListNumberedIcon,
   CalendarToday as CalendarTodayIcon,
   Description as DescriptionIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
 } from '@mui/icons-material';
 import { SxProps } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { Fragment } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import TimeList from '@/classes/TimeList';
+import DeleteTimeDialog from '@/components/timer/dialogs/DeleteTimeDialog';
+import { deleteTime } from '@/utils/data/times';
 
 interface Props {
   boxId: string | undefined;
   sx?: SxProps<Theme>;
+  tableProps?: any;
 }
 
-const TimeListComponent = ({ boxId, sx }: Props) => {
-  const { user } = useAuth();
+const TimeListComponent = ({ boxId, sx, tableProps }: Props) => {
+  const { user, deleteTime: deleteTimeFromState } = useAuth();
   const [timeList, setTimeList] = useState<TimeList>();
   const [box, setBox] = useState<Box>();
   const [open, setOpen] = useState<number | null>();
+
+  const [deletingTime, setDeletingTime] = useState<Time | null>(null);
 
   useEffect(() => {
     if (user && boxId) {
@@ -51,7 +60,7 @@ const TimeListComponent = ({ boxId, sx }: Props) => {
 
   return (
     <MUIBox sx={sx}>
-      <TableContainer>
+      <TableContainer {...tableProps}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>
@@ -132,6 +141,23 @@ const TimeListComponent = ({ boxId, sx }: Props) => {
                                 }
                               />
                             </ListItem>
+                            <Divider />
+                            <ListItem
+                              sx={{
+                                py: 1,
+                                display: 'flex',
+                                justifyContent: 'space-around',
+                              }}
+                            >
+                              <IconButton
+                                onClick={() => setDeletingTime(timeData ?? null)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                              <IconButton>
+                                <EditIcon />
+                              </IconButton>
+                            </ListItem>
                           </List>
                         </Collapse>
                       </TableCell>
@@ -143,6 +169,19 @@ const TimeListComponent = ({ boxId, sx }: Props) => {
           </TableBody>
         </Table>
       </TableContainer>
+      {user?.id && deletingTime ? (
+        <DeleteTimeDialog
+          time={deletingTime}
+          handleClose={() => setDeletingTime(null)}
+          deleteTime={async (): Promise<void> => {
+            if (!boxId) return;
+            await deleteTime(user.id, boxId, deletingTime.id);
+            deleteTimeFromState(boxId, deletingTime.id);
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </MUIBox>
   );
 };

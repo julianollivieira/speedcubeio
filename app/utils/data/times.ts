@@ -34,4 +34,23 @@ const createTime = async (
   return timeObject;
 };
 
-export { createTime };
+const deleteTime = async (
+  userId: string,
+  boxId: string,
+  timeId: string
+): Promise<void> => {
+  const boxReference = doc(db, 'users', userId, 'boxes', boxId);
+  const boxDocument = await getDoc(boxReference);
+
+  const box = boxDocument.data();
+
+  if (!box) return;
+
+  const newTimeArr = box.times.filter((time: Time) => time.id !== timeId);
+
+  updateDoc(boxReference, {
+    times: newTimeArr,
+  });
+};
+
+export { createTime, deleteTime };
