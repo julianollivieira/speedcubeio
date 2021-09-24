@@ -45,7 +45,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
           secondary: {
             main: '#873FAD',
           },
-          ...(prefersDarkMode ? darkModePalette : lightModePalette),
+          ...prefersDarkMode ? darkModePalette : lightModePalette,
         },
         components: {
           MuiCssBaseline: {

@@ -10,7 +10,7 @@ const ProfilePage: NextPage = () => {
   return (
     <Layout title="Your profile" isApp>
       <Container sx={{ pt: '64px' }}>
-        <Profile user={user} />
+        <Profile user={user} showControls />
       </Container>
     </Layout>
   );

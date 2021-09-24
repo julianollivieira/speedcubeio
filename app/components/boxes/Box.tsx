@@ -85,7 +85,7 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
             <IconButton size="large">
               <ShareIcon />
             </IconButton>
-            {loggedInUser && showControls ? (
+            {loggedInUser && showControls ?
               <IconButton
                 size="large"
                 sx={{ display: { xs: 'none', lg: 'flex' } }}
@@ -93,9 +93,9 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
               >
                 <EditIcon />
               </IconButton>
-            ) : (
+              :
               <></>
-            )}
+            }
           </MUIBox>
         </Grid>
       </Grid>
@@ -131,7 +131,7 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
           />
         </Grid>
       </Grid>
-      {box && editingBox && loggedInUser && showControls ? (
+      {box && editingBox && loggedInUser && showControls ?
         <EditBoxDialog
           box={box}
           handleClose={() => setEditingBox(null)}
@@ -140,10 +140,10 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
             editBoxInState(editingBox, name, icon, color);
           }}
         />
-      ) : (
+        :
         <></>
-      )}
-      {loggedInUser && showControls ? (
+      }
+      {loggedInUser && showControls ?
         <Fab
           color="primary"
           sx={{
@@ -156,9 +156,9 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
         >
           <EditIcon />
         </Fab>
-      ) : (
+        :
         <></>
-      )}
+      }
     </>
   );
 };

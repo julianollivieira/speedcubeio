@@ -93,7 +93,7 @@ const LoginForm = () => {
           </Button>
         </Box>
       </Box>
-      {loading ? (
+      {loading ?
         <LinearProgress
           sx={{
             width: 1,
@@ -101,9 +101,9 @@ const LoginForm = () => {
             borderBottomRightRadius: '4px',
           }}
         />
-      ) : (
+        :
         <></>
-      )}
+      }
     </Paper>
   );
 };

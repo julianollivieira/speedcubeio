@@ -7,14 +7,15 @@ import { Box, Divider, CircularProgress } from '@mui/material';
 import { AllInbox as AllInboxIcon } from '@mui/icons-material';
 import PageHeader from '@/components/misc/PageHeader';
 import BoxGrid from '@/components/boxes/grid/BoxGrid';
+import { User as FirebaseUser } from 'firebase/auth';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const BoxPage: NextPage = () => {
   const router = useRouter();
   const { userId } = router.query;
-  const { data } = useSWR<{ user: any }>(userId ? `/api/users/${userId}` : null, fetcher);
-  const user = useUser(data?.user);
+  const { data } = useSWR<{ user: unknown }>(userId ? `/api/users/${userId}` : null, fetcher);
+  const user = useUser(data?.user as FirebaseUser);
 
   return (
     <Layout title="Box" isApp allowUnauthenticated>

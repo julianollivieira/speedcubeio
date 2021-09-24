@@ -4,7 +4,7 @@ import { User as FirebaseUser } from 'firebase/auth';
 import { getUser } from '@/utils/data/users';
 import { useEffect, useState } from 'react';
 
-const useUser = (userObj: FirebaseUser | admin.auth.UserRecord) => {
+const useUser = (userObj: FirebaseUser | admin.auth.UserRecord): User | undefined => {
   const [user, setUser] = useState<User | undefined>();
 
   useEffect(() => {

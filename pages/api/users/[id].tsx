@@ -5,8 +5,8 @@ type Data = {
   user: admin.auth.UserRecord;
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  const { id } = req.query as any;
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>): Promise<void> {
+  const { id } = req.query;
   try {
     const userRecord = await admin.app('admin').auth().getUser(id);
     res.status(200).json({

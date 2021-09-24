@@ -5,14 +5,15 @@ import Box from '@/components/boxes/Box';
 import useSWR from 'swr';
 import useUser from '@/hooks/userUser';
 import { Box as MUIBox, CircularProgress } from '@mui/material';
+import { User as FirebaseUser } from 'firebase/auth';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const BoxPage: NextPage = () => {
   const router = useRouter();
   const { userId, boxId } = router.query;
-  const { data } = useSWR<{ user: any }>(userId ? `/api/users/${userId}` : null, fetcher);
-  const user = useUser(data?.user);
+  const { data } = useSWR<{ user: unknown }>(userId ? `/api/users/${userId}` : null, fetcher);
+  const user = useUser(data?.user as FirebaseUser);
   const box = user?.boxes.find((box) => box.id == boxId);
 
   return (

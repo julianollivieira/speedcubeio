@@ -5,14 +5,15 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import useUser from '@/hooks/userUser';
 import { Container, Box, CircularProgress } from '@mui/material';
+import { User as FirebaseUser } from 'firebase/auth';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const ProfilePage: NextPage = () => {
   const router = useRouter();
   const { userId } = router.query;
-  const { data } = useSWR<{ user: any }>(userId ? `/api/users/${userId}` : null, fetcher);
-  const user = useUser(data?.user);
+  const { data } = useSWR<{ user: unknown }>(userId ? `/api/users/${userId}` : null, fetcher);
+  const user = useUser(data?.user as FirebaseUser);
 
   return (
     <Layout title="Your profile" isApp allowUnauthenticated>

@@ -24,9 +24,10 @@ dayjs.extend(utc);
 
 interface Props {
   user: User | null | undefined;
+  showControls?: boolean;
 }
 
-const Profile = ({ user }: Props) => {
+const Profile = ({ user, showControls }: Props) => {
   const { user: loggedInUser } = useAuth();
 
   return (
@@ -80,11 +81,11 @@ const Profile = ({ user }: Props) => {
                 <Typography variant="h3" sx={{ fontSize: { xs: '2em', lg: '2.5em' } }}>
                   {user?.displayName}
                 </Typography>
-                {user?.isVerified ? (
+                {user?.isVerified ?
                   <VerifiedIcon sx={{ ml: 2 }} color="info" fontSize="large" />
-                ) : (
+                  :
                   <></>
-                )}
+                }
               </Box>
               <Typography
                 variant="subtitle1"
@@ -138,25 +139,28 @@ const Profile = ({ user }: Props) => {
             }}
           >
             {/* <IconButton onClick={copyProfileLinkToClipboard} size="large"> */}
-            {loggedInUser?.id !== user?.id ? (
+            <IconButton size="large">
+              <ShareIcon />
+            </IconButton>
+            {loggedInUser?.id !== user?.id ?
               <Link href={`/users/${user?.id}/boxes`} passHref>
                 <IconButton size="large">
                   <AllInboxIcon />
                 </IconButton>
               </Link>
-            ) : (
+              :
               <></>
-            )}
-            <IconButton size="large">
-              <ShareIcon />
-            </IconButton>
-            {/* {loggedInUser?.id === user?.id ? (
-              <IconButton size="large" sx={{ display: { xs: 'none', lg: 'flex' } }}>
+            }
+            {loggedInUser && showControls ?
+              <IconButton
+                size="large"
+                sx={{ display: { xs: 'none', lg: 'flex' } }}
+              >
                 <EditIcon />
               </IconButton>
-            ) : (
+              :
               <></>
-            )} */}
+            }
           </Box>
         </Grid>
       </Grid>
@@ -186,7 +190,7 @@ const Profile = ({ user }: Props) => {
           </Card>
         </Grid> */}
       </Grid>
-      {/* {loggedInUser?.id === user?.id ? (
+      {loggedInUser && showControls ?
         <Fab
           color="primary"
           sx={{
@@ -198,9 +202,9 @@ const Profile = ({ user }: Props) => {
         >
           <EditIcon />
         </Fab>
-      ) : (
+        :
         <></>
-      )} */}
+      }
     </>
   );
 };
