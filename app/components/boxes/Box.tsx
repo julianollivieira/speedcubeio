@@ -7,15 +7,17 @@ import {
   Divider,
   Fab,
 } from '@mui/material';
-import { Share as ShareIcon, Edit as EditIcon } from '@mui/icons-material';
+import { Share as ShareIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { User, Box } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
+import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import TimeListComponent from '@/components/timer/TimeList';
-import { editBox } from '@/utils/data/boxes';
+import { editBox, deleteBox } from '@/utils/data/boxes';
 import { useState } from 'react';
+import Router from 'next/router';
 
 interface Props {
   user: User | null | undefined;
@@ -24,8 +26,9 @@ interface Props {
 }
 
 const BoxComponent = ({ user, box, showControls }: Props) => {
-  const { user: loggedInUser, editBox: editBoxInState } = useAuth();
+  const { user: loggedInUser, editBox: editBoxInState, deleteBox: deleteBoxFromState } = useAuth();
   const [editingBox, setEditingBox] = useState<Box | null>(null);
+  const [deletingBox, setDeletingBox] = useState<Box | null>(null);
 
   return (
     <>
@@ -86,13 +89,22 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
               <ShareIcon />
             </IconButton>
             {loggedInUser && showControls ?
-              <IconButton
-                size="large"
-                sx={{ display: { xs: 'none', lg: 'flex' } }}
-                onClick={() => setEditingBox(box ?? null)}
-              >
-                <EditIcon />
-              </IconButton>
+              <>
+                <IconButton
+                  size="large"
+                  sx={{ display: { xs: 'none', lg: 'flex' } }}
+                  onClick={() => setEditingBox(box ?? null)}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  size="large"
+                  sx={{ display: { xs: 'none', lg: 'flex' } }}
+                  onClick={() => setDeletingBox(box ?? null)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </>
               :
               <></>
             }
@@ -138,6 +150,19 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
           editBox={async (name: string, icon: string, color: string): Promise<void> => {
             await editBox(loggedInUser.id, editingBox, name, icon, color);
             editBoxInState(editingBox, name, icon, color);
+          }}
+        />
+        :
+        <></>
+      }
+      {user?.id && deletingBox ?
+        <DeleteBoxDialog
+          box={deletingBox}
+          handleClose={() => setDeletingBox(null)}
+          deleteBox={async (): Promise<void> => {
+            await deleteBox(user.id, deletingBox);
+            deleteBoxFromState(deletingBox);
+            Router.push('/boxes');
           }}
         />
         :

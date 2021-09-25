@@ -14,10 +14,6 @@
     "react"
   ],
   "rules": {
-    "no-extra-parens": [
-      "error",
-      "all"
-    ],
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off"
   }
