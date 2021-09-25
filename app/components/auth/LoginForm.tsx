@@ -6,11 +6,32 @@ import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import Router from 'next/router';
 import Logo from '@/components/misc/Logo';
+import createSnackbar from '@/utils/snackbar';
+import { useSnackbar } from 'notistack';
+
+// TODO: cleanup
+interface Test {
+  [key: string]: string
+  'auth/wrong-password': string
+  'auth/user-not-found': string
+  'auth/email-not-verified': string
+}
+
+const errors: Test = {
+  'auth/wrong-password': 'Incorrect email and/or password',
+  'auth/user-not-found': 'Incorrect email and/or password',
+  'auth/email-not-verified': 'Please verify your email'
+}
+
+interface Err {
+  code: string;
+}
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(false);
   const { login } = useAuth();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -18,11 +39,22 @@ const LoginForm = () => {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        await login(values.email, values.password);
-        Router.push('/home');
-      } catch (error: any) {
-        setError(error.code);
+        const userCredential = await login(values.email, values.password);
+        if (userCredential.user.emailVerified) {
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            'Succesfully logged in',
+            'success'
+          );
+          Router.push('/home');
+        } else {
+          throw { code: 'auth/email-not-verified' }
+        }
+      } catch (error: unknown) {
+        setError(true);
         setLoading(false);
+        createSnackbar(enqueueSnackbar, closeSnackbar, errors[(error as Err).code], 'error');
       }
     },
   });

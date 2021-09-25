@@ -15,11 +15,29 @@ import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import Router from 'next/router';
 import Logo from '@/components/misc/Logo';
+import createSnackbar from '@/utils/snackbar';
+import { useSnackbar } from 'notistack';
+
+// TODO: cleanup
+interface Test {
+  [key: string]: string
+  'auth/email-already-in-use': string
+}
+
+const errors: Test = {
+  'auth/email-already-in-use': 'Email already in use',
+}
+
+interface Err {
+  code: string;
+}
 
 const SignupForm = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const { signup } = useAuth();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
 
   const formik = useFormik({
     initialValues: {
@@ -34,10 +52,17 @@ const SignupForm = () => {
       try {
         setLoading(true);
         await signup(values.displayName, values.email, values.password);
-        Router.push('/home');
-      } catch (error: any) {
-        setError(error.code);
+        createSnackbar(
+          enqueueSnackbar,
+          closeSnackbar,
+          'Verification email sent',
+          'info'
+        );
+        Router.push('/login');
+      } catch (error: unknown) {
+        setError(true);
         setLoading(false);
+        createSnackbar(enqueueSnackbar, closeSnackbar, errors[(error as Err).code], 'error');
       }
     },
   });

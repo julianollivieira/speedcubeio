@@ -10,7 +10,7 @@ const createSnackbar = (
   closeSnackbar: (key?: SnackbarKey | undefined) => void,
   message: SnackbarMessage,
   variant: VariantType
-) => {
+): SnackbarKey =>
   enqueueSnackbar(message, {
     variant: variant,
     action: (key) => (
@@ -19,6 +19,6 @@ const createSnackbar = (
       </IconButton>
     ),
   });
-};
+
 
 export default createSnackbar;

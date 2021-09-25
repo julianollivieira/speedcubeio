@@ -8,6 +8,7 @@ import {
   updateProfile,
   User as FirebaseUser,
   UserCredential,
+  sendEmailVerification
 } from 'firebase/auth';
 import app from '@/utils/firebase/client';
 import { getUser } from '@/utils/data/users';
@@ -41,8 +42,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe: Unsubscribe = auth.onAuthStateChanged(
       async (user: FirebaseUser | null) => {
         if (user) {
-          console.log('✅ You are logged in');
-          setUser(await getUser(user));
+          if (user.emailVerified) {
+            console.log('✅ You are logged in');
+            setUser(await getUser(user));
+          } else {
+            console.log('📧 Email not verified')
+            auth.signOut();
+            setUser(null);
+          }
         } else {
           console.log('🛑 You are not logged in');
           setUser(null);
@@ -62,7 +69,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         updateProfile(auth.currentUser, {
           displayName: displayName,
         });
+        sendEmailVerification(auth.currentUser)
       }
+      auth.signOut();
     });
 
   const login = (email: string, password: string): Promise<UserCredential> =>
