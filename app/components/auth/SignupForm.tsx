@@ -17,24 +17,14 @@ import Router from 'next/router';
 import Logo from '@/components/misc/Logo';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import authErrors from '@/utils/authErrors';
 
-// TODO: cleanup
-interface Test {
-  [key: string]: string
-  'auth/email-already-in-use': string
-}
-
-const errors: Test = {
-  'auth/email-already-in-use': 'Email already in use',
-}
-
-interface Err {
+interface Error {
   code: string;
 }
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const { signup } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -60,9 +50,8 @@ const SignupForm = () => {
         );
         Router.push('/login');
       } catch (error: unknown) {
-        setError(true);
         setLoading(false);
-        createSnackbar(enqueueSnackbar, closeSnackbar, errors[(error as Err).code], 'error');
+        createSnackbar(enqueueSnackbar, closeSnackbar, authErrors[(error as Error).code], 'error');
       }
     },
   });

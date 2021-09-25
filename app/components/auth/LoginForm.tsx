@@ -8,28 +8,14 @@ import Router from 'next/router';
 import Logo from '@/components/misc/Logo';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import authErrors from '@/utils/authErrors';
 
-// TODO: cleanup
-interface Test {
-  [key: string]: string
-  'auth/wrong-password': string
-  'auth/user-not-found': string
-  'auth/email-not-verified': string
-}
-
-const errors: Test = {
-  'auth/wrong-password': 'Incorrect email and/or password',
-  'auth/user-not-found': 'Incorrect email and/or password',
-  'auth/email-not-verified': 'Please verify your email'
-}
-
-interface Err {
+interface Error {
   code: string;
 }
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const { login } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -52,9 +38,8 @@ const LoginForm = () => {
           throw { code: 'auth/email-not-verified' }
         }
       } catch (error: unknown) {
-        setError(true);
         setLoading(false);
-        createSnackbar(enqueueSnackbar, closeSnackbar, errors[(error as Err).code], 'error');
+        createSnackbar(enqueueSnackbar, closeSnackbar, authErrors[(error as Error).code], 'error');
       }
     },
   });
