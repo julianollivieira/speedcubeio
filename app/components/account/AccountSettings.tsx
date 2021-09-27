@@ -13,6 +13,7 @@ import {
 } from '@mui/icons-material';
 import { SyntheticEvent, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import SecuritySettings from '@/components/account/SecuritySettings';
 
 const AccountSettings = () => {
   const matches: boolean = useMediaQuery('(min-width:1200px)');
@@ -68,27 +69,7 @@ const AccountSettings = () => {
         </Box>
       </Box>
       <Box hidden={value !== 1}>
-        <Box sx={{ pt: 3, px: { xs: 0, lg: 5 }, pb: { xs: 0, lg: 3 }, minWidth: { md: "600px" } }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold' }}>Security</Typography>
-          <Box sx={{ pt: 4, display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="h6">Change your password</Typography>
-            <TextField
-              name="current_password"
-              label="Current password"
-              variant="outlined"
-              type="password"
-              sx={{ mt: 1 }}
-            />
-            <TextField
-              name="new_password"
-              label="New password"
-              variant="outlined"
-              type="password"
-              sx={{ mt: 1 }}
-            />
-            <Button variant="contained" sx={{ width: 'fit-content', px: 3, mt: 1 }}>Save</Button>
-          </Box>
-        </Box>
+        <SecuritySettings />
       </Box>
     </Box>
   );

@@ -43,3 +43,10 @@ export const boxValidationSchema = yup.object().shape({
     .required('Color is required')
     .matches(/^#(?:[0-9a-fA-F]{3}){1,2}$/, 'Select a valid color'),
 });
+
+export const changePasswordValidationSchema = yup.object().shape({
+  newPassword: yup
+    .string()
+    .required('Password is required')
+    .min(8, 'Password should be at least 8 characters'),
+});

@@ -8,7 +8,11 @@ import {
   updateProfile,
   User as FirebaseUser,
   UserCredential,
-  sendEmailVerification
+  sendEmailVerification,
+  reauthenticateWithCredential,
+  updatePassword,
+  AuthCredential,
+  EmailAuthProvider
 } from 'firebase/auth';
 import app from '@/utils/firebase/client';
 import { getUser } from '@/utils/data/users';
@@ -24,6 +28,7 @@ interface Context {
   ) => Promise<UserCredential | void>;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
   addBox: (box: Box) => void;
   deleteBox: (box: Box) => void;
   editBox: (box: Box, name: string, icon: string, color: string) => void;
@@ -37,6 +42,7 @@ const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>();
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>();
 
   useEffect(() => {
     const unsubscribe: Unsubscribe = auth.onAuthStateChanged(
@@ -45,14 +51,17 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (user.emailVerified) {
             console.log('✅ You are logged in');
             setUser(await getUser(user));
+            setFirebaseUser(user);
           } else {
             console.log('📧 Email not verified')
             auth.signOut();
             setUser(null);
+            setFirebaseUser(null);
           }
         } else {
           console.log('🛑 You are not logged in');
           setUser(null);
+          setFirebaseUser(null);
         }
       }
     );
@@ -78,6 +87,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     signInWithEmailAndPassword(auth, email, password);
 
   const logout = (): Promise<void> => auth.signOut();
+
+  const changePassword = async (oldPassword: string, newPassword: string): Promise<void> => {
+    if (!firebaseUser?.email) throw new Error();
+    const credential = EmailAuthProvider.credential(firebaseUser.email, oldPassword);
+    await reauthenticateWithCredential(firebaseUser, credential);
+    await updatePassword(firebaseUser, newPassword);
+  }
 
   const addBox = (box: Box): void => {
     const newUser = { ...user } as User;
@@ -155,6 +171,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     signup,
     login,
     logout,
+    changePassword,
     addBox,
     deleteBox,
     editBox,

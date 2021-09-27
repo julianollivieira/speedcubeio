@@ -1,5 +1,5 @@
 import { Box, User } from '@/types';
-import { User as FirebaseUser } from 'firebase/auth';
+import { User as FirebaseUser, reauthenticateWithCredential, AuthCredential, updatePassword } from 'firebase/auth';
 import {
   getFirestore,
   doc,
@@ -30,8 +30,7 @@ export const getUser = async (
     } as Box;
   });
   console.log(
-    `📦 ${boxesSnapshot.docs.length} box read${
-      boxesSnapshot.docs.length === 1 ? '' : 's'
+    `📦 ${boxesSnapshot.docs.length} box read${boxesSnapshot.docs.length === 1 ? '' : 's'
     }`
   );
 
