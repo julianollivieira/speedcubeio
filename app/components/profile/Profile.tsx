@@ -55,114 +55,147 @@ const Profile = ({ user, showControls }: Props) => {
           />
         </Grid>
         <Grid item xs={12} lg={8} sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexGrow: 1,
-            }}
-          >
+          {user ? (
             <Box
               sx={{
-                pl: 3,
                 display: 'flex',
-                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 flexGrow: 1,
               }}
             >
               <Box
                 sx={{
+                  pl: 3,
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: { xs: 'center', lg: 'flex-start' },
+                  flexDirection: 'column',
+                  flexGrow: 1,
                 }}
               >
-                <Typography variant="h3" sx={{ fontSize: { xs: '2em', lg: '2.5em' } }}>
-                  {user?.displayName}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: { xs: 'center', lg: 'flex-start' },
+                  }}
+                >
+                  <Typography variant="h3" sx={{ fontSize: { xs: '2em', lg: '2.5em' } }}>
+                    {user?.displayName}
+                  </Typography>
+                  {user?.isVerified ? (
+                    <VerifiedIcon sx={{ ml: 2 }} color="info" fontSize="large" />
+                  ) : (
+                    <></>
+                  )}
+                </Box>
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: { xs: 'center', lg: 'flex-start' },
+                  }}
+                >
+                  Joined on {dayjs(user?.joinDate).utc().format('MMMM D YYYY')}
                 </Typography>
-                {user?.isVerified ?
-                  <VerifiedIcon sx={{ ml: 2 }} color="info" fontSize="large" />
-                  :
-                  <></>
-                }
-              </Box>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  display: 'flex',
-                  justifyContent: { xs: 'center', lg: 'flex-start' },
-                }}
-              >
-                Joined on {dayjs(user?.joinDate).utc().format('MMMM D YYYY')}
-              </Typography>
-              <Box
-                sx={{
-                  my: 1,
-                  display: 'flex',
-                  justifyContent: { xs: 'center', lg: 'flex-start' },
-                }}
-              >
-                <Box>
-                  <Chip
-                    label="PRO MEMBER"
-                    color="error"
-                    size="small"
-                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                  />
-                  <Chip
-                    label="BETA TESTER"
-                    color="warning"
-                    size="small"
-                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                  />
+                <Box
+                  sx={{
+                    my: 1,
+                    display: 'flex',
+                    justifyContent: { xs: 'center', lg: 'flex-start' },
+                  }}
+                >
+                  <Box>
+                    <Chip
+                      label="PRO MEMBER"
+                      color="error"
+                      size="small"
+                      sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+                    />
+                    <Chip
+                      label="BETA TESTER"
+                      color="warning"
+                      size="small"
+                      sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+                    />
+                  </Box>
                 </Box>
               </Box>
             </Box>
-          </Box>
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexGrow: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  pl: { xs: 0, lg: 3 },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flexGrow: 1,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: { xs: 'center', lg: 'flex-start' },
+                  }}
+                >
+                  <Typography variant="h3" sx={{ fontSize: { xs: '2em', lg: '2.5em' } }}>
+                    User not found
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          )}
         </Grid>
-        <Grid
-          item
-          xs={12}
-          lg={2}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            pt: { xs: 3, lg: 0 },
-          }}
-        >
-          <Box
+        {user ? (
+          <Grid
+            item
+            xs={12}
+            lg={2}
             sx={{
               display: 'flex',
-              alignItems: 'center',
               justifyContent: 'center',
+              pt: { xs: 3, lg: 0 },
             }}
           >
-            {/* <IconButton onClick={copyProfileLinkToClipboard} size="large"> */}
-            <IconButton size="large">
-              <ShareIcon />
-            </IconButton>
-            {loggedInUser?.id !== user?.id ?
-              <Link href={`/users/${user?.id}/boxes`} passHref>
-                <IconButton size="large">
-                  <AllInboxIcon />
-                </IconButton>
-              </Link>
-              :
-              <></>
-            }
-            {loggedInUser && showControls ?
-              <IconButton
-                size="large"
-                sx={{ display: { xs: 'none', lg: 'flex' } }}
-              >
-                <EditIcon />
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {/* <IconButton onClick={copyProfileLinkToClipboard} size="large"> */}
+              <IconButton size="large">
+                <ShareIcon />
               </IconButton>
-              :
-              <></>
-            }
-          </Box>
-        </Grid>
+              {loggedInUser?.id !== user?.id ? (
+                <Link href={`/users/${user?.id}/boxes`} passHref>
+                  <IconButton size="large">
+                    <AllInboxIcon />
+                  </IconButton>
+                </Link>
+              ) : (
+                <></>
+              )}
+              {loggedInUser && showControls ? (
+                <IconButton size="large" sx={{ display: { xs: 'none', lg: 'flex' } }}>
+                  <EditIcon />
+                </IconButton>
+              ) : (
+                <></>
+              )}
+            </Box>
+          </Grid>
+        ) : (
+          <></>
+        )}
       </Grid>
       <Divider sx={{ mb: 3 }} />
       <Box
@@ -190,7 +223,7 @@ const Profile = ({ user, showControls }: Props) => {
           </Card>
         </Grid> */}
       </Grid>
-      {loggedInUser && showControls ?
+      {loggedInUser && showControls ? (
         <Fab
           color="primary"
           sx={{
@@ -202,9 +235,9 @@ const Profile = ({ user, showControls }: Props) => {
         >
           <EditIcon />
         </Fab>
-        :
+      ) : (
         <></>
-      }
+      )}
     </>
   );
 };

@@ -12,12 +12,18 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const ProfilePage: NextPage = () => {
   const router = useRouter();
   const { userId } = router.query;
-  const { data } = useSWR<{ user: unknown }>(userId ? `/api/users/${userId}` : null, fetcher);
+  const { data, error } = useSWR<{ user: unknown }>(
+    userId ? `/api/users/${userId}` : null,
+    fetcher
+  );
+
+  console.log(error);
+
   const user = useUser(data?.user as FirebaseUser);
 
   return (
-    <Layout title="Your profile" isApp allowUnauthenticated>
-      {user ? (
+    <Layout title={user ? user.displayName : 'User not found'} isApp allowUnauthenticated>
+      {user || error ? (
         <Container sx={{ pt: '64px' }}>
           <Profile user={user} />
         </Container>

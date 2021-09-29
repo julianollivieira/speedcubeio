@@ -30,6 +30,7 @@ interface Props {
   showControls: boolean;
   openDeleteBoxDialog: () => void;
   openEditBoxDialog: () => void;
+  share: () => void;
 }
 
 const BoxCard = ({
@@ -37,6 +38,7 @@ const BoxCard = ({
   showControls,
   openDeleteBoxDialog,
   openEditBoxDialog,
+  share
 }: Props) => {
   const [showMenuButtons, setShowMenuButtons] = useState(false);
   const handleShowMenu = () => setShowMenuButtons(true);
@@ -155,6 +157,7 @@ const BoxCard = ({
           key="share"
           onClick={() => {
             handleMenuClose();
+            share();
             // copyBoxLinkToClipboard();
           }}
         >

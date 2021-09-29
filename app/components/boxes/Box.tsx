@@ -7,7 +7,11 @@ import {
   Divider,
   Fab,
 } from '@mui/material';
-import { Share as ShareIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import {
+  Share as ShareIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+} from '@mui/icons-material';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { User, Box } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,7 +20,7 @@ import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import TimeListComponent from '@/components/timer/TimeList';
 import { editBox, deleteBox } from '@/utils/data/boxes';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import Router from 'next/router';
 
 interface Props {
@@ -25,8 +29,12 @@ interface Props {
   showControls?: boolean;
 }
 
-const BoxComponent = ({ user, box, showControls }: Props) => {
-  const { user: loggedInUser, editBox: editBoxInState, deleteBox: deleteBoxFromState } = useAuth();
+const BoxComponent = ({ user, box, showControls }: Props): ReactElement => {
+  const {
+    user: loggedInUser,
+    editBox: editBoxInState,
+    deleteBox: deleteBoxFromState,
+  } = useAuth();
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
 
@@ -50,73 +58,87 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
               </Avatar>
             </Typography>
             <MUIBox sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
-                {box?.name}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  display: 'flex',
-                  justifyContent: { xs: 'center', lg: 'flex-start' },
-                }}
-              >
-                Created {UnixEpochToDaysAgo(box?.creationTime.seconds)} / Last used{' '}
-                {UnixEpochToDaysAgo(getBoxLastUseOrCreationTime(box))}
-                {!loggedInUser ? ` / By ${user?.displayName}` : <></>}
-              </Typography>
+              {box ? (
+                <>
+                  <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
+                    {box?.name}
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      display: 'flex',
+                      justifyContent: { xs: 'center', lg: 'flex-start' },
+                    }}
+                  >
+                    Created {UnixEpochToDaysAgo(box?.creationTime.seconds)} / Last used{' '}
+                    {UnixEpochToDaysAgo(getBoxLastUseOrCreationTime(box))}
+                    {!loggedInUser ? ` / By ${user?.displayName}` : <></>}
+                  </Typography>
+                </>
+              ) : (
+                <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
+                  {!user ? 'User' : 'Box'} not found
+                </Typography>
+              )}
             </MUIBox>
           </MUIBox>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          lg={2}
-          sx={{
-            display: 'flex',
-            justifyContent: { xs: 'center', lg: 'end' },
-            pt: { xs: 3, lg: 0 },
-            pr: { xs: 0, lg: 2 },
-          }}
-        >
-          <MUIBox
+        {box ? (
+          <Grid
+            item
+            xs={12}
+            lg={2}
             sx={{
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: { xs: 'center', lg: 'end' },
+              pt: { xs: 3, lg: 0 },
+              pr: { xs: 0, lg: 2 },
             }}
           >
-            <IconButton size="large">
-              <ShareIcon />
-            </IconButton>
-            {loggedInUser && showControls ?
-              <>
-                <IconButton
-                  size="large"
-                  sx={{ display: { xs: 'none', lg: 'flex' } }}
-                  onClick={() => setEditingBox(box ?? null)}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  size="large"
-                  sx={{ display: { xs: 'none', lg: 'flex' } }}
-                  onClick={() => setDeletingBox(box ?? null)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </>
-              :
-              <></>
-            }
-          </MUIBox>
-        </Grid>
+            <MUIBox
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <IconButton size="large">
+                <ShareIcon />
+              </IconButton>
+              {loggedInUser && showControls ? (
+                <>
+                  <IconButton
+                    size="large"
+                    sx={{ display: { xs: 'none', lg: 'flex' } }}
+                    onClick={() => setEditingBox(box ?? null)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    size="large"
+                    sx={{ display: { xs: 'none', lg: 'flex' } }}
+                    onClick={() => setDeletingBox(box ?? null)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </>
+              ) : (
+                <></>
+              )}
+            </MUIBox>
+          </Grid>
+        ) : (
+          <></>
+        )}
       </Grid>
       <Divider sx={{ mb: 3 }} />
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={12} xl={6}>
-          <SummaryTableCard box={box} />
-        </Grid>
-        {/* <Grid item xs={12} sm={6} md={12} xl={6}>
+      {box ? (
+        <>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={12} xl={6}>
+              <SummaryTableCard box={box} />
+            </Grid>
+            {/* <Grid item xs={12} sm={6} md={12} xl={6}>
           <BoxSummaryCard timeList={timeList} />
         </Grid>
         <Grid item xs={12}>
@@ -125,25 +147,30 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
         <Grid item xs={12} xl={6}>
           <PuzzlesPieChartCard timeList={timeList} />
         </Grid> */}
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <TimeListComponent
-            boxId={box?.id}
-            sx={{
-              position: 'fixed',
-              top: 64,
-              right: 0,
-              width: 360,
-              height: 'calc(100vh - 64px)',
-              bgcolor: 'background.paper',
-              borderLeft: '1px solid rgba(255, 255, 255, 0.12)',
-              display: { xs: 'none', lg: 'flex' },
-            }}
-          />
-        </Grid>
-      </Grid>
-      {box && editingBox && loggedInUser && showControls ?
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TimeListComponent
+                boxId={box?.id}
+                sx={{
+                  position: 'fixed',
+                  top: 64,
+                  right: 0,
+                  width: 360,
+                  height: 'calc(100vh - 64px)',
+                  bgcolor: 'background.paper',
+                  borderLeft: '1px solid rgba(255, 255, 255, 0.12)',
+                  display: { xs: 'none', lg: 'flex' },
+                }}
+              />
+            </Grid>
+          </Grid>
+        </>
+      ) : (
+        <></>
+      )}
+
+      {box && editingBox && loggedInUser && showControls ? (
         <EditBoxDialog
           box={box}
           handleClose={() => setEditingBox(null)}
@@ -152,10 +179,10 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
             editBoxInState(editingBox, name, icon, color);
           }}
         />
-        :
+      ) : (
         <></>
-      }
-      {user?.id && deletingBox ?
+      )}
+      {user?.id && deletingBox ? (
         <DeleteBoxDialog
           box={deletingBox}
           handleClose={() => setDeletingBox(null)}
@@ -165,10 +192,10 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
             Router.push('/boxes');
           }}
         />
-        :
+      ) : (
         <></>
-      }
-      {loggedInUser && showControls ?
+      )}
+      {loggedInUser && showControls ? (
         <Fab
           color="primary"
           sx={{
@@ -181,9 +208,9 @@ const BoxComponent = ({ user, box, showControls }: Props) => {
         >
           <EditIcon />
         </Fab>
-        :
+      ) : (
         <></>
-      }
+      )}
     </>
   );
 };

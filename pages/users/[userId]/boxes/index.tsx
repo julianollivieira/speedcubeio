@@ -14,12 +14,19 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const BoxPage: NextPage = () => {
   const router = useRouter();
   const { userId } = router.query;
-  const { data } = useSWR<{ user: unknown }>(userId ? `/api/users/${userId}` : null, fetcher);
+  const { data, error } = useSWR<{ user: unknown }>(
+    userId ? `/api/users/${userId}` : null,
+    fetcher
+  );
   const user = useUser(data?.user as FirebaseUser);
 
   return (
-    <Layout title="Box" isApp allowUnauthenticated>
-      {user ? (
+    <Layout
+      title={user ? `${user.displayName}'s boxes'` : 'User not found'}
+      isApp
+      allowUnauthenticated
+    >
+      {user || error ? (
         <Box
           sx={{
             pt: '64px',
@@ -27,7 +34,10 @@ const BoxPage: NextPage = () => {
           }}
         >
           <Box sx={{ px: 2 }}>
-            <PageHeader title={`${user?.displayName}'s boxes`} icon={AllInboxIcon} />
+            <PageHeader
+              title={user ? `${user?.displayName}'s boxes` : 'User not found'}
+              icon={AllInboxIcon}
+            />
             <Divider sx={{ mb: 3 }} />
             <BoxGrid user={user} showControls={false} />
           </Box>

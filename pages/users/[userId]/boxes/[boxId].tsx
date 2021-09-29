@@ -12,18 +12,25 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const BoxPage: NextPage = () => {
   const router = useRouter();
   const { userId, boxId } = router.query;
-  const { data } = useSWR<{ user: unknown }>(userId ? `/api/users/${userId}` : null, fetcher);
+  const { data, error } = useSWR<{ user: unknown }>(
+    userId ? `/api/users/${userId}` : null,
+    fetcher
+  );
   const user = useUser(data?.user as FirebaseUser);
   const box = user?.boxes.find((box) => box.id == boxId);
 
   return (
-    <Layout title="Box" isApp allowUnauthenticated>
-      {user ? (
+    <Layout
+      title={box ? box.name : `${!user ? 'User' : 'Box'} not found`}
+      isApp
+      allowUnauthenticated
+    >
+      {user || error ? (
         <MUIBox
           sx={{
             pt: '64px',
             pl: { md: '240px' },
-            pr: { md: '240px', lg: `${360 + (240 - 73)}px` },
+            pr: { md: '240px', lg: `${box ? 360 + (240 - 73) : 240}px` },
           }}
         >
           <MUIBox sx={{ px: 2 }}>

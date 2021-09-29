@@ -53,6 +53,9 @@ const BoxGrid = ({ user, showControls }: Props) => {
                 showControls={showControls}
                 openDeleteBoxDialog={() => setDeletingBox(box)}
                 openEditBoxDialog={() => setEditingBox(box)}
+                share={() =>
+                  console.log(`localhost:3000/users/${user.id}/boxes/${box.id}`)
+                }
               />
             </Grid>
           ))}
