@@ -19,7 +19,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import Link from '@/components/misc/Link';
 import Logo from '@/components/misc/Logo';
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
 import Router from 'next/router';
 
 interface Props {
@@ -27,7 +27,7 @@ interface Props {
   toggleNavigationDrawer?: () => void;
 }
 
-const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props) => {
+const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props): ReactElement => {
   const { user, logout } = useAuth();
 
   const [anchorEl, setAnchorEl] = useState(null);

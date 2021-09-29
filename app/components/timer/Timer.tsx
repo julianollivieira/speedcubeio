@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Box as MUIBox, Typography } from '@mui/material';
 import TimerClass from '@/classes/Timer';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,7 +9,7 @@ interface Props {
   box: Box | undefined;
 }
 
-const Timer = ({ box }: Props) => {
+const Timer = ({ box }: Props): ReactElement => {
   const [time, setTime] = useState(0);
   const [readying, setReadying] = useState(false);
   const [ready, setReady] = useState(false);
@@ -17,9 +17,7 @@ const Timer = ({ box }: Props) => {
   const { user, addTime: addTimeToState } = useAuth();
 
   useEffect(() => {
-    const timer = new TimerClass();
-
-    timer.init({
+    const timer = new TimerClass({
       onTick: (time: any) => {
         setTime(time);
       },
@@ -51,7 +49,41 @@ const Timer = ({ box }: Props) => {
       },
     });
 
-    const keyDown = (event: any) => {
+    // const timer = new TimerClass();
+
+    // timer.init({
+    // onTick: (time: any) => {
+    //   setTime(time);
+    // },
+    // onReadying: () => {
+    //   setReadying(true);
+    // },
+    // onCancelReady: () => {
+    //   setReadying(false);
+    // },
+    // onReady: () => {
+    //   setReady(true);
+    //   setReadying(false);
+    // },
+    // onStart: () => {
+    //   setReady(false);
+    //   setReadying(false);
+    // },
+    // onStop: async (time: number) => {
+    //   if (user && box?.id) {
+    //     const timeObject = await createTime(
+    //       user?.id,
+    //       box?.id,
+    //       time,
+    //       '3x3x3',
+    //       'U R L F B F B'
+    //     );
+    //     addTimeToState(box?.id, timeObject);
+    //   }
+    // },
+    // });
+
+    const keyDown = (event: KeyboardEvent) => {
       if (event.code == 'Space') {
         if (!timer.isReadying) {
           if (!timer.isRunning) {
@@ -64,7 +96,7 @@ const Timer = ({ box }: Props) => {
       }
     };
 
-    const keyUp = (event: any) => {
+    const keyUp = (event: KeyboardEvent) => {
       if (event.code == 'Space') {
         if (timer.justStopped) {
           timer.justStopped = false;

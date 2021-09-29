@@ -1,12 +1,13 @@
 import { Box, Theme, Typography } from '@mui/material';
 import { SxProps } from '@mui/system';
+import { ReactElement } from 'react';
 
 interface Props {
   expanded?: boolean;
   sx?: SxProps<Theme>;
 }
 
-const Logo = ({ expanded, sx }: Props) => {
+const Logo = ({ expanded, sx }: Props): ReactElement => {
   return (
     <Box sx={sx}>
       <Box

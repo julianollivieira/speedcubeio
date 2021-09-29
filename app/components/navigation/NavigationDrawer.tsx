@@ -22,6 +22,7 @@ import {
 import { styled, useTheme } from '@mui/material/styles';
 import Link from 'next/link';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { ReactElement } from 'react';
 
 const drawerWidth = 240;
 
@@ -69,7 +70,11 @@ interface Props {
   handleDrawerClose: () => void;
 }
 
-const NavigationDrawer = ({ open, handleDrawerOpen, handleDrawerClose }: Props) => {
+const NavigationDrawer = ({
+  open,
+  handleDrawerOpen,
+  handleDrawerClose,
+}: Props): ReactElement => {
   const theme = useTheme();
 
   const [adminPanelOpen, setAdminPanelOpen] = useLocalStorage('subDrawerOpen', false);

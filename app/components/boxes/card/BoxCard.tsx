@@ -1,5 +1,5 @@
 import { Box } from '@/types';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import {
   Card,
@@ -9,7 +9,6 @@ import {
   CardActionArea,
   IconButton,
   Box as MUIBox,
-  CardActions,
   Typography,
   Menu,
   MenuItem,
@@ -20,7 +19,6 @@ import {
   Delete as DeleteIcon,
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
-  Close as CloseIcon,
 } from '@mui/icons-material';
 import BoxCardSummaryTable from '@/components/boxes/card/BoxCardSummaryTable';
 import Link from 'next/link';
@@ -38,8 +36,8 @@ const BoxCard = ({
   showControls,
   openDeleteBoxDialog,
   openEditBoxDialog,
-  share
-}: Props) => {
+  share,
+}: Props): ReactElement => {
   const [showMenuButtons, setShowMenuButtons] = useState(false);
   const handleShowMenu = () => setShowMenuButtons(true);
   const handleHideMenu = () => setShowMenuButtons(false);

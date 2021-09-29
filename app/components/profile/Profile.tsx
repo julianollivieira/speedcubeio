@@ -20,6 +20,7 @@ import { User } from '@/types';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { useAuth } from '@/hooks/useAuth';
+import { ReactElement } from 'react';
 dayjs.extend(utc);
 
 interface Props {
@@ -27,7 +28,7 @@ interface Props {
   showControls?: boolean;
 }
 
-const Profile = ({ user, showControls }: Props) => {
+const Profile = ({ user, showControls }: Props): ReactElement => {
   const { user: loggedInUser } = useAuth();
 
   return (

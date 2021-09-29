@@ -1,4 +1,5 @@
 import { Chip, SvgIcon } from '@mui/material';
+import { ReactElement } from 'react';
 
 interface Props {
   name: string;
@@ -9,7 +10,14 @@ interface Props {
   href?: string;
 }
 
-const SocialChip = ({ name, color, icon, viewBox, padding, href }: Props) => {
+const SocialChip = ({
+  name,
+  color,
+  icon,
+  viewBox,
+  padding,
+  href,
+}: Props): ReactElement => {
   return (
     <Chip
       clickable

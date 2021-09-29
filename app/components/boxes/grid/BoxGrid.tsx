@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
 import { Box, User } from '@/types';
 import { Typography, Grid } from '@mui/material';
 import BoxCard from '@/components/boxes/card/BoxCard';
@@ -14,7 +14,7 @@ interface Props {
   showControls: boolean;
 }
 
-const BoxGrid = ({ user, showControls }: Props) => {
+const BoxGrid = ({ user, showControls }: Props): ReactElement => {
   const [searchString, setSearchString] = useState<string | null>();
   const [view, setView] = useState<string | null>('grid');
 

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Router from 'next/router';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, ReactElement } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import NavigationBar from '@/components/navigation/NavigationBar';
 import NavigationDrawer from '@/components/navigation/NavigationDrawer';
@@ -14,7 +14,12 @@ interface Props {
   isApp?: boolean;
 }
 
-const Layout = ({ title, children, allowUnauthenticated, isApp }: Props) => {
+const Layout = ({
+  title,
+  children,
+  allowUnauthenticated,
+  isApp,
+}: Props): ReactElement => {
   const { user } = useAuth();
 
   useEffect(() => {

@@ -1,13 +1,13 @@
 import { useAuth } from '@/hooks/useAuth';
 import { Box } from '@/types';
 import { FormControl, OutlinedInput, InputLabel, Select, MenuItem } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ReactElement } from 'react';
 
 interface Props {
   onChange: (boxId: string) => void;
 }
 
-const BoxSelector = ({ onChange }: Props) => {
+const BoxSelector = ({ onChange }: Props): ReactElement => {
   const { user } = useAuth();
   const [boxId, setBoxId] = useState<string | undefined>(user?.boxes[0]?.id);
 

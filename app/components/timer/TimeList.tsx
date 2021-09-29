@@ -27,7 +27,7 @@ import {
 } from '@mui/icons-material';
 import { SxProps } from '@mui/system';
 import { useEffect, useState } from 'react';
-import { Fragment } from 'react';
+import { Fragment, ReactElement } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import TimeList from '@/classes/TimeList';
 import DeleteTimeDialog from '@/components/timer/dialogs/DeleteTimeDialog';
@@ -39,7 +39,7 @@ interface Props {
   tableProps?: any;
 }
 
-const TimeListComponent = ({ boxId, sx, tableProps }: Props) => {
+const TimeListComponent = ({ boxId, sx, tableProps }: Props): ReactElement => {
   const { user, deleteTime: deleteTimeFromState } = useAuth();
   const [timeList, setTimeList] = useState<TimeList>();
   const [box, setBox] = useState<Box>();

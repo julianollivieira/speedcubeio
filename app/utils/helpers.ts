@@ -6,7 +6,7 @@ dayjs.extend(relativeTime);
 dayjs.extend(utc);
 
 // Return a well formatted time string from input time (ms)
-export const msToTime = (ms: number | null = null, dash: boolean = false): string => {
+export const msToTime = (ms: number | null = null, dash = false): string => {
   if (dash && ms === null) return '-';
   if (ms === null) return '';
   const num = ms / 1000; // from ms to s

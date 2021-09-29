@@ -12,7 +12,7 @@ import ColorPicker from '@/components/misc/ColorPicker';
 import { boxValidationSchema } from '@/validations';
 import { useFormik } from 'formik';
 import { Box } from '@/types';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 
@@ -22,7 +22,7 @@ interface Props {
   editBox: (name: string, icon: string, color: string) => Promise<void>;
 }
 
-const EditBoxDialog = ({ box, handleClose, editBox }: Props) => {
+const EditBoxDialog = ({ box, handleClose, editBox }: Props): ReactElement => {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 

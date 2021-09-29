@@ -1,12 +1,13 @@
 import SocialChip from '@/components/profile/SocialChip';
 import socials from '@/utils/socials';
 import { SocialLink } from '@/types';
+import { ReactElement } from 'react';
 
 interface Props {
   socialLinks: SocialLink[] | undefined;
 }
 
-const SocialChipList = ({ socialLinks }: Props) => {
+const SocialChipList = ({ socialLinks }: Props): ReactElement => {
   return (
     <>
       {(socialLinks ?? []).map((socialLink) => {
@@ -14,6 +15,7 @@ const SocialChipList = ({ socialLinks }: Props) => {
         if (!social) return null;
         return (
           <SocialChip
+            key={social.name}
             name={social.name}
             color={social.color}
             icon={social.icon}

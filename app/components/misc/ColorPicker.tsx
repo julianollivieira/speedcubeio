@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
 import { Box, TextField } from '@mui/material';
 import { CirclePicker, ColorChangeHandler } from 'react-color';
 
@@ -22,7 +22,7 @@ const ColorPicker = ({
   error,
   helperText,
   handlePickerColorChange,
-}: Props) => {
+}: Props): ReactElement => {
   const [color, setColor] = useState<string>(value);
 
   return (

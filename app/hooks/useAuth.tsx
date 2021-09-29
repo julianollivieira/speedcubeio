@@ -12,7 +12,7 @@ import {
   reauthenticateWithCredential,
   updatePassword,
   AuthCredential,
-  EmailAuthProvider
+  EmailAuthProvider,
 } from 'firebase/auth';
 import app from '@/utils/firebase/client';
 import { getUser } from '@/utils/data/users';
@@ -53,7 +53,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(await getUser(user));
             setFirebaseUser(user);
           } else {
-            console.log('📧 Email not verified')
+            console.log('📧 Email not verified');
             auth.signOut();
             setUser(null);
             setFirebaseUser(null);
@@ -78,7 +78,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         updateProfile(auth.currentUser, {
           displayName: displayName,
         });
-        sendEmailVerification(auth.currentUser)
+        sendEmailVerification(auth.currentUser);
       }
       auth.signOut();
     });
@@ -88,12 +88,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = (): Promise<void> => auth.signOut();
 
-  const changePassword = async (oldPassword: string, newPassword: string): Promise<void> => {
+  const changePassword = async (
+    oldPassword: string,
+    newPassword: string
+  ): Promise<void> => {
     if (!firebaseUser?.email) throw new Error();
     const credential = EmailAuthProvider.credential(firebaseUser.email, oldPassword);
     await reauthenticateWithCredential(firebaseUser, credential);
     await updatePassword(firebaseUser, newPassword);
-  }
+  };
 
   const addBox = (box: Box): void => {
     const newUser = { ...user } as User;

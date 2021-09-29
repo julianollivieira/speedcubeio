@@ -1,13 +1,13 @@
 import { SvgIconComponent } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
-import { createElement } from 'react';
+import { createElement, ReactElement } from 'react';
 
 interface Props {
   title: string;
   icon: SvgIconComponent;
 }
 
-const PageHeader = ({ title, icon }: Props) => {
+const PageHeader = ({ title, icon }: Props): ReactElement => {
   return (
     <Box
       sx={{

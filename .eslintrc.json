@@ -27,6 +27,7 @@
     "react/jsx-curly-newline": [
       "error",
       "consistent"
-    ]
+    ],
+    "@typescript-eslint/explicit-member-accessibility": "error"
   }
 }

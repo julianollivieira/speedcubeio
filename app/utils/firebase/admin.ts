@@ -11,7 +11,7 @@ const adminConfig = {
   databaseURL: 'https://speedcubeio-dev-default-rtdb.europe-west1.firebasedatabase.app',
 };
 
-let appNames = admin.apps.map((app: admin.app.App | null) => app?.name);
+const appNames = admin.apps.map((app: admin.app.App | null) => app?.name);
 
 if (!appNames.includes('admin')) {
   admin.initializeApp(adminConfig, 'admin');

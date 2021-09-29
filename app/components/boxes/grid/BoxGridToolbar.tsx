@@ -13,7 +13,7 @@ import {
   Apps as AppsIcon,
   FormatListBulleted as FormatListBulletedIcon,
 } from '@mui/icons-material';
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, ReactElement } from 'react';
 import { User } from '@/types';
 
 interface Props {
@@ -32,7 +32,7 @@ const BoxGridToolbar = ({
   handleOpenCreateDialog,
   handleChangeView,
   handleSearchInput,
-}: Props) => {
+}: Props): ReactElement => {
   return (
     <>
       <Grid container sx={{ my: 3 }}>

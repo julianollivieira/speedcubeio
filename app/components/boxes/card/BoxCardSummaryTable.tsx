@@ -9,12 +9,13 @@ import {
 import { msToTime } from '@/utils/helpers';
 import useTimeList from '@/hooks/useTimeList';
 import { Box } from '@/types';
+import { ReactElement } from 'react';
 
 interface Props {
   box: Box | undefined;
 }
 
-const BoxCardSummaryTable = ({ box }: Props) => {
+const BoxCardSummaryTable = ({ box }: Props): ReactElement => {
   const timeList = useTimeList(box);
 
   return (
