@@ -4,8 +4,18 @@ import { ReactNode, useEffect, ReactElement } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import NavigationBar from '@/components/navigation/NavigationBar';
 import NavigationDrawer from '@/components/navigation/NavigationDrawer';
-import { useAuth } from '@/hooks/useAuth';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAuth, Unsubscribe, User as FirebaseUser } from 'firebase/auth';
+import { getFirestore, getDocs, collection } from 'firebase/firestore';
+import { selectUser } from '@/store';
+import { User, Box as BoxType } from '@/types';
+import app from '@/utils/firebase/client';
+import { setUser } from '@/features/userSlice';
+import { setBoxes } from '@/features/boxSlice';
+
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 interface Props {
   title?: string;
@@ -20,13 +30,37 @@ const Layout = ({
   allowUnauthenticated,
   isApp,
 }: Props): ReactElement => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user === null && !allowUnauthenticated) {
-      Router.push('/login');
-    }
-  }, [user]);
+    const unsubscribe: Unsubscribe = auth.onAuthStateChanged(
+      async (firebaseUser: FirebaseUser | null) => {
+        dispatch(setUser(firebaseUser?.toJSON() as User));
+
+        if (firebaseUser) {
+          const boxesSnapshot = await getDocs(
+            collection(db, 'users', firebaseUser?.uid, 'boxes')
+          );
+          const boxes: BoxType[] = boxesSnapshot.docs.map(
+            (boxDoc) =>
+            ({
+              id: boxDoc.id,
+              ...boxDoc.data(),
+            } as BoxType)
+          );
+          dispatch(setBoxes(boxes));
+        }
+      }
+    );
+    return unsubscribe;
+  }, []);
+
+  // useEffect(() => {
+  //   if (user === null && !allowUnauthenticated) {
+  //     Router.push('/login');
+  //   }
+  // }, [user]);
 
   const [open, setOpen] = useLocalStorage('drawerOpen', false);
   const handleDrawerOpen = () => setOpen(true);

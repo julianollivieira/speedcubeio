@@ -16,11 +16,13 @@ import {
   Settings as SettingsIcon,
   Menu as MenuIcon,
 } from '@mui/icons-material';
-import { useAuth } from '@/hooks/useAuth';
 import Link from '@/components/misc/Link';
 import Logo from '@/components/misc/Logo';
 import { useState, ReactElement } from 'react';
 import Router from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser } from '@/store';
+import { logout } from '@/features/userSlice';
 
 interface Props {
   isApp?: boolean;
@@ -28,7 +30,8 @@ interface Props {
 }
 
 const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props): ReactElement => {
-  const { user, logout } = useAuth();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -37,10 +40,7 @@ const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props): ReactElement =
   const handleClose = () => setAnchorEl(null);
 
   const handleLogout = () => {
-    logout().then(() => {
-      handleClose();
-      Router.push('/login');
-    });
+    dispatch(logout());
   };
 
   return (
@@ -73,7 +73,7 @@ const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props): ReactElement =
                   <Box sx={{ height: 1, p: 0.5 }}>
                     <IconButton sx={{ height: 1 }} onClick={handleClick}>
                       <Avatar
-                        src={user?.profilePicture}
+                        src={user?.providerData[0].photoURL}
                         sx={{ height: 1, borderRadius: '50%', border: 1 }}
                       />
                     </IconButton>
