@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import { useMemo } from 'react';
 import { SnackbarProvider } from 'notistack';
-import { Provider } from 'react-redux';
 import store from '@/store';
 
 const darkModePalette: PaletteOptions = {
@@ -82,11 +81,9 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Provider store={store}>
-          <SnackbarProvider maxSnack={3}>
-            <Component {...pageProps} />
-          </SnackbarProvider>
-        </Provider>
+        <SnackbarProvider maxSnack={3}>
+          <Component {...pageProps} />
+        </SnackbarProvider>
       </ThemeProvider>
     </>
   );

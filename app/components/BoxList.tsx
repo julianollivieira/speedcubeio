@@ -1,49 +1,50 @@
-import { Box, Button } from '@mui/material';
-import { connect } from 'react-redux';
-import { RootState } from '@/store';
-import { BoxSliceState, createBox } from '@/features/boxSlice';
+import { Typography, Box, Button } from '@mui/material';
+import { useBoxes } from '@/hooks/useBoxes';
+import { useUser } from '@/hooks/useUser';
 
-const BoxList = ({ boxes }: { boxes: BoxSliceState }) => {
+const BoxList = () => {
+  const { user } = useUser();
+  const { boxes, createBox, deleteBox, editBox } = useBoxes();
+
   const handleClick = () => {
-    // if (user) {
-    //   dispatch(
-    //     createBox({
-    //       user: user,
-    //       box: {
-    //         name: 'New box',
-    //         icon: '😂',
-    //         color: '#FFF',
-    //       },
-    //     })
-    //   );
-    // }
+    createBox({
+      name: 'testbox',
+      icon: '🧀',
+      color: '#FF0',
+    });
   };
 
-  console.log('📦', boxes);
+  const handleDelete = (boxId: string) => {
+    // deleteBox(boxId);
+    editBox(boxId, {
+      name: 'GEEDITEN NAMM',
+      icon: '',
+      color: '',
+    });
+  };
 
   return (
     <>
       <Box sx={{ px: 2, py: 2 }}>
+        <Typography>User: {user?.displayName}</Typography>
         <Button onClick={handleClick} variant="contained">
           Create box
         </Button>
+        <ul style={{ width: 500 }}>
+          <li>Boxes</li>
+          {boxes.map((box) => (
+            <li
+              key={box.id}
+              style={{ border: '1px solid white', paddingTop: 10, paddingBottom: 10 }}
+              onClick={() => handleDelete(box.id)}
+            >
+              {box.name} ({box.id})
+            </li>
+          ))}
+        </ul>
       </Box>
-      <ul>
-        <li>Boxes</li>
-        {boxes?.boxes?.map((box) => (
-          <li key={box.id}>{box.name}</li>
-        ))}
-      </ul>
     </>
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
-  boxes: state.boxes,
-});
-
-// const mapDispatchToProps = (dispatch) => ({
-//   createBox: () => dispatch(createBox()),
-// });
-
-export default connect(mapStateToProps)(BoxList);
+export default BoxList;
