@@ -4,10 +4,10 @@ import { useUser } from '@/hooks/useUser';
 
 const BoxList = () => {
   const { user } = useUser();
-  const { boxes, createBox, deleteBox, editBox } = useBoxes();
+  const { times, createTime, deleteTime, editTime } = useBoxes();
 
   const handleClick = () => {
-    createBox({
+    createTime({
       name: 'testbox',
       icon: '🧀',
       color: '#FF0',
@@ -15,11 +15,11 @@ const BoxList = () => {
   };
 
   const handleDelete = (boxId: string) => {
-    deleteBox(boxId);
+    createTime(boxId);
   };
 
   const handleEdit = (boxId: string) => {
-    editBox(boxId, {
+    createTime(boxId, {
       name: 'GEEDITEN NAMM',
       icon: '',
       color: '',
@@ -29,20 +29,20 @@ const BoxList = () => {
   return (
     <>
       <Box sx={{ px: 2, py: 2 }}>
-        <Typography>User: {user?.displayName}</Typography>
+        <Typography>Box: {user?.displayName}</Typography>
         <Button onClick={handleClick} variant="contained">
-          Create box
+          Create time
         </Button>
         <ul style={{ width: 500 }}>
-          <li>Boxes</li>
-          {boxes.map((box) => (
+          <li>Times</li>
+          {times.map((time) => (
             <li
-              key={box.id}
+              key={time.id}
               style={{ border: '1px solid white', paddingTop: 10, paddingBottom: 10 }}
-              onClick={() => handleEdit(box.id)}
-              onContextMenu={() => handleDelete(box.id)}
+              onClick={() => handleEdit(time.id)}
+              onContextMenu={() => handleDelete(time.id)}
             >
-              {box.name} ({box.id})
+              {time.time} ({time.id})
             </li>
           ))}
         </ul>

@@ -11,7 +11,6 @@ import {
   sendEmailVerification,
   reauthenticateWithCredential,
   updatePassword,
-  AuthCredential,
   EmailAuthProvider,
 } from 'firebase/auth';
 import app from '@/utils/firebase/client';

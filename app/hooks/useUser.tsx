@@ -13,6 +13,7 @@ import {
   User,
   UserCredential,
 } from 'firebase/auth';
+import { deleteObject, getStorage, ref, uploadBytes } from 'firebase/storage';
 import app from '@/utils/firebase/client';
 
 type Context = {
@@ -25,9 +26,12 @@ type Context = {
     password: string
   ) => Promise<UserCredential>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  changeProfilePicture: (newProfilePicture: Blob) => Promise<void>;
+  removeProfilePicture: () => Promise<void>;
 };
 
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 const UserContext = createContext<Context>({
   user: undefined,
@@ -35,6 +39,8 @@ const UserContext = createContext<Context>({
   logOut: undefined,
   signUp: undefined,
   changePassword: undefined,
+  changeProfilePicture: undefined,
+  removeProfilePicture: undefined,
 }); // TODO: fix
 
 const useUser = (): Context => useContext(UserContext);
@@ -85,7 +91,29 @@ const UserProvider = ({ children }: { children: ReactNode }): ReactElement => {
     await updatePassword(user, newPassword);
   };
 
-  const value: Context = { user, logIn, logOut, signUp, changePassword };
+  const changeProfilePicture = async (newProfilePicture: Blob) => {
+    if (!user) return;
+    const userProfilePictureRef = ref(storage, `users/${user.uid}/profile.png`);
+    await uploadBytes(userProfilePictureRef, newProfilePicture).then(() => {
+      console.log('Uploaded a blob or file!');
+    });
+  };
+
+  const removeProfilePicture = async () => {
+    if (!user) return;
+    const userProfilePictureRef = ref(storage, `users/${user.uid}/profile.png`);
+    await deleteObject(userProfilePictureRef);
+  };
+
+  const value: Context = {
+    user,
+    logIn,
+    logOut,
+    signUp,
+    changePassword,
+    changeProfilePicture,
+    removeProfilePicture,
+  };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 

@@ -26,7 +26,7 @@ export interface User {
 }
 
 export interface SocialLink {
-  id: string;
+  id: SocialLinkId;
   href: string;
 }
 
@@ -35,6 +35,15 @@ export interface Profile {
   isPrivate: boolean;
   isVerified: boolean;
 }
+
+export type SocialLinkId =
+  | 'youtube'
+  | 'twitter'
+  | 'facebook'
+  | 'reddit'
+  | 'discord'
+  | 'twitch'
+  | 'instagram';
 
 export type Puzzle =
   | '2x2x2'

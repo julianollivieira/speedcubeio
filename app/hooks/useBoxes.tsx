@@ -94,6 +94,10 @@ const BoxProvider = ({ children }: { children: ReactNode }): ReactElement => {
     );
   };
 
+  const setBox = (box: Box) => {
+    // update box in state
+  };
+
   const value: Context = { boxes, createBox, deleteBox, editBox };
   return <BoxContext.Provider value={value}>{children}</BoxContext.Provider>;
 };
