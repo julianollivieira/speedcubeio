@@ -1,120 +1,123 @@
 import {
-  Fab,
-  Grid,
+  AllInbox as AllInboxIcon,
+  Edit as EditIcon,
+  Share as ShareIcon,
+  Verified as VerifiedIcon,
+} from '@mui/icons-material';
+import {
   Avatar,
   Box,
-  Typography,
   Chip,
-  IconButton,
   Divider,
+  Fab,
+  Grid,
+  IconButton,
+  Typography,
 } from '@mui/material';
-import {
-  Verified as VerifiedIcon,
-  Share as ShareIcon,
-  Edit as EditIcon,
-  AllInbox as AllInboxIcon,
-} from '@mui/icons-material';
 import Link from '@/components/misc/Link';
 import SocialChipList from '@/components/profile/SocialChipList';
-import { User } from '@/types';
+import type { User } from 'firebase/auth';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { useAuth } from '@/hooks/useAuth';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 dayjs.extend(utc);
+import type { Profile as ProfileType } from '@/types';
 
 interface Props {
   user: User | null | undefined;
+  profile: ProfileType | undefined;
   showControls?: boolean;
 }
 
-const Profile = ({ user, showControls }: Props): ReactElement => {
-  const { user: loggedInUser } = useAuth();
-
+const Profile = ({ user, profile, showControls }: Props): ReactElement => {
+  const handleShare = () => {
+    console.log(`localhost:3000/users/${user?.uid}`);
+  };
   return (
     <>
       <Grid container sx={{ py: 3 }}>
         <Grid
           item
-          xs={12}
           lg={2}
           sx={{
-            display: 'flex',
             alignItems: 'center',
+            display: 'flex',
             justifyContent: 'center',
           }}
+          xs={12}
         >
           <Avatar
-            src={user?.profilePicture}
+            src={user?.photoURL ?? ''}
             sx={{
-              height: 150,
-              width: 150,
-              borderRadius: '50%',
               border: 1,
+              borderRadius: '50%',
+              height: 150,
               mb: { xs: 5, lg: 0 },
+              width: 150,
             }}
           />
         </Grid>
-        <Grid item xs={12} lg={8} sx={{ display: 'flex', alignItems: 'center' }}>
+        <Grid item lg={8} sx={{ display: 'flex', alignItems: 'center' }} xs={12}>
           {user ? (
             <Box
               sx={{
-                display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                display: 'flex',
                 flexGrow: 1,
+                justifyContent: 'space-between',
               }}
             >
               <Box
                 sx={{
-                  pl: 3,
                   display: 'flex',
+                  pl: 3,
                   flexDirection: 'column',
                   flexGrow: 1,
                 }}
               >
                 <Box
                   sx={{
-                    display: 'flex',
                     alignItems: 'center',
+                    display: 'flex',
                     justifyContent: { xs: 'center', lg: 'flex-start' },
                   }}
                 >
-                  <Typography variant="h3" sx={{ fontSize: { xs: '2em', lg: '2.5em' } }}>
-                    {user?.displayName}
+                  <Typography sx={{ fontSize: { xs: '2em', lg: '2.5em' } }} variant="h3">
+                    {user.displayName}
                   </Typography>
-                  {user?.isVerified ? (
-                    <VerifiedIcon sx={{ ml: 2 }} color="info" fontSize="large" />
+                  {profile?.isVerified ? (
+                    <VerifiedIcon color="info" fontSize="large" sx={{ ml: 2 }} />
                   ) : (
-                    <></>
+                    ''
                   )}
                 </Box>
                 <Typography
-                  variant="subtitle1"
                   sx={{
                     display: 'flex',
                     justifyContent: { xs: 'center', lg: 'flex-start' },
                   }}
+                  variant="subtitle1"
                 >
-                  Joined on {dayjs(user?.joinDate).utc().format('MMMM D YYYY')}
+                  {'Joined on '}
+                  {dayjs(user.metadata.creationTime).utc().format('MMMM D YYYY')}
                 </Typography>
                 <Box
                   sx={{
-                    my: 1,
                     display: 'flex',
                     justifyContent: { xs: 'center', lg: 'flex-start' },
+                    my: 1,
                   }}
                 >
                   <Box>
                     <Chip
-                      label="PRO MEMBER"
                       color="error"
+                      label="PRO MEMBER"
                       size="small"
                       sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
                     />
                     <Chip
-                      label="BETA TESTER"
                       color="warning"
+                      label="BETA TESTER"
                       size="small"
                       sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
                     />
@@ -146,7 +149,7 @@ const Profile = ({ user, showControls }: Props): ReactElement => {
                     justifyContent: { xs: 'center', lg: 'flex-start' },
                   }}
                 >
-                  <Typography variant="h3" sx={{ fontSize: { xs: '2em', lg: '2.5em' } }}>
+                  <Typography sx={{ fontSize: { xs: '2em', lg: '2.5em' } }} variant="h3">
                     User not found
                   </Typography>
                 </Box>
@@ -157,13 +160,13 @@ const Profile = ({ user, showControls }: Props): ReactElement => {
         {user ? (
           <Grid
             item
-            xs={12}
             lg={2}
             sx={{
               display: 'flex',
               justifyContent: 'center',
               pt: { xs: 3, lg: 0 },
             }}
+            xs={12}
           >
             <Box
               sx={{
@@ -172,30 +175,24 @@ const Profile = ({ user, showControls }: Props): ReactElement => {
                 justifyContent: 'center',
               }}
             >
-              {/* <IconButton onClick={copyProfileLinkToClipboard} size="large"> */}
-              <IconButton size="large">
+              <IconButton size="large" onClick={handleShare}>
                 <ShareIcon />
               </IconButton>
-              {loggedInUser?.id !== user?.id ? (
-                <Link href={`/users/${user?.id}/boxes`} passHref>
-                  <IconButton size="large">
-                    <AllInboxIcon />
-                  </IconButton>
-                </Link>
-              ) : (
-                <></>
-              )}
-              {loggedInUser && showControls ? (
+              {showControls ? (
                 <IconButton size="large" sx={{ display: { xs: 'none', lg: 'flex' } }}>
                   <EditIcon />
                 </IconButton>
               ) : (
-                <></>
+                <Link href={`/users/${user.uid}/boxes`} passHref>
+                  <IconButton size="large">
+                    <AllInboxIcon />
+                  </IconButton>
+                </Link>
               )}
             </Box>
           </Grid>
         ) : (
-          <></>
+          ''
         )}
       </Grid>
       <Divider sx={{ mb: 3 }} />
@@ -208,7 +205,7 @@ const Profile = ({ user, showControls }: Props): ReactElement => {
           justifyContent: { xs: 'center', lg: 'flex-start' },
         }}
       >
-        <SocialChipList socialLinks={user?.socialLinks} />
+        <SocialChipList socialLinks={profile?.socialLinks} />
       </Box>
       <Grid container spacing={2}>
         {/* <Grid item xs={12} md={6}>
@@ -224,7 +221,7 @@ const Profile = ({ user, showControls }: Props): ReactElement => {
           </Card>
         </Grid> */}
       </Grid>
-      {loggedInUser && showControls ? (
+      {/* {loggedInUser && showControls ? (
         <Fab
           color="primary"
           sx={{
@@ -238,7 +235,7 @@ const Profile = ({ user, showControls }: Props): ReactElement => {
         </Fab>
       ) : (
         <></>
-      )}
+      )} */}
     </>
   );
 };

@@ -28,35 +28,32 @@ import {
 import { SxProps } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { Fragment, ReactElement } from 'react';
-import { useAuth } from '@/hooks/useAuth';
 import TimeList from '@/classes/TimeList';
 import DeleteTimeDialog from '@/components/timer/dialogs/DeleteTimeDialog';
-import { deleteTime } from '@/utils/data/times';
+import { useData } from '@/hooks/useData';
 
 interface Props {
-  boxId: string | undefined;
   sx?: SxProps<Theme>;
   tableProps?: any;
+  showControls?: boolean;
 }
 
-const TimeListComponent = ({ boxId, sx, tableProps }: Props): ReactElement => {
-  const { user, deleteTime: deleteTimeFromState } = useAuth();
+const TimeListComponent = ({
+  sx,
+  tableProps,
+  showControls = false,
+}: Props): ReactElement => {
+  const { box, deleteTime } = useData();
   const [timeList, setTimeList] = useState<TimeList>();
-  const [box, setBox] = useState<Box>();
   const [open, setOpen] = useState<number | null>();
-
   const [deletingTime, setDeletingTime] = useState<Time | null>(null);
 
   useEffect(() => {
-    if (user && boxId) {
-      const box = user?.boxes.find((box) => box.id === boxId);
-      if (box) {
-        const newTimeList = new TimeList(box);
-        setTimeList(newTimeList);
-        setBox(box);
-      }
+    if (box) {
+      const newTimeList = new TimeList(box);
+      setTimeList(newTimeList);
     }
-  }, [user, boxId]);
+  }, [box]);
 
   return (
     <MUIBox sx={sx}>
@@ -121,7 +118,7 @@ const TimeListComponent = ({ boxId, sx, tableProps }: Props): ReactElement => {
                               </ListItemIcon>
                               <ListItemText
                                 primary="Date"
-                                secondary={UnixEpochToUTC(timeData?.creationTime)}
+                                secondary={UnixEpochToUTC(timeData?.createdAt)}
                               />
                             </ListItem>
                             <ListItem>
@@ -136,28 +133,36 @@ const TimeListComponent = ({ boxId, sx, tableProps }: Props): ReactElement => {
                                       fontStyle: timeData?.comment ? 'normal' : 'italic',
                                     }}
                                   >
-                                    {timeData?.comment ?? 'none'}
+                                    {timeData?.comment && timeData?.comment !== ''
+                                      ? timeData?.comment
+                                      : 'none'}
                                   </span>
                                 }
                               />
                             </ListItem>
-                            <Divider />
-                            <ListItem
-                              sx={{
-                                py: 1,
-                                display: 'flex',
-                                justifyContent: 'space-around',
-                              }}
-                            >
-                              <IconButton
-                                onClick={() => setDeletingTime(timeData ?? null)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                              <IconButton>
-                                <EditIcon />
-                              </IconButton>
-                            </ListItem>
+                            {showControls ? (
+                              <>
+                                <Divider />
+                                <ListItem
+                                  sx={{
+                                    py: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-around',
+                                  }}
+                                >
+                                  <IconButton
+                                    onClick={() => setDeletingTime(timeData ?? null)}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                  <IconButton>
+                                    <EditIcon />
+                                  </IconButton>
+                                </ListItem>
+                              </>
+                            ) : (
+                              ''
+                            )}
                           </List>
                         </Collapse>
                       </TableCell>
@@ -169,14 +174,12 @@ const TimeListComponent = ({ boxId, sx, tableProps }: Props): ReactElement => {
           </TableBody>
         </Table>
       </TableContainer>
-      {user?.id && deletingTime ? (
+      {showControls && deletingTime ? (
         <DeleteTimeDialog
           time={deletingTime}
           handleClose={() => setDeletingTime(null)}
           deleteTime={async (): Promise<void> => {
-            if (!boxId) return;
-            await deleteTime(user.id, boxId, deletingTime.id);
-            deleteTimeFromState(boxId, deletingTime.id);
+            deleteTime(deletingTime.id);
           }}
         />
       ) : (

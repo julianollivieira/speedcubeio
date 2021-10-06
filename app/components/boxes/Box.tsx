@@ -13,15 +13,14 @@ import {
   Delete as DeleteIcon,
 } from '@mui/icons-material';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
-import { User, Box } from '@/types';
-import { useAuth } from '@/hooks/useAuth';
+import { Box } from '@/types';
+import { useData } from '@/hooks/useData';
 import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import TimeListComponent from '@/components/timer/TimeList';
-import { editBox, deleteBox } from '@/utils/data/boxes';
-import { ReactElement, useState } from 'react';
-import Router from 'next/router';
+import { ReactElement, useState, useEffect } from 'react';
+import { User } from 'firebase/auth';
 
 interface Props {
   user: User | null | undefined;
@@ -29,12 +28,9 @@ interface Props {
   showControls?: boolean;
 }
 
-const BoxComponent = ({ user, box, showControls }: Props): ReactElement => {
-  const {
-    user: loggedInUser,
-    editBox: editBoxInState,
-    deleteBox: deleteBoxFromState,
-  } = useAuth();
+const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement => {
+  const { editBox, deleteBox } = useData();
+
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
 
@@ -70,15 +66,16 @@ const BoxComponent = ({ user, box, showControls }: Props): ReactElement => {
                       justifyContent: { xs: 'center', lg: 'flex-start' },
                     }}
                   >
-                    Created {UnixEpochToDaysAgo(box?.creationTime.seconds)} / Last used{' '}
+                    Created {UnixEpochToDaysAgo(box?.createdAt)} / Last used{' '}
                     {UnixEpochToDaysAgo(getBoxLastUseOrCreationTime(box))}
-                    {!loggedInUser ? ` / By ${user?.displayName}` : <></>}
+                    {/* {!loggedInUser ? ` / By ${user?.displayName}` : <></>} */}
                   </Typography>
                 </>
               ) : (
-                <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
-                  {!user ? 'User' : 'Box'} not found
-                </Typography>
+                // <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
+                //   {!user ? 'User' : 'Box'} not found
+                // </Typography>
+                ''
               )}
             </MUIBox>
           </MUIBox>
@@ -105,7 +102,7 @@ const BoxComponent = ({ user, box, showControls }: Props): ReactElement => {
               <IconButton size="large">
                 <ShareIcon />
               </IconButton>
-              {loggedInUser && showControls ? (
+              {/* {loggedInUser && showControls ? (
                 <>
                   <IconButton
                     size="large"
@@ -124,7 +121,7 @@ const BoxComponent = ({ user, box, showControls }: Props): ReactElement => {
                 </>
               ) : (
                 <></>
-              )}
+              )} */}
             </MUIBox>
           </Grid>
         ) : (
@@ -151,7 +148,7 @@ const BoxComponent = ({ user, box, showControls }: Props): ReactElement => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TimeListComponent
-                boxId={box?.id}
+                showControls
                 sx={{
                   position: 'fixed',
                   top: 64,
@@ -169,8 +166,7 @@ const BoxComponent = ({ user, box, showControls }: Props): ReactElement => {
       ) : (
         <></>
       )}
-
-      {box && editingBox && loggedInUser && showControls ? (
+      {/* {box && editingBox && loggedInUser && showControls ? (
         <EditBoxDialog
           box={box}
           handleClose={() => setEditingBox(null)}
@@ -210,7 +206,7 @@ const BoxComponent = ({ user, box, showControls }: Props): ReactElement => {
         </Fab>
       ) : (
         <></>
-      )}
+      )} */}
     </>
   );
 };

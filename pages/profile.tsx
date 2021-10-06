@@ -1,18 +1,16 @@
-import type { NextPage } from 'next';
-import Layout from '@/components/layout/Layout';
-import Profile from '@/components/profile/Profile';
 import { Container } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { selectUser } from '@/store';
+import Layout from '@/components/layout/Layout';
+import type { NextPage } from 'next';
+import Profile from '@/components/profile/Profile';
+import { useData } from '@/hooks/useData';
 
 const ProfilePage: NextPage = () => {
-  const user = useSelector(selectUser);
+  const { user, profile } = useData();
 
   return (
-    <Layout title="Your profile" isApp>
+    <Layout title="Your profile">
       <Container sx={{ pt: '64px' }}>
-        {/* <Profile user={user} showControls /> */}
-        <h1>{user?.displayName}</h1>
+        <Profile profile={profile} showControls user={user} />
       </Container>
     </Layout>
   );

@@ -6,16 +6,16 @@ class TimeList {
   public ao12s: (number | null)[] = [];
 
   public constructor(box: Box) {
-    const sortedTimes = box.times?.sort((a, b) => a.creationTime - b.creationTime);
+    const sortedTimes = box.times?.sort((a, b) => a.createdAt - b.createdAt);
     this.times = (sortedTimes ?? []).map((time: Time) => time.time);
     this.ao5s = this.times.map((item, index) => {
       if (index < 4) return null;
-      const five = this.times.slice(index - 4, index);
+      const five = this.times.slice(index - 4, index + 1);
       return this.average(this.removeWorstAndBest(five));
     });
     this.ao12s = this.times.map((item, index) => {
       if (index < 11) return null;
-      const twelve = this.times.slice(index - 11, index);
+      const twelve = this.times.slice(index - 11, index + 1);
       return this.average(this.removeWorstAndBest(twelve));
     });
   }
@@ -121,8 +121,14 @@ class TimeList {
   private removeWorstAndBest(times: number[]): number[] {
     const best = Math.min(...times);
     const worst = Math.max(...times);
-    const withoutBest = times.filter((time) => time !== best);
-    return withoutBest.filter((time) => time !== worst);
+
+    const firstBestIndex = times.findIndex((time) => time === best);
+    times.splice(firstBestIndex, 1);
+
+    const firstWorstIndex = times.findIndex((time) => time === worst);
+    times.splice(firstWorstIndex, 1);
+
+    return times;
   }
 }
 

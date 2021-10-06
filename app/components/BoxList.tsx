@@ -1,10 +1,12 @@
 import { Typography, Box, Button } from '@mui/material';
-import { useBoxes } from '@/hooks/useBoxes';
-import { useUser } from '@/hooks/useUser';
+import { useData } from '@/hooks/useData';
 
 const BoxList = () => {
-  const { user } = useUser();
-  const { boxes, createBox, deleteBox, editBox } = useBoxes();
+  const { boxes, createBox, deleteBox, editBox, changeBox } = useData();
+
+  const handleChangeActiveBox = (boxId: string) => {
+    changeBox(boxId);
+  };
 
   const handleClick = () => {
     createBox({
@@ -29,20 +31,32 @@ const BoxList = () => {
   return (
     <>
       <Box sx={{ px: 2, py: 2 }}>
-        <Typography>User: {user?.displayName}</Typography>
+        <Typography>Boxes count: {boxes.length}</Typography>
         <Button onClick={handleClick} variant="contained">
           Create box
         </Button>
         <ul style={{ width: 500 }}>
-          <li>Boxes</li>
           {boxes.map((box) => (
             <li
               key={box.id}
-              style={{ border: '1px solid white', paddingTop: 10, paddingBottom: 10 }}
-              onClick={() => handleEdit(box.id)}
-              onContextMenu={() => handleDelete(box.id)}
+              style={{
+                border: '1px solid white',
+                paddingLeft: 20,
+                paddingRight: 20,
+                paddingTop: 10,
+                paddingBottom: 10,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+              onContextMenu={() => handleEdit(box.id)}
+              onClick={() => handleChangeActiveBox(box.id)}
             >
               {box.name} ({box.id})
+              <Button variant="contained" onClick={() => handleDelete(box.id)}>
+                X
+              </Button>
             </li>
           ))}
         </ul>

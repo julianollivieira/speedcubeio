@@ -3,12 +3,12 @@ import Link from '@/components/misc/Link';
 import { useFormik } from 'formik';
 import { loginValidationSchema } from '@/validations';
 import { useState, ReactElement } from 'react';
-import { useAuth } from '@/hooks/useAuth';
 import Router from 'next/router';
 import Logo from '@/components/misc/Logo';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import authErrors from '@/utils/authErrors';
+import { useData } from '@/hooks/useData';
 
 interface Error {
   code: string;
@@ -16,7 +16,7 @@ interface Error {
 
 const LoginForm = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { logIn } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const formik = useFormik({
@@ -25,7 +25,7 @@ const LoginForm = (): ReactElement => {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        const userCredential = await login(values.email, values.password);
+        const userCredential = await logIn(values.email, values.password);
         if (userCredential.user.emailVerified) {
           createSnackbar(
             enqueueSnackbar,

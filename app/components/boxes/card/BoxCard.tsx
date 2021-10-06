@@ -121,36 +121,32 @@ const BoxCard = ({
         open={!!anchorEl}
         onClose={handleMenuClose}
       >
-        {showControls ? (
-          [
-            <MenuItem
-              key="edit"
-              onClick={() => {
-                handleMenuClose();
-                openEditBoxDialog();
-              }}
-            >
-              <ListItemIcon>
-                <EditIcon fontSize="small" />
-              </ListItemIcon>
-              <Typography variant="inherit">Edit</Typography>
-            </MenuItem>,
-            <MenuItem
-              key="delete"
-              onClick={() => {
-                handleMenuClose();
-                openDeleteBoxDialog();
-              }}
-            >
-              <ListItemIcon>
-                <DeleteIcon fontSize="small" />
-              </ListItemIcon>
-              <Typography variant="inherit">Delete</Typography>
-            </MenuItem>,
-          ]
-        ) : (
-          <></>
-        )}
+        {showControls && [
+          <MenuItem
+            key="edit"
+            onClick={() => {
+              handleMenuClose();
+              openEditBoxDialog();
+            }}
+          >
+            <ListItemIcon>
+              <EditIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Edit</Typography>
+          </MenuItem>,
+          <MenuItem
+            key="delete"
+            onClick={() => {
+              handleMenuClose();
+              openDeleteBoxDialog();
+            }}
+          >
+            <ListItemIcon>
+              <DeleteIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Delete</Typography>
+          </MenuItem>,
+        ]}
         <MenuItem
           key="share"
           onClick={() => {

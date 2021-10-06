@@ -1,20 +1,21 @@
 import { useState, ReactElement } from 'react';
-import { Box, User } from '@/types';
+import { User } from 'firebase/auth';
+import { Box } from '@/types';
 import { Typography, Grid } from '@mui/material';
 import BoxCard from '@/components/boxes/card/BoxCard';
 import BoxGridToolbar from '@/components/boxes/grid/BoxGridToolbar';
 import CreateBoxDialog from '@/components/boxes/dialogs/CreateBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
-import { createBox, deleteBox, editBox } from '@/utils/data/boxes';
-import { useAuth } from '@/hooks/useAuth';
+import { useData } from '@/hooks/useData';
 
 interface Props {
   user: User | null | undefined;
-  showControls: boolean;
+  boxes: Box[];
+  showControls?: boolean;
 }
 
-const BoxGrid = ({ user, showControls }: Props): ReactElement => {
+const BoxGrid = ({ user, boxes, showControls = false }: Props): ReactElement => {
   const [searchString, setSearchString] = useState<string | null>();
   const [view, setView] = useState<string | null>('grid');
 
@@ -24,11 +25,7 @@ const BoxGrid = ({ user, showControls }: Props): ReactElement => {
     }
   };
 
-  const {
-    addBox: addBoxToState,
-    deleteBox: deleteBoxFromState,
-    editBox: editBoxInState,
-  } = useAuth();
+  const { createBox, deleteBox, editBox } = useData();
 
   const [creatingBox, setCreatingBox] = useState(false);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
@@ -46,7 +43,7 @@ const BoxGrid = ({ user, showControls }: Props): ReactElement => {
       />
       {view === 'grid' ? (
         <Grid container spacing={2}>
-          {user?.boxes.map((box) => (
+          {boxes.map((box) => (
             <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
               <BoxCard
                 box={box}
@@ -54,7 +51,7 @@ const BoxGrid = ({ user, showControls }: Props): ReactElement => {
                 openDeleteBoxDialog={() => setDeletingBox(box)}
                 openEditBoxDialog={() => setEditingBox(box)}
                 share={() =>
-                  console.log(`localhost:3000/users/${user.id}/boxes/${box.id}`)
+                  console.log(`localhost:3000/users/${user?.uid}/boxes/${box.id}`)
                 }
               />
             </Grid>
@@ -63,17 +60,51 @@ const BoxGrid = ({ user, showControls }: Props): ReactElement => {
       ) : (
         <Typography>List view here / seachString: {searchString}</Typography>
       )}
-      {user?.id ? (
+      {showControls && (
         <CreateBoxDialog
           open={creatingBox}
           handleClose={() => setCreatingBox(false)}
           createBox={async (name: string, icon: string, color: string): Promise<void> => {
-            const boxDocument = await createBox(user.id, name, icon, color);
-            addBoxToState({
-              id: boxDocument.id,
-              times: [],
-              ...boxDocument.data(),
-            } as unknown as Box);
+            await createBox({
+              name: name,
+              icon: icon,
+              color: color,
+            });
+          }}
+        />
+      )}
+      {showControls && deletingBox && (
+        <DeleteBoxDialog
+          box={deletingBox}
+          handleClose={() => setDeletingBox(null)}
+          deleteBox={async (): Promise<void> => {
+            await deleteBox(deletingBox.id);
+          }}
+        />
+      )}
+      {showControls && editingBox && (
+        <EditBoxDialog
+          box={editingBox}
+          handleClose={() => setEditingBox(null)}
+          editBox={async (name: string, icon: string, color: string): Promise<void> => {
+            await editBox(editingBox.id, {
+              name: name,
+              icon: icon,
+              color: color,
+            });
+          }}
+        />
+      )}
+      {/* {user?.id ? (
+        <CreateBoxDialog
+          open={creatingBox}
+          handleClose={() => setCreatingBox(false)}
+          createBox={async (name: string, icon: string, color: string): Promise<void> => {
+            await createBox({
+              name: name,
+              icon: icon,
+              color: color,
+            });
           }}
         />
       ) : (
@@ -84,8 +115,7 @@ const BoxGrid = ({ user, showControls }: Props): ReactElement => {
           box={deletingBox}
           handleClose={() => setDeletingBox(null)}
           deleteBox={async (): Promise<void> => {
-            await deleteBox(user.id, deletingBox);
-            deleteBoxFromState(deletingBox);
+            await deleteBox(deletingBox.id);
           }}
         />
       ) : (
@@ -96,13 +126,16 @@ const BoxGrid = ({ user, showControls }: Props): ReactElement => {
           box={editingBox}
           handleClose={() => setEditingBox(null)}
           editBox={async (name: string, icon: string, color: string): Promise<void> => {
-            await editBox(user.id, editingBox, name, icon, color);
-            editBoxInState(editingBox, name, icon, color);
+            await editBox(editingBox.id, {
+              name: name,
+              icon: icon,
+              color: color,
+            });
           }}
         />
       ) : (
         <></>
-      )}
+      )} */}
     </>
   );
 };

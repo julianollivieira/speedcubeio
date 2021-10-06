@@ -9,6 +9,11 @@ export const loginValidationSchema = yup.object().shape({
 });
 
 export const signupValidationSchema = yup.object().shape({
+  acceptTerms: yup.boolean().oneOf([true], 'You must accept the terms and conditions'),
+  confirmPassword: yup
+    .string()
+    .required('Password confirmation is required')
+    .oneOf([yup.ref('password')], 'Passwords need to be the same'),
   displayName: yup
     .string()
     .required('Display name is required')
@@ -21,27 +26,22 @@ export const signupValidationSchema = yup.object().shape({
     .string()
     .required('Password is required')
     .min(8, 'Password should be at least 8 characters'),
-  confirmPassword: yup
-    .string()
-    .required('Password confirmation is required')
-    .oneOf([yup.ref('password')], 'Passwords need to be the same'),
-  acceptTerms: yup.boolean().oneOf([true], 'You must accept the terms and conditions'),
 });
 
 export const boxValidationSchema = yup.object().shape({
-  name: yup
+  color: yup
     .string()
-    .required('Name is required')
-    .max(32, 'Name should cannot be longer then 32 characters'),
+    .required('Color is required')
+    .matches(/^#(?:[0-9a-fA-F]{3}){1,2}$/, 'Select a valid color'),
   icon: yup
     .string()
     .required('Icon is required')
     .min(1, 'Icon should be at least 1 character')
     .max(2, 'Icon cannot be longer then 2 characters'),
-  color: yup
+  name: yup
     .string()
-    .required('Color is required')
-    .matches(/^#(?:[0-9a-fA-F]{3}){1,2}$/, 'Select a valid color'),
+    .required('Name is required')
+    .max(32, 'Name should cannot be longer then 32 characters'),
 });
 
 export const changePasswordValidationSchema = yup.object().shape({

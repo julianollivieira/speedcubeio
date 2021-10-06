@@ -19,10 +19,8 @@ import {
 import Link from '@/components/misc/Link';
 import Logo from '@/components/misc/Logo';
 import { useState, ReactElement } from 'react';
+import { useData } from '@/hooks/useData';
 import Router from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectUser } from '@/store';
-import { logout } from '@/features/userSlice';
 
 interface Props {
   isApp?: boolean;
@@ -30,8 +28,7 @@ interface Props {
 }
 
 const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props): ReactElement => {
-  const user = useSelector(selectUser);
-  const dispatch = useDispatch();
+  const { user, logOut } = useData();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -39,8 +36,9 @@ const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props): ReactElement =
   const handleClick = (event: any) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await logOut();
+    Router.push('/login');
   };
 
   return (
@@ -73,7 +71,7 @@ const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props): ReactElement =
                   <Box sx={{ height: 1, p: 0.5 }}>
                     <IconButton sx={{ height: 1 }} onClick={handleClick}>
                       <Avatar
-                        src={user?.providerData[0].photoURL}
+                        src={user?.photoURL ?? ''}
                         sx={{ height: 1, borderRadius: '50%', border: 1 }}
                       />
                     </IconButton>
@@ -134,7 +132,7 @@ const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props): ReactElement =
               )
             ) : (
               <Box>
-                <Link href="/home" passHref sx={{ textDecoration: 'none', mr: 1 }}>
+                <Link href="/login" passHref sx={{ textDecoration: 'none', mr: 1 }}>
                   <Button color="primary">Login</Button>
                 </Link>
                 <Link href="/signup" passHref sx={{ textDecoration: 'none' }}>

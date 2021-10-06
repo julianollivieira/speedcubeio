@@ -33,9 +33,9 @@ export const msToTime = (ms: number | null = null, dash = false): string => {
 export const getBoxLastUseOrCreationTime = (box: Box | undefined): number | undefined => {
   if (!box) return undefined;
   if (box.times?.length) {
-    return box.times[box.times.length - 1].creationTime;
+    return box.times[box.times.length - 1].createdAt;
   } else {
-    return box.creationTime.seconds;
+    return box.createdAt;
   }
 };
 

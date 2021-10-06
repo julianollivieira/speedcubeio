@@ -1,28 +1,22 @@
 import type { NextPage } from 'next';
 import { Box } from '@mui/material';
 import BoxList from '@/components/BoxList';
-import SocialList from '@/components/SocialList';
 import TimeList from '@/components/TimeList';
+import Profile from '@/components/Profile';
 import Layout from '@/components/layout/Layout';
-import { BoxProvider } from '@/hooks/useBoxes';
-import { ProfileProvider } from '@/hooks/useProfile';
 
 const TestPage: NextPage = () => {
   return (
     <Layout>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', p: 20 }}>
         <Box>
-          <ProfileProvider>
-            <SocialList />
-          </ProfileProvider>
         </Box>
         <Box>
-          <BoxProvider>
-            <Box sx={{ display: 'flex' }}>
-              <BoxList />
-              <TimeList />
-            </Box>
-          </BoxProvider>
+          <Box sx={{ display: 'flex' }}>
+            <BoxList />
+            <TimeList />
+            <Profile />
+          </Box>
         </Box>
       </Box>
     </Layout>

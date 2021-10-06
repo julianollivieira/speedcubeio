@@ -2,14 +2,14 @@ import type { NextPage } from 'next';
 import Router from 'next/router';
 import Head from 'next/head';
 import { useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
 import { Box, CircularProgress, Container, Button } from '@mui/material';
 import LoginForm from '@/components/auth/LoginForm';
 import Logo from '@/components/misc/Logo';
 import Link from '@/components/misc/Link';
+import { useData } from '@/hooks/useData';
 
 const LoginPage: NextPage = () => {
-  const { user } = useAuth();
+  const { user } = useData();
 
   useEffect(() => {
     if (user !== null && user !== undefined) {

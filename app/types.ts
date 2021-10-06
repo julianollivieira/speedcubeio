@@ -7,23 +7,23 @@ export interface Provider {
   photoURL: string;
 }
 
-export interface User {
-  uid: string;
-  email: string;
-  emailVerified: boolean;
-  displayName: string;
-  isAnonymous: boolean;
-  providerData: Provider[];
-  stsTokenManager: {
-    refreshToken: string;
-    accessToken: string;
-    expirationTime: number;
-  };
-  createdAt: string;
-  lastLoginAt: string;
-  apiKey: string;
-  appName: string;
-}
+// export interface User {
+//   uid: string;
+//   email: string;
+//   emailVerified: boolean;
+//   displayName: string;
+//   isAnonymous: boolean;
+//   providerData: Provider[];
+//   stsTokenManager: {
+//     refreshToken: string;
+//     accessToken: string;
+//     expirationTime: number;
+//   };
+//   createdAt: string;
+//   lastLoginAt: string;
+//   apiKey: string;
+//   appName: string;
+// }
 
 export interface SocialLink {
   id: SocialLinkId;
@@ -60,11 +60,11 @@ export type Puzzle =
 
 export interface Time {
   id: string;
-  timer: number;
+  time: number;
   puzzle: Puzzle;
   scramble: string;
   comment?: string;
-  createdAt: string;
+  createdAt: number;
 }
 
 export interface Box {
@@ -73,28 +73,6 @@ export interface Box {
   icon: string;
   color: string;
   times: Time[];
-  createdAt: string;
+  createdAt: number;
+  isPrivate: boolean;
 }
-
-// export interface User {
-//   uid: string;
-//   displayName: string;
-//   email: string;
-//   emailVerified: boolean;
-//   metadata: {
-//     creationTime: string;
-//     lastSignInTime: string;
-//   };
-//   photoURL: string;
-// }
-
-// export interface Profile {
-//   socialLinks: SocialLink[];
-//   isPrivate: boolean;
-//   isVerified: boolean;
-// }
-
-// export interface SocialLink {
-//   id: string;
-//   href: string;
-// }

@@ -1,6 +1,6 @@
 import { Typography, Box, Button } from '@mui/material';
-import { useProfile } from '@/hooks/useProfile';
-import { useUser } from '@/hooks/useUser';
+import { useProfile } from '@/hooks/data/useProfile';
+import { useUser } from '@/hooks/data/useUser';
 import { SocialLinkId } from '@/types';
 
 const SocialList = () => {
@@ -28,7 +28,7 @@ const SocialList = () => {
         </Button>
         <ul style={{ width: 500 }}>
           <li>Social links</li>
-          {profile?.socialLinks.map((socialLink) => (
+          {profile?.socialLinks ? profile?.socialLinks.map((socialLink) => (
             <li
               key={socialLink.id}
               style={{ border: '1px solid white', paddingTop: 10, paddingBottom: 10 }}
@@ -37,7 +37,7 @@ const SocialList = () => {
             >
               {socialLink.href} ({socialLink.id})
             </li>
-          ))}
+          )) : ''}
         </ul>
       </Box>
     </>
