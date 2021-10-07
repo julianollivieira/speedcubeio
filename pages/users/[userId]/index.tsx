@@ -21,7 +21,7 @@ const ProfilePage: NextPage = () => {
   const { user, profile } = data || { user: undefined, profile: undefined };
 
   return (
-    <Layout>
+    <Layout title={`${user?.displayName}'s profile`}>
       <Container sx={{ pt: '64px' }}>
         <Profile profile={profile} user={user} />
       </Container>

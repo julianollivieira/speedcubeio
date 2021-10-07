@@ -36,14 +36,16 @@ interface Props {
   sx?: SxProps<Theme>;
   tableProps?: any;
   showControls?: boolean;
+  box: Box;
 }
 
 const TimeListComponent = ({
   sx,
   tableProps,
   showControls = false,
+  box,
 }: Props): ReactElement => {
-  const { box, deleteTime } = useData();
+  const { deleteTime } = useData();
   const [timeList, setTimeList] = useState<TimeList>();
   const [open, setOpen] = useState<number | null>();
   const [deletingTime, setDeletingTime] = useState<Time | null>(null);

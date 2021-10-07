@@ -3,7 +3,16 @@ import { useData } from '@/hooks/useData';
 import { SocialLinkId } from '@/types';
 
 const Profile = () => {
-  const { user, profile, addSocialLink, editSocialLink, removeSocialLink, setProfileVisibility, changeProfilePicture, removeProfilePicture } = useData();
+  const {
+    user,
+    profile,
+    addSocialLink,
+    editSocialLink,
+    removeSocialLink,
+    setProfileVisibility,
+    changeProfilePicture,
+    removeProfilePicture,
+  } = useData();
 
   const handleClick = () => {
     addSocialLink('twitter', 'twitter.com/asiimo');
@@ -44,25 +53,46 @@ const Profile = () => {
           <li>private: {profile?.isPrivate ? 'yes' : 'no'}</li>
           <li style={{ display: 'flex', alignItems: 'center' }}>
             Profile image:
-            <img src={user?.photoURL ?? ''} style={{ height: 50, width: 50, marginLeft: 20 }} />
+            <img
+              src={user?.photoURL ?? ''}
+              style={{ height: 50, width: 50, marginLeft: 20 }}
+            />
           </li>
           <li style={{ paddingTop: 10, paddingBottom: 10 }}>
             <input type="file" onChange={handleChangeProfilePicture} />
-            <Button onClick={handleRemoveProfilePicture} variant="outlined" sx={{ ml: 2 }}>
+            <Button
+              onClick={handleRemoveProfilePicture}
+              variant="outlined"
+              sx={{ ml: 2 }}
+            >
               Remove
             </Button>
           </li>
           <li>Social links</li>
-          {profile?.socialLinks ? profile?.socialLinks.map((socialLink) => (
-            <li
-              key={socialLink.id}
-              style={{ border: '1px solid white', paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-              onContextMenu={() => handleEdit(socialLink.id)}
-            >
-              {socialLink.href} ({socialLink.id})
-              <Button variant="contained" onClick={() => handleDelete(socialLink.id)}>X</Button>
-            </li>
-          )) : ''}
+          {profile?.socialLinks
+            ? profile?.socialLinks.map((socialLink) => (
+              <li
+                key={socialLink.id}
+                style={{
+                  border: '1px solid white',
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  paddingTop: 10,
+                  paddingBottom: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+                onContextMenu={() => handleEdit(socialLink.id)}
+              >
+                {socialLink.href} ({socialLink.id})
+                <Button variant="contained" onClick={() => handleDelete(socialLink.id)}>
+                  X
+                </Button>
+              </li>
+            ))
+            : ''}
         </ul>
       </Box>
     </>

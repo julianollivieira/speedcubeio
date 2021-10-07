@@ -34,6 +34,10 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
 
+  const handleShare = () => {
+    console.log(`localhost:3000/users/${user?.uid}/boxes/${box?.id}`);
+  };
+
   return (
     <>
       <Grid container sx={{ py: 3 }}>
@@ -99,7 +103,7 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
                 justifyContent: 'center',
               }}
             >
-              <IconButton size="large">
+              <IconButton size="large" onClick={handleShare}>
                 <ShareIcon />
               </IconButton>
               {showControls && (
@@ -146,7 +150,8 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TimeListComponent
-                showControls
+                box={box}
+                showControls={showControls}
                 sx={{
                   position: 'fixed',
                   top: 64,
