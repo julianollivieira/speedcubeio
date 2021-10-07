@@ -4,7 +4,7 @@ import { Typography, Container } from '@mui/material';
 
 const LandingPage: NextPage = () => {
   return (
-    <Layout allowUnauthenticated>
+    <Layout>
       <Container maxWidth="lg">
         <Typography>Landing page</Typography>
       </Container>

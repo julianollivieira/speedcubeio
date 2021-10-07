@@ -19,8 +19,9 @@ import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import TimeListComponent from '@/components/timer/TimeList';
-import { ReactElement, useState, useEffect } from 'react';
+import { ReactElement, useState } from 'react';
 import { User } from 'firebase/auth';
+import Router from 'next/router';
 
 interface Props {
   user: User | null | undefined;
@@ -30,7 +31,6 @@ interface Props {
 
 const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement => {
   const { editBox, deleteBox } = useData();
-
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
 
@@ -102,7 +102,7 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
               <IconButton size="large">
                 <ShareIcon />
               </IconButton>
-              {/* {loggedInUser && showControls ? (
+              {showControls && (
                 <>
                   <IconButton
                     size="large"
@@ -119,9 +119,7 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
                     <DeleteIcon />
                   </IconButton>
                 </>
-              ) : (
-                <></>
-              )} */}
+              )}
             </MUIBox>
           </Grid>
         ) : (
@@ -166,32 +164,30 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
       ) : (
         <></>
       )}
-      {/* {box && editingBox && loggedInUser && showControls ? (
-        <EditBoxDialog
-          box={box}
-          handleClose={() => setEditingBox(null)}
-          editBox={async (name: string, icon: string, color: string): Promise<void> => {
-            await editBox(loggedInUser.id, editingBox, name, icon, color);
-            editBoxInState(editingBox, name, icon, color);
-          }}
-        />
-      ) : (
-        <></>
-      )}
-      {user?.id && deletingBox ? (
+      {showControls && deletingBox && (
         <DeleteBoxDialog
           box={deletingBox}
           handleClose={() => setDeletingBox(null)}
           deleteBox={async (): Promise<void> => {
-            await deleteBox(user.id, deletingBox);
-            deleteBoxFromState(deletingBox);
+            await deleteBox(deletingBox.id);
             Router.push('/boxes');
           }}
         />
-      ) : (
-        <></>
       )}
-      {loggedInUser && showControls ? (
+      {showControls && editingBox && (
+        <EditBoxDialog
+          box={editingBox}
+          handleClose={() => setEditingBox(null)}
+          editBox={async (name: string, icon: string, color: string): Promise<void> => {
+            await editBox(editingBox.id, {
+              name: name,
+              icon: icon,
+              color: color,
+            });
+          }}
+        />
+      )}
+      {showControls ?? (
         <Fab
           color="primary"
           sx={{
@@ -204,9 +200,7 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
         >
           <EditIcon />
         </Fab>
-      ) : (
-        <></>
-      )} */}
+      )}
     </>
   );
 };

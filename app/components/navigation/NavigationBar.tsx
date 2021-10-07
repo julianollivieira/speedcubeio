@@ -27,7 +27,10 @@ interface Props {
   toggleNavigationDrawer?: () => void;
 }
 
-const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props): ReactElement => {
+const NavigationBar = ({
+  isApp = false,
+  toggleNavigationDrawer,
+}: Props): ReactElement => {
   const { user, logOut } = useData();
 
   const [anchorEl, setAnchorEl] = useState(null);

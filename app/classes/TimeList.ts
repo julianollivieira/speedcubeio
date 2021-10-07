@@ -123,10 +123,10 @@ class TimeList {
     const worst = Math.max(...times);
 
     const firstBestIndex = times.findIndex((time) => time === best);
-    times.splice(firstBestIndex, 1);
+    times.slice(firstBestIndex, 1);
 
     const firstWorstIndex = times.findIndex((time) => time === worst);
-    times.splice(firstWorstIndex, 1);
+    times.slice(firstWorstIndex, 1);
 
     return times;
   }

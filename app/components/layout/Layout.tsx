@@ -10,9 +10,10 @@ import Router from 'next/router';
 type Props = {
   title?: string;
   children: ReactNode;
+  isApp?: boolean;
 };
 
-const Layout = ({ title, children }: Props): ReactElement => {
+const Layout = ({ title, children, isApp = false }: Props): ReactElement => {
   const [open, setOpen] = useLocalStorage('drawerOpen', false);
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
@@ -30,12 +31,14 @@ const Layout = ({ title, children }: Props): ReactElement => {
       <Head>
         <title>{title ? `${title} | ` : ''}Speedcube.io</title>
       </Head>
-      <NavigationBar isApp={true} toggleNavigationDrawer={toggleNavigationDrawer} />
-      <NavigationDrawer
-        open={open}
-        handleDrawerOpen={handleDrawerOpen}
-        handleDrawerClose={handleDrawerClose}
-      />
+      <NavigationBar isApp={isApp} toggleNavigationDrawer={toggleNavigationDrawer} />
+      {isApp && (
+        <NavigationDrawer
+          open={open}
+          handleDrawerOpen={handleDrawerOpen}
+          handleDrawerClose={handleDrawerClose}
+        />
+      )}
       <Box>{children}</Box>
     </>
   );

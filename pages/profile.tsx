@@ -8,7 +8,7 @@ const ProfilePage: NextPage = () => {
   const { user, profile } = useData();
 
   return (
-    <Layout title="Your profile">
+    <Layout title="Your profile" isApp>
       <Container sx={{ pt: '64px' }}>
         <Profile profile={profile} showControls user={user} />
       </Container>

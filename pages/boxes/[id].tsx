@@ -14,13 +14,12 @@ const BoxPage: NextPage = () => {
 
   useEffect(() => {
     if (id && boxes.length > 0) {
-      console.log('🔥', id, boxes);
       changeBox(id as string);
     }
   }, [id, boxes]);
 
   return (
-    <Layout title="Box">
+    <Layout title="Box" isApp>
       <MUIBox
         sx={{
           pt: '64px',

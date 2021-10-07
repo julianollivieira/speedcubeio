@@ -95,47 +95,6 @@ const BoxGrid = ({ user, boxes, showControls = false }: Props): ReactElement => 
           }}
         />
       )}
-      {/* {user?.id ? (
-        <CreateBoxDialog
-          open={creatingBox}
-          handleClose={() => setCreatingBox(false)}
-          createBox={async (name: string, icon: string, color: string): Promise<void> => {
-            await createBox({
-              name: name,
-              icon: icon,
-              color: color,
-            });
-          }}
-        />
-      ) : (
-        <></>
-      )}
-      {user?.id && deletingBox ? (
-        <DeleteBoxDialog
-          box={deletingBox}
-          handleClose={() => setDeletingBox(null)}
-          deleteBox={async (): Promise<void> => {
-            await deleteBox(deletingBox.id);
-          }}
-        />
-      ) : (
-        <></>
-      )}
-      {user?.id && editingBox ? (
-        <EditBoxDialog
-          box={editingBox}
-          handleClose={() => setEditingBox(null)}
-          editBox={async (name: string, icon: string, color: string): Promise<void> => {
-            await editBox(editingBox.id, {
-              name: name,
-              icon: icon,
-              color: color,
-            });
-          }}
-        />
-      ) : (
-        <></>
-      )} */}
     </>
   );
 };

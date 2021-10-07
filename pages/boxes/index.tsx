@@ -10,7 +10,7 @@ const BoxesPage: NextPage = () => {
   const { user, boxes } = useData();
 
   return (
-    <Layout title="Boxes">
+    <Layout title="Boxes" isApp>
       <Box
         sx={{
           pt: '64px',

@@ -7,10 +7,9 @@ import Layout from '@/components/layout/Layout';
 
 const TestPage: NextPage = () => {
   return (
-    <Layout>
+    <Layout isApp>
       <Box sx={{ display: 'flex', flexDirection: 'row', p: 20 }}>
-        <Box>
-        </Box>
+        <Box></Box>
         <Box>
           <Box sx={{ display: 'flex' }}>
             <BoxList />
