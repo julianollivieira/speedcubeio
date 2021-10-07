@@ -21,7 +21,7 @@ const BoxPage: NextPage = () => {
   const { user, box } = data || { user: undefined, box: undefined };
 
   return (
-    <Layout title="Box">
+    <Layout title="Box" isApp>
       <MUIBox
         sx={{
           pt: '64px',

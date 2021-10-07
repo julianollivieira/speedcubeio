@@ -11,6 +11,8 @@ import {
   Share as ShareIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { Box } from '@/types';
@@ -19,9 +21,11 @@ import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import TimeListComponent from '@/components/timer/TimeList';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import Router from 'next/router';
+import createSnackbar from '@/utils/snackbar';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   user: User | null | undefined;
@@ -30,9 +34,24 @@ interface Props {
 }
 
 const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement => {
-  const { editBox, deleteBox } = useData();
+  const { editBox, deleteBox, setBoxVisibility } = useData();
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const [isPrivate, setIsPrivate] = useState(box?.isPrivate);
+
+  const toggleVisibility = () => {
+    setBoxVisibility(!isPrivate ? 'private' : 'public').then(() => {
+      createSnackbar(
+        enqueueSnackbar,
+        closeSnackbar,
+        `Box set to ${!isPrivate ? 'private' : 'public'}`,
+        'success'
+      );
+    });
+    setIsPrivate((prevState) => !prevState);
+  };
 
   const handleShare = () => {
     console.log(`localhost:3000/users/${user?.uid}/boxes/${box?.id}`);
@@ -103,11 +122,22 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
                 justifyContent: 'center',
               }}
             >
-              <IconButton size="large" onClick={handleShare}>
-                <ShareIcon />
-              </IconButton>
+              {isPrivate ? (
+                ''
+              ) : (
+                <IconButton size="large" onClick={handleShare}>
+                  <ShareIcon />
+                </IconButton>
+              )}
               {showControls && (
                 <>
+                  <IconButton
+                    size="large"
+                    sx={{ display: { xs: 'none', lg: 'flex' } }}
+                    onClick={toggleVisibility}
+                  >
+                    {isPrivate ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
                   <IconButton
                     size="large"
                     sx={{ display: { xs: 'none', lg: 'flex' } }}

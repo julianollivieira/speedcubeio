@@ -11,14 +11,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ): Promise<void> {
-  const { id } = req.query;
+  const { userId } = req.query;
   try {
     const userRecord = await admin
       .app('admin')
       .auth()
-      .getUser(Array.isArray(id) ? id[0] : id);
+      .getUser(Array.isArray(userId) ? userId[0] : userId);
 
-    const profileReference = admin.app('admin').firestore().doc(`users/${id}`);
+    const profileReference = admin.app('admin').firestore().doc(`users/${userId}`);
     const profileDocument = await profileReference.get();
     const profileData = profileDocument.data() as Profile;
 
