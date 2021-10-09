@@ -37,25 +37,25 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
   const { editBox, deleteBox, setBoxVisibility } = useData();
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  // const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const [isPrivate, setIsPrivate] = useState(box?.isPrivate);
+  // const [isPrivate, setIsPrivate] = useState(box?.isPrivate);
 
-  const toggleVisibility = () => {
-    setBoxVisibility(!isPrivate ? 'private' : 'public').then(() => {
-      createSnackbar(
-        enqueueSnackbar,
-        closeSnackbar,
-        `Box set to ${!isPrivate ? 'private' : 'public'}`,
-        'success'
-      );
-    });
-    setIsPrivate((prevState) => !prevState);
-  };
+  // const toggleVisibility = () => {
+  //   setBoxVisibility(!isPrivate ? 'private' : 'public').then(() => {
+  //     createSnackbar(
+  //       enqueueSnackbar,
+  //       closeSnackbar,
+  //       `Box set to ${!isPrivate ? 'private' : 'public'}`,
+  //       'success'
+  //     );
+  //   });
+  //   setIsPrivate((prevState) => !prevState);
+  // };
 
-  const handleShare = () => {
-    console.log(`localhost:3000/users/${user?.uid}/boxes/${box?.id}`);
-  };
+  // const handleShare = () => {
+  //   console.log(`localhost:3000/users/${user?.uid}/boxes/${box?.id}`);
+  // };
 
   return (
     <>
@@ -122,22 +122,22 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
                 justifyContent: 'center',
               }}
             >
-              {isPrivate ? (
+              {/* {isPrivate ? (
                 ''
               ) : (
                 <IconButton size="large" onClick={handleShare}>
                   <ShareIcon />
                 </IconButton>
-              )}
+              )} */}
               {showControls && (
                 <>
-                  <IconButton
+                  {/* <IconButton
                     size="large"
                     sx={{ display: { xs: 'none', lg: 'flex' } }}
                     onClick={toggleVisibility}
                   >
                     {isPrivate ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
+                  </IconButton> */}
                   <IconButton
                     size="large"
                     sx={{ display: { xs: 'none', lg: 'flex' } }}

@@ -3,6 +3,8 @@ import {
   Edit as EditIcon,
   Share as ShareIcon,
   Verified as VerifiedIcon,
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
 import {
   Avatar,
@@ -19,9 +21,12 @@ import SocialChipList from '@/components/profile/SocialChipList';
 import type { User } from 'firebase/auth';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import type { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 dayjs.extend(utc);
 import type { Profile as ProfileType } from '@/types';
+import { useData } from '@/hooks/useData';
+import createSnackbar from '@/utils/snackbar';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   user: User | null | undefined;
@@ -30,9 +35,27 @@ interface Props {
 }
 
 const Profile = ({ user, profile, showControls }: Props): ReactElement => {
+  const { setProfilePrivate } = useData();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [visibilityLoading, setVisibilityLoading] = useState(false);
+
   const handleShare = () => {
     console.log(`localhost:3000/users/${user?.uid}`);
   };
+
+  const toggleVisibility = () => {
+    setVisibilityLoading(true);
+    setProfilePrivate(!profile?.isPrivate).then((isPrivate) => {
+      setVisibilityLoading(false);
+      createSnackbar(
+        enqueueSnackbar,
+        closeSnackbar,
+        `Profile set to ${isPrivate ? 'private' : 'public'}`,
+        'success'
+      );
+    });
+  };
+
   return (
     <>
       <Grid container sx={{ py: 3 }}>
@@ -179,9 +202,19 @@ const Profile = ({ user, profile, showControls }: Props): ReactElement => {
                 <ShareIcon />
               </IconButton>
               {showControls ? (
-                <IconButton size="large" sx={{ display: { xs: 'none', lg: 'flex' } }}>
-                  <EditIcon />
-                </IconButton>
+                <>
+                  <IconButton
+                    size="large"
+                    sx={{ display: { xs: 'none', lg: 'flex' } }}
+                    onClick={toggleVisibility}
+                    disabled={visibilityLoading}
+                  >
+                    {profile?.isPrivate ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                  <IconButton size="large" sx={{ display: { xs: 'none', lg: 'flex' } }}>
+                    <EditIcon />
+                  </IconButton>
+                </>
               ) : (
                 <Link href={`/users/${user.uid}/boxes`} passHref>
                   <IconButton size="large">

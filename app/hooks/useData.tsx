@@ -76,7 +76,7 @@ interface Context {
   addSocialLink: (id: SocialLinkId, href: string) => void;
   editSocialLink: (id: SocialLinkId, href: string) => void;
   removeSocialLink: (id: SocialLinkId) => void;
-  setProfileVisibility: (option: 'private' | 'public') => Promise<void>;
+  setProfilePrivate: (isPrivate: boolean) => Promise<boolean>;
   setBoxVisibility: (option: 'private' | 'public') => Promise<void>;
 }
 
@@ -448,16 +448,15 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Set profile to public or private
-  const setProfileVisibility = async (option: 'private' | 'public'): Promise<void> => {
+  const setProfilePrivate = async (isPrivate: boolean): Promise<boolean> => {
     if (!user) return;
     const profileReference = doc(db, 'users', user.uid);
     const profileSnapshot = await getDoc(profileReference);
     const profileData = profileSnapshot.data() as Profile | undefined;
 
-    const isPrivate = option === 'private' ? true : false;
-
     await updateDoc(profileReference, { isPrivate: isPrivate });
     setProfile((prevState) => ({ ...prevState, isPrivate: isPrivate } as Profile));
+    return isPrivate;
   };
 
   // Set box to public or private
@@ -494,7 +493,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     addSocialLink,
     removeSocialLink,
     editSocialLink,
-    setProfileVisibility,
+    setProfilePrivate,
     setBoxVisibility,
   };
 
