@@ -1,10 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import admin from '@/utils/firebase/admin';
-import { Box } from '@/types';
+import { Box, Profile } from '@/types';
 
 type Data = {
   user: admin.auth.UserRecord;
   boxes: Box[];
+  profile: Profile;
 };
 
 export default async function handler(
@@ -27,9 +28,16 @@ export default async function handler(
 
     console.log(`📦🔢 Read ${boxes.length} box${boxes.length === 1 ? '' : 'es'}`);
 
+    const profileReference = admin.app('admin').firestore().doc(`users/${userId}`);
+    const profileDocument = await profileReference.get();
+    const profileData = profileDocument.data() as Profile;
+
+    console.log('👤🔢 Read 1 profile');
+
     res.status(200).json({
       user: userRecord,
       boxes: boxes,
+      profile: profileData,
     });
   } catch (error) {
     console.log('🐛', error);

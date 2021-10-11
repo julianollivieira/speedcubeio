@@ -8,14 +8,23 @@ import CreateBoxDialog from '@/components/boxes/dialogs/CreateBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import { useData } from '@/hooks/useData';
+import type { Profile } from '@/types';
 
 interface Props {
   user: User | null | undefined;
+  profile: Profile | undefined;
   boxes: Box[];
   showControls?: boolean;
+  hideIfPrivate?: boolean;
 }
 
-const BoxGrid = ({ user, boxes, showControls = false }: Props): ReactElement => {
+const BoxGrid = ({
+  user,
+  boxes,
+  profile,
+  showControls = false,
+  hideIfPrivate = false,
+}: Props): ReactElement => {
   const [searchString, setSearchString] = useState<string | null>();
   const [view, setView] = useState<string | null>('grid');
 
@@ -31,6 +40,8 @@ const BoxGrid = ({ user, boxes, showControls = false }: Props): ReactElement => 
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
   const [editingBox, setEditingBox] = useState<Box | null>(null);
 
+  const hide = (profile?.isPrivate ?? true) && hideIfPrivate;
+
   return (
     <>
       <BoxGridToolbar
@@ -43,19 +54,21 @@ const BoxGrid = ({ user, boxes, showControls = false }: Props): ReactElement => 
       />
       {view === 'grid' ? (
         <Grid container spacing={2}>
-          {boxes.map((box) => (
-            <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
-              <BoxCard
-                box={box}
-                showControls={showControls}
-                openDeleteBoxDialog={() => setDeletingBox(box)}
-                openEditBoxDialog={() => setEditingBox(box)}
-                share={() =>
-                  console.log(`localhost:3000/users/${user?.uid}/boxes/${box.id}`)
-                }
-              />
-            </Grid>
-          ))}
+          {hide
+            ? ''
+            : boxes.map((box) => (
+              <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
+                <BoxCard
+                  box={box}
+                  showControls={showControls}
+                  openDeleteBoxDialog={() => setDeletingBox(box)}
+                  openEditBoxDialog={() => setEditingBox(box)}
+                  share={() =>
+                    console.log(`localhost:3000/users/${user?.uid}/boxes/${box.id}`)
+                  }
+                />
+              </Grid>
+            ))}
         </Grid>
       ) : (
         <Typography>List view here / seachString: {searchString}</Typography>

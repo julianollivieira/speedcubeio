@@ -20,7 +20,11 @@ const BoxPage: NextPage = () => {
     fetcher
   );
 
-  const { user, boxes } = data || { user: undefined, boxes: [] };
+  const { user, boxes, profile } = data || {
+    user: undefined,
+    boxes: [],
+    profile: undefined,
+  };
 
   return (
     <Layout title="Boxes">
@@ -33,7 +37,7 @@ const BoxPage: NextPage = () => {
         <Box sx={{ px: 2 }}>
           <PageHeader title={`${user?.displayName}'s boxes`} icon={AllInboxIcon} />
           <Divider sx={{ mb: 3 }} />
-          <BoxGrid user={user} boxes={boxes} />
+          <BoxGrid user={user} boxes={boxes} profile={profile} hideIfPrivate />
         </Box>
       </Box>
     </Layout>

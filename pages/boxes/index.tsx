@@ -7,7 +7,7 @@ import PageHeader from '@/components/misc/PageHeader';
 import BoxGrid from '@/components/boxes/grid/BoxGrid';
 
 const BoxesPage: NextPage = () => {
-  const { user, boxes } = useData();
+  const { user, boxes, profile } = useData();
 
   return (
     <Layout title="Boxes" isApp>
@@ -20,7 +20,7 @@ const BoxesPage: NextPage = () => {
         <Box sx={{ px: 2 }}>
           <PageHeader title="Your boxes" icon={AllInboxIcon} />
           <Divider sx={{ mb: 3 }} />
-          <BoxGrid user={user} boxes={boxes} showControls={true} />
+          <BoxGrid user={user} boxes={boxes} profile={profile} showControls={true} />
         </Box>
       </Box>
     </Layout>
