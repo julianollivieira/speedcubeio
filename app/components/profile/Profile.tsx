@@ -6,22 +6,13 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
-import {
-  Avatar,
-  Box,
-  Chip,
-  Divider,
-  Fab,
-  Grid,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, Chip, Divider, Grid, IconButton, Typography } from '@mui/material';
 import Link from '@/components/misc/Link';
 import SocialChipList from '@/components/profile/SocialChipList';
 import type { User } from 'firebase/auth';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useState } from 'react';
 dayjs.extend(utc);
 import type { Profile as ProfileType } from '@/types';
 import { useData } from '@/hooks/useData';
@@ -32,9 +23,15 @@ interface Props {
   user: User | null | undefined;
   profile: ProfileType | undefined;
   showControls?: boolean;
+  hideIfPrivate?: boolean;
 }
 
-const Profile = ({ user, profile, showControls }: Props): ReactElement => {
+const Profile = ({
+  user,
+  profile,
+  showControls,
+  hideIfPrivate = false,
+}: Props): ReactElement => {
   const { setProfilePrivate } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [visibilityLoading, setVisibilityLoading] = useState(false);
@@ -42,6 +39,8 @@ const Profile = ({ user, profile, showControls }: Props): ReactElement => {
   const handleShare = () => {
     console.log(`localhost:3000/users/${user?.uid}`);
   };
+
+  const hide = (profile?.isPrivate ?? true) && hideIfPrivate;
 
   const toggleVisibility = () => {
     setVisibilityLoading(true);
@@ -70,7 +69,7 @@ const Profile = ({ user, profile, showControls }: Props): ReactElement => {
           xs={12}
         >
           <Avatar
-            src={user?.photoURL ?? ''}
+            src={user?.photoURL ? (hide ? '' : user?.photoURL) : ''}
             sx={{
               border: 1,
               borderRadius: '50%',
@@ -81,49 +80,62 @@ const Profile = ({ user, profile, showControls }: Props): ReactElement => {
           />
         </Grid>
         <Grid item lg={8} sx={{ display: 'flex', alignItems: 'center' }} xs={12}>
-          {user ? (
+          <Box
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              flexGrow: 1,
+              justifyContent: 'space-between',
+            }}
+          >
             <Box
               sx={{
-                alignItems: 'center',
                 display: 'flex',
+                pl: 3,
+                flexDirection: 'column',
                 flexGrow: 1,
-                justifyContent: 'space-between',
               }}
             >
               <Box
                 sx={{
+                  alignItems: 'center',
                   display: 'flex',
-                  pl: 3,
-                  flexDirection: 'column',
-                  flexGrow: 1,
+                  justifyContent: { xs: 'center', lg: 'flex-start' },
                 }}
               >
-                <Box
-                  sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    justifyContent: { xs: 'center', lg: 'flex-start' },
-                  }}
-                >
-                  <Typography sx={{ fontSize: { xs: '2em', lg: '2.5em' } }} variant="h3">
-                    {user.displayName}
-                  </Typography>
-                  {profile?.isVerified ? (
-                    <VerifiedIcon color="info" fontSize="large" sx={{ ml: 2 }} />
-                  ) : (
-                    ''
-                  )}
-                </Box>
-                <Typography
-                  sx={{
-                    display: 'flex',
-                    justifyContent: { xs: 'center', lg: 'flex-start' },
-                  }}
-                  variant="subtitle1"
-                >
-                  {'Joined on '}
-                  {dayjs(user.metadata.creationTime).utc().format('MMMM D YYYY')}
+                <Typography sx={{ fontSize: { xs: '2em', lg: '2.5em' } }} variant="h3">
+                  {user
+                    ? hide
+                      ? 'Profile is private'
+                      : user?.displayName
+                    : 'User not found'}
                 </Typography>
+                {hide ? (
+                  ''
+                ) : profile?.isVerified ? (
+                  <VerifiedIcon color="info" fontSize="large" sx={{ ml: 2 }} />
+                ) : (
+                  ''
+                )}
+              </Box>
+              <Typography
+                sx={{
+                  display: 'flex',
+                  justifyContent: { xs: 'center', lg: 'flex-start' },
+                }}
+                variant="subtitle1"
+              >
+                {user
+                  ? hide
+                    ? ''
+                    : `Joined on ${dayjs(user.metadata.creationTime)
+                      .utc()
+                      .format('MMMM D YYYY')}`
+                  : ''}
+              </Typography>
+              {hide ? (
+                ''
+              ) : (
                 <Box
                   sx={{
                     display: 'flex',
@@ -146,39 +158,9 @@ const Profile = ({ user, profile, showControls }: Props): ReactElement => {
                     />
                   </Box>
                 </Box>
-              </Box>
+              )}
             </Box>
-          ) : (
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexGrow: 1,
-              }}
-            >
-              <Box
-                sx={{
-                  pl: { xs: 0, lg: 3 },
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flexGrow: 1,
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: { xs: 'center', lg: 'flex-start' },
-                  }}
-                >
-                  <Typography sx={{ fontSize: { xs: '2em', lg: '2.5em' } }} variant="h3">
-                    User not found
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          )}
+          </Box>
         </Grid>
         {user ? (
           <Grid
@@ -209,12 +191,14 @@ const Profile = ({ user, profile, showControls }: Props): ReactElement => {
                     onClick={toggleVisibility}
                     disabled={visibilityLoading}
                   >
-                    {profile?.isPrivate ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                    {!profile?.isPrivate ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
                   <IconButton size="large" sx={{ display: { xs: 'none', lg: 'flex' } }}>
                     <EditIcon />
                   </IconButton>
                 </>
+              ) : hide ? (
+                ''
               ) : (
                 <Link href={`/users/${user.uid}/boxes`} passHref>
                   <IconButton size="large">
@@ -229,46 +213,22 @@ const Profile = ({ user, profile, showControls }: Props): ReactElement => {
         )}
       </Grid>
       <Divider sx={{ mb: 3 }} />
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          mb: 3,
-          justifyContent: { xs: 'center', lg: 'flex-start' },
-        }}
-      >
-        <SocialChipList socialLinks={profile?.socialLinks} />
-      </Box>
-      <Grid container spacing={2}>
-        {/* <Grid item xs={12} md={6}>
-            <Card>
-              <CardHeader title="Socials" />
-              <CardContent></CardContent>
-            </Card>
-          </Grid> */}
-        {/* <Grid item xs={12} md={6}>
-          <Card>
-            <CardHeader title="Bio" />
-            <CardContent>{user?.bio}</CardContent>
-          </Card>
-        </Grid> */}
-      </Grid>
-      {/* {loggedInUser && showControls ? (
-        <Fab
-          color="primary"
+      {hide ? (
+        ''
+      ) : (
+        <Box
           sx={{
-            position: 'fixed',
-            right: 25,
-            bottom: 25,
-            display: { xs: 'flex', lg: 'none' },
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            mb: 3,
+            justifyContent: { xs: 'center', lg: 'flex-start' },
           }}
         >
-          <EditIcon />
-        </Fab>
-      ) : (
-        <></>
-      )} */}
+          <SocialChipList socialLinks={profile?.socialLinks} />
+        </Box>
+      )}
+      {/* TODO: Add fabs here */}
     </>
   );
 };
