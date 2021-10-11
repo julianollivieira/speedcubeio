@@ -61,6 +61,7 @@ const BoxGrid = ({
                 <BoxCard
                   user={user}
                   box={box}
+                  profile={profile}
                   showControls={showControls}
                   openDeleteBoxDialog={() => setDeletingBox(box)}
                   openEditBoxDialog={() => setEditingBox(box)}

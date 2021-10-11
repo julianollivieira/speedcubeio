@@ -10,7 +10,7 @@ const BoxPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { boxes, changeBox, user, box } = useData();
+  const { boxes, changeBox, user, box, profile } = useData();
 
   useEffect(() => {
     if (id && boxes.length > 0) {
@@ -28,7 +28,7 @@ const BoxPage: NextPage = () => {
         }}
       >
         <MUIBox sx={{ px: 2 }}>
-          <Box user={user} box={box} showControls />
+          <Box user={user} box={box} profile={profile} showControls />
         </MUIBox>
       </MUIBox>
     </Layout>

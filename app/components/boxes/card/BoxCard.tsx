@@ -1,4 +1,4 @@
-import { Box, User } from '@/types';
+import { Box, User, Profile } from '@/types';
 import { ReactElement, useState } from 'react';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import {
@@ -24,21 +24,21 @@ import BoxCardSummaryTable from '@/components/boxes/card/BoxCardSummaryTable';
 import Link from 'next/link';
 
 interface Props {
+  user?: User;
   box: Box;
   showControls: boolean;
   openDeleteBoxDialog: () => void;
   openEditBoxDialog: () => void;
   share: () => void;
-  user?: User;
 }
 
 const BoxCard = ({
+  user,
   box,
   showControls,
   openDeleteBoxDialog,
   openEditBoxDialog,
   share,
-  user = null,
 }: Props): ReactElement => {
   const [showMenuButtons, setShowMenuButtons] = useState(false);
   const handleShowMenu = () => setShowMenuButtons(true);

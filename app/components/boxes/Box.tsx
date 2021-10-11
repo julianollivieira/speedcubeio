@@ -6,6 +6,7 @@ import {
   IconButton,
   Divider,
   Fab,
+  Tooltip,
 } from '@mui/material';
 import {
   Share as ShareIcon,
@@ -15,13 +16,13 @@ import {
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
-import { Box } from '@/types';
+import { Box, Profile } from '@/types';
 import { useData } from '@/hooks/useData';
 import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import TimeListComponent from '@/components/timer/TimeList';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import Router from 'next/router';
 import createSnackbar from '@/utils/snackbar';
@@ -30,15 +31,27 @@ import { useSnackbar } from 'notistack';
 interface Props {
   user: User | null | undefined;
   box: Box | undefined;
+  profile: Profile | undefined;
   showControls?: boolean;
 }
 
-const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement => {
+const BoxComponent = ({
+  user,
+  box,
+  profile,
+  showControls = false,
+}: Props): ReactElement => {
   const { editBox, deleteBox, setBoxPrivate } = useData();
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
   const [visibilityLoading, setVisibilityLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (profile?.isPrivate) {
+      setVisibilityLoading(true);
+    }
+  }, [profile]);
 
   const toggleVisibility = () => {
     setVisibilityLoading(true);
@@ -127,14 +140,30 @@ const BoxComponent = ({ user, box, showControls = false }: Props): ReactElement 
               </IconButton>
               {showControls && (
                 <>
-                  <IconButton
-                    size="large"
-                    sx={{ display: { xs: 'none', lg: 'flex' } }}
-                    onClick={toggleVisibility}
-                    disabled={visibilityLoading}
+                  <Tooltip
+                    title={
+                      profile?.isPrivate
+                        ? "Can't change visibility because profile is private"
+                        : `Make box ${box?.isPrivate ? 'public' : 'private'}`
+                    }
                   >
-                    {!box?.isPrivate ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
+                    <span>
+                      <IconButton
+                        size="large"
+                        sx={{ display: { xs: 'none', lg: 'flex' } }}
+                        onClick={toggleVisibility}
+                        disabled={visibilityLoading}
+                      >
+                        {profile?.isPrivate ? (
+                          <VisibilityOffIcon />
+                        ) : !box?.isPrivate ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </span>
+                  </Tooltip>
                   <IconButton
                     size="large"
                     sx={{ display: { xs: 'none', lg: 'flex' } }}
