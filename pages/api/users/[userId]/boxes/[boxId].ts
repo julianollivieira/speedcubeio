@@ -23,7 +23,7 @@ export default async function handler(
       .firestore()
       .doc(`users/${userId}/boxes/${boxId}`);
     const boxDocument = await boxReference.get();
-    const boxData = boxDocument.data() as Box;
+    const boxData = { id: boxDocument.id, ...boxDocument.data() } as Box;
 
     console.log('🗳️🔢 Read 1 box');
 

@@ -77,7 +77,7 @@ interface Context {
   editSocialLink: (id: SocialLinkId, href: string) => void;
   removeSocialLink: (id: SocialLinkId) => void;
   setProfilePrivate: (isPrivate: boolean) => Promise<boolean>;
-  setBoxVisibility: (option: 'private' | 'public') => Promise<void>;
+  setBoxPrivate: (isPrivate: boolean) => Promise<boolean>;
 }
 
 const DataContext = createContext<Context>();
@@ -460,16 +460,15 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Set box to public or private
-  const setBoxVisibility = async (option: 'private' | 'public'): Promise<void> => {
+  const setBoxPrivate = async (isPrivate: boolean): Promise<boolean> => {
     if (!box || !user) return;
     const boxReference = doc(db, 'users', user.uid, 'boxes', box.id);
     const boxSnapshot = await getDoc(boxReference);
     const boxData = boxSnapshot.data() as Box | undefined;
 
-    const isPrivate = option === 'private' ? true : false;
-
     await updateDoc(boxReference, { isPrivate: isPrivate });
     setBox((prevState) => ({ ...prevState, isPrivate: isPrivate } as Box));
+    return isPrivate;
   };
 
   const value: Context = {
@@ -494,7 +493,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     removeSocialLink,
     editSocialLink,
     setProfilePrivate,
-    setBoxVisibility,
+    setBoxPrivate,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
