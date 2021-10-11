@@ -24,7 +24,13 @@ export default async function handler(
       .firestore()
       .collection(`users/${userId}/boxes`);
     const boxesDocuments = await boxesReference.get();
-    const boxes: Box[] = boxesDocuments.docs.map((boxDoc) => boxDoc.data() as Box);
+    const boxes: Box[] = boxesDocuments.docs.map(
+      (boxDoc) =>
+      ({
+        id: boxDoc.id,
+        ...boxDoc.data(),
+      } as Box)
+    );
 
     console.log(`📦🔢 Read ${boxes.length} box${boxes.length === 1 ? '' : 'es'}`);
 

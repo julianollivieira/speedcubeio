@@ -1,4 +1,4 @@
-import { Box } from '@/types';
+import { Box, User } from '@/types';
 import { ReactElement, useState } from 'react';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import {
@@ -29,6 +29,7 @@ interface Props {
   openDeleteBoxDialog: () => void;
   openEditBoxDialog: () => void;
   share: () => void;
+  user?: User;
 }
 
 const BoxCard = ({
@@ -37,6 +38,7 @@ const BoxCard = ({
   openDeleteBoxDialog,
   openEditBoxDialog,
   share,
+  user = null,
 }: Props): ReactElement => {
   const [showMenuButtons, setShowMenuButtons] = useState(false);
   const handleShowMenu = () => setShowMenuButtons(true);
@@ -49,7 +51,7 @@ const BoxCard = ({
 
   return (
     <Card onMouseEnter={handleShowMenu} onMouseLeave={handleHideMenu}>
-      <Link href={`/boxes/${box.id}`}>
+      <Link href={`${user ? `/users/${user.uid}` : ''}/boxes/${box.id}`}>
         <CardActionArea>
           <MUIBox
             sx={{

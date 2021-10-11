@@ -7,7 +7,7 @@ import { AllInbox as AllInboxIcon } from '@mui/icons-material';
 import PageHeader from '@/components/misc/PageHeader';
 import BoxGrid from '@/components/boxes/grid/BoxGrid';
 import { User } from 'firebase/auth';
-import { Box as BoxType } from '@/types';
+import { Box as BoxType, Profile } from '@/types';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -15,7 +15,7 @@ const BoxPage: NextPage = () => {
   const router = useRouter();
   const { userId } = router.query;
 
-  const { data, error } = useSWR<{ user: User; boxes: BoxType[] }>(
+  const { data, error } = useSWR<{ user: User; boxes: BoxType[]; profile: Profile }>(
     userId ? `/api/users/${userId}/boxes` : null,
     fetcher
   );
