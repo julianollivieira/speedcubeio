@@ -60,7 +60,7 @@ const BoxComponent = ({
       createSnackbar(
         enqueueSnackbar,
         closeSnackbar,
-        `Profile set to ${isPrivate ? 'private' : 'public'}`,
+        `Box set to ${isPrivate ? 'private' : 'public'}`,
         'success'
       );
     });

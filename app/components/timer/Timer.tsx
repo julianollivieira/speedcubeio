@@ -1,20 +1,13 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Box as MUIBox, Typography } from '@mui/material';
 import TimerClass from '@/classes/Timer';
-import { useAuth } from '@/hooks/useAuth';
-import { createTime } from '@/utils/data/times';
-import { Box } from '@/types';
+import { useData } from '@/hooks/useData';
 
-interface Props {
-  box: Box | undefined;
-}
-
-const Timer = ({ box }: Props): ReactElement => {
+const Timer = (): ReactElement => {
+  const { createTime, box, setTimerActive } = useData();
   const [time, setTime] = useState(0);
   const [readying, setReadying] = useState(false);
   const [ready, setReady] = useState(false);
-
-  const { user, addTime: addTimeToState } = useAuth();
 
   useEffect(() => {
     const timer = new TimerClass({
@@ -23,9 +16,11 @@ const Timer = ({ box }: Props): ReactElement => {
       },
       onReadying: () => {
         setReadying(true);
+        setTimerActive(true);
       },
       onCancelReady: () => {
         setReadying(false);
+        setTimerActive(false);
       },
       onReady: () => {
         setReady(true);
@@ -36,52 +31,14 @@ const Timer = ({ box }: Props): ReactElement => {
         setReadying(false);
       },
       onStop: async (time: number) => {
-        if (user && box?.id) {
-          const timeObject = await createTime(
-            user?.id,
-            box?.id,
-            time,
-            '3x3x3',
-            'U R L F B F B'
-          );
-          addTimeToState(box?.id, timeObject);
-        }
+        setTimerActive(false);
+        await createTime({
+          time: time,
+          puzzle: '3x3x3',
+          scramble: 'A A B B C C D D E E',
+        });
       },
     });
-
-    // const timer = new TimerClass();
-
-    // timer.init({
-    // onTick: (time: any) => {
-    //   setTime(time);
-    // },
-    // onReadying: () => {
-    //   setReadying(true);
-    // },
-    // onCancelReady: () => {
-    //   setReadying(false);
-    // },
-    // onReady: () => {
-    //   setReady(true);
-    //   setReadying(false);
-    // },
-    // onStart: () => {
-    //   setReady(false);
-    //   setReadying(false);
-    // },
-    // onStop: async (time: number) => {
-    //   if (user && box?.id) {
-    //     const timeObject = await createTime(
-    //       user?.id,
-    //       box?.id,
-    //       time,
-    //       '3x3x3',
-    //       'U R L F B F B'
-    //     );
-    //     addTimeToState(box?.id, timeObject);
-    //   }
-    // },
-    // });
 
     const keyDown = (event: KeyboardEvent) => {
       if (event.code == 'Space') {

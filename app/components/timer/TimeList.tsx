@@ -1,4 +1,4 @@
-import { Box, Time } from '@/types';
+import { Time } from '@/types';
 import { msToTime, UnixEpochToUTC } from '@/utils/helpers';
 import {
   Box as MUIBox,
@@ -36,16 +36,14 @@ interface Props {
   sx?: SxProps<Theme>;
   tableProps?: any;
   showControls?: boolean;
-  box: Box;
 }
 
 const TimeListComponent = ({
   sx,
   tableProps,
   showControls = false,
-  box,
 }: Props): ReactElement => {
-  const { deleteTime } = useData();
+  const { deleteTime, box } = useData();
   const [timeList, setTimeList] = useState<TimeList>();
   const [open, setOpen] = useState<number | null>();
   const [deletingTime, setDeletingTime] = useState<Time | null>(null);
@@ -185,7 +183,7 @@ const TimeListComponent = ({
           }}
         />
       ) : (
-        <></>
+        ''
       )}
     </MUIBox>
   );

@@ -31,6 +31,7 @@ import {
 } from '@firebase/firestore';
 import app from '@/utils/firebase/client';
 import type { Box, Time, Profile, SocialLink, SocialLinkId } from '@/types';
+import useLocalStorage from '@/hooks/useLocalStorage';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
@@ -44,6 +45,7 @@ interface Context {
   boxes: Box[];
   box: Box | undefined;
   profile: Profile | undefined;
+  timerActive: boolean;
 
   logIn: (email: string, password: string) => Promise<UserCredential>;
   logOut: () => Promise<void>;
@@ -78,6 +80,8 @@ interface Context {
   removeSocialLink: (id: SocialLinkId) => void;
   setProfilePrivate: (isPrivate: boolean) => Promise<boolean>;
   setBoxPrivate: (isPrivate: boolean) => Promise<boolean>;
+
+  setTimerActive: (state: boolean) => void;
 }
 
 const DataContext = createContext<Context>();
@@ -89,6 +93,8 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   const [boxes, setBoxes] = useState<Context['boxes']>([]);
   const [box, setBox] = useState<Context['box']>(undefined);
   const [profile, setProfile] = useState<Context['profile']>(undefined);
+  const [currentBoxId, setCurrentBoxId] = useLocalStorage('currentBoxId', null);
+  const [timerActive, setTimerState] = useState<Context['timerActive']>(false);
 
   // Set user on page load
   useEffect(() => {
@@ -138,6 +144,15 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
       return prevState.map((bx) => (bx.id === box.id ? box : bx));
     });
   }, [box]);
+
+  useEffect(() => {
+    if (currentBoxId) {
+      const newCurrentBox = boxes.find((box) => box.id === currentBoxId);
+      setBox(newCurrentBox ? newCurrentBox : boxes[0]);
+    } else {
+      setBox(boxes[0]);
+    }
+  }, [currentBoxId, boxes]);
 
   // Set profile on user load
   useEffect(() => {
@@ -264,6 +279,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   // Change current box
   const changeBox = (boxId: string): void => {
     const box = boxes.find((box) => box.id === boxId);
+    setCurrentBoxId(boxId);
     setBox(box);
   };
 
@@ -471,11 +487,16 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     return isPrivate;
   };
 
+  const setTimerActive = (state: boolean) => {
+    setTimerState(state);
+  };
+
   const value: Context = {
     user,
     boxes,
     box,
     profile,
+    timerActive,
     logIn,
     logOut,
     signUp,
@@ -494,6 +515,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     editSocialLink,
     setProfilePrivate,
     setBoxPrivate,
+    setTimerActive,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

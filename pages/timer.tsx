@@ -1,17 +1,11 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
 import { Box as MUIBox } from '@mui/material';
 import Layout from '@/components/layout/Layout';
 import BoxSelector from '@/components/misc/BoxSelector';
 import TimeList from '@/components/timer/TimeList';
 import Timer from '@/components/timer/Timer';
-import { Box } from '@/types';
-import { useAuth } from '@/hooks/useAuth';
 
 const TimerPage: NextPage = () => {
-  const [box, setBox] = useState<Box>();
-  const { user } = useAuth();
-
   return (
     <Layout title="Timer" isApp>
       <MUIBox sx={{ display: 'flex', pt: '64px', width: '100vw', height: '100vh' }}>
@@ -27,7 +21,7 @@ const TimerPage: NextPage = () => {
               justifyContent: 'center',
             }}
           >
-            <Timer box={box} />
+            <Timer />
           </MUIBox>
         </MUIBox>
         <MUIBox
@@ -43,14 +37,9 @@ const TimerPage: NextPage = () => {
           }}
         >
           <MUIBox sx={{ p: 2, height: 100 }}>
-            <BoxSelector
-              onChange={(boxId) => {
-                setBox(user?.boxes.find((box: Box) => box.id === boxId));
-              }}
-            />
+            <BoxSelector />
           </MUIBox>
           <TimeList
-            boxId={box?.id}
             sx={{
               bgcolor: 'background.paper',
             }}
