@@ -145,6 +145,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     });
   }, [box]);
 
+  // Retrieve current box from localstorage or set first
   useEffect(() => {
     if (currentBoxId) {
       const newCurrentBox = boxes.find((box) => box.id === currentBoxId);

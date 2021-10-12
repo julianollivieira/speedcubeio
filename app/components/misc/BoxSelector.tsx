@@ -1,7 +1,7 @@
 import { useData } from '@/hooks/useData';
 import { Box } from '@/types';
 import { FormControl, OutlinedInput, InputLabel, Select, MenuItem } from '@mui/material';
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
 
 const BoxSelector = (): ReactElement => {
   const { boxes, box, changeBox, timerActive } = useData();

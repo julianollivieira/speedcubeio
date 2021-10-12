@@ -4,6 +4,7 @@ import Layout from '@/components/layout/Layout';
 import BoxSelector from '@/components/misc/BoxSelector';
 import TimeList from '@/components/timer/TimeList';
 import Timer from '@/components/timer/Timer';
+import PuzzleSelector from '@/components/misc/PuzzleSelector';
 
 const TimerPage: NextPage = () => {
   return (
@@ -19,9 +20,29 @@ const TimerPage: NextPage = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              flexDirection: 'column',
             }}
           >
-            <Timer />
+            <MUIBox
+              sx={{
+                p: 2,
+                width: 1,
+                height: 100,
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <MUIBox>
+                <PuzzleSelector />
+              </MUIBox>
+              <MUIBox sx={{ width: 359 }}>
+                <PuzzleSelector />
+              </MUIBox>
+            </MUIBox>
+            <MUIBox sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+              <Timer />
+            </MUIBox>
+            <MUIBox sx={{ width: 1, height: 100 }}></MUIBox>
           </MUIBox>
         </MUIBox>
         <MUIBox
