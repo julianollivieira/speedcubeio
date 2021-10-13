@@ -15,7 +15,7 @@ const BoxPage: NextPage = () => {
   const router = useRouter();
   const { userId } = router.query;
 
-  const { data, error } = useSWR<{ user: User; boxes: BoxType[]; profile: Profile }>(
+  const { data } = useSWR<{ user: User; boxes: BoxType[]; profile: Profile }>(
     userId ? `/api/users/${userId}/boxes` : null,
     fetcher
   );

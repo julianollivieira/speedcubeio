@@ -13,12 +13,16 @@ const BoxPage: NextPage = () => {
   const router = useRouter();
   const { userId, boxId } = router.query;
 
-  const { data, error } = useSWR<{ user: User; box: BoxType; profile: Profile }>(
+  const { data } = useSWR<{ user: User; box: BoxType; profile: Profile }>(
     userId ? `/api/users/${userId}/boxes/${boxId}` : null,
     fetcher
   );
 
-  const { user, box } = data || { user: undefined, box: undefined };
+  const { user, box, profile } = data || {
+    user: undefined,
+    box: undefined,
+    profile: undefined,
+  };
 
   return (
     <Layout title="Box" isApp>
@@ -30,7 +34,7 @@ const BoxPage: NextPage = () => {
         }}
       >
         <MUIBox sx={{ px: 2 }}>
-          <Box user={user} box={box} />
+          <Box user={user} box={box} profile={profile} />
         </MUIBox>
       </MUIBox>
     </Layout>

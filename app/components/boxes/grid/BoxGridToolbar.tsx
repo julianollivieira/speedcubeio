@@ -14,7 +14,7 @@ import {
   FormatListBulleted as FormatListBulletedIcon,
 } from '@mui/icons-material';
 import { ChangeEventHandler, ReactElement } from 'react';
-import { User } from '@/types';
+import { User } from 'firebase/auth';
 
 interface Props {
   user: User | null | undefined;

@@ -20,7 +20,7 @@ const SignupPage: NextPage = () => {
   return user === null ? (
     <>
       <Head>
-        <title>{'Sign up | Speedcube.io'}</title>
+        <title>Sign up | Speedcube.io</title>
       </Head>
       <Container
         maxWidth="xs"

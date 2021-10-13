@@ -9,13 +9,13 @@ import {
 } from '@mui/material';
 import { Security as SecurityIcon, Email as EmailIcon } from '@mui/icons-material';
 import { SyntheticEvent, useState, ReactElement } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useData } from '@/hooks/useData';
 import SecuritySettings from '@/components/account/SecuritySettings';
 
 const AccountSettings = (): ReactElement => {
   const matches: boolean = useMediaQuery('(min-width:1200px)');
   const [value, setValue] = useState(0);
-  const { user } = useAuth();
+  const { user } = useData();
 
   const handleChange = (event: SyntheticEvent<Element, Event>, newValue: number) => {
     setValue(newValue);

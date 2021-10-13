@@ -84,7 +84,7 @@ interface Context {
   setTimerActive: (state: boolean) => void;
 }
 
-const DataContext = createContext<Context>();
+const DataContext = createContext<Context>({} as Context);
 
 const useData = () => useContext(DataContext);
 
@@ -466,7 +466,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 
   // Set profile to public or private
   const setProfilePrivate = async (isPrivate: boolean): Promise<boolean> => {
-    if (!user) return;
+    if (!user) throw 'User not found';
     const profileReference = doc(db, 'users', user.uid);
     const profileSnapshot = await getDoc(profileReference);
     const profileData = profileSnapshot.data() as Profile | undefined;
@@ -478,7 +478,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 
   // Set box to public or private
   const setBoxPrivate = async (isPrivate: boolean): Promise<boolean> => {
-    if (!box || !user) return;
+    if (!box || !user) throw 'User not found';
     const boxReference = doc(db, 'users', user.uid, 'boxes', box.id);
     const boxSnapshot = await getDoc(boxReference);
     const boxData = boxSnapshot.data() as Box | undefined;

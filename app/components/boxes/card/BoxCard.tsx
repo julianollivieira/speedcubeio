@@ -1,6 +1,7 @@
-import { Box, User, Profile } from '@/types';
+import { Box } from '@/types';
 import { ReactElement, useState } from 'react';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
+import { User } from 'firebase/auth';
 import {
   Card,
   CardHeader,
@@ -24,7 +25,7 @@ import BoxCardSummaryTable from '@/components/boxes/card/BoxCardSummaryTable';
 import Link from 'next/link';
 
 interface Props {
-  user?: User;
+  user: User | null | undefined;
   box: Box;
   showControls: boolean;
   openDeleteBoxDialog: () => void;

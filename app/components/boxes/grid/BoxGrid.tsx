@@ -57,19 +57,19 @@ const BoxGrid = ({
           {hide
             ? ''
             : boxes.map((box) => (
-              <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
-                <BoxCard
-                  user={user}
-                  box={box}
-                  profile={profile}
-                  showControls={showControls}
-                  openDeleteBoxDialog={() => setDeletingBox(box)}
-                  openEditBoxDialog={() => setEditingBox(box)}
-                  share={() =>
-                    console.log(`localhost:3000/users/${user?.uid}/boxes/${box.id}`)}
-                />
-              </Grid>
-            ))}
+                <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
+                  <BoxCard
+                    user={user}
+                    box={box}
+                    showControls={showControls}
+                    openDeleteBoxDialog={() => setDeletingBox(box)}
+                    openEditBoxDialog={() => setEditingBox(box)}
+                    share={() =>
+                      console.log(`localhost:3000/users/${user?.uid}/boxes/${box.id}`)
+                    }
+                  />
+                </Grid>
+              ))}
         </Grid>
       ) : (
         <Typography>List view here / seachString: {searchString}</Typography>

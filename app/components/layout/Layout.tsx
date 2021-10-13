@@ -40,6 +40,7 @@ const Layout = ({ title, children, isApp = false }: Props): ReactElement => {
         />
       )}
       <Box>{children}</Box>
+      {/* Add circular progress when loading user/boxes/profile? */}
     </>
   );
 };

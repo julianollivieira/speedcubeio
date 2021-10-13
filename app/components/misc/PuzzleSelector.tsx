@@ -1,6 +1,13 @@
 import { useData } from '@/hooks/useData';
 import { Puzzle } from '@/types';
-import { FormControl, OutlinedInput, InputLabel, Select, MenuItem } from '@mui/material';
+import {
+  FormControl,
+  OutlinedInput,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from '@mui/material';
 import { ReactElement } from 'react';
 import puzzles from '@/utils/puzzles';
 
@@ -15,10 +22,9 @@ const PuzzleSelector = (): ReactElement => {
     <FormControl fullWidth>
       <InputLabel shrink={true}>Current puzzle</InputLabel>
       <Select
-        // value={box?.id ?? ''}
         disabled={timerActive ? true : puzzles.length == 0}
         input={<OutlinedInput notched={true} label="Current puzzle"></OutlinedInput>}
-        onChange={(event) => {
+        onChange={(event: SelectChangeEvent) => {
           changeBox(event.target.value);
         }}
       >

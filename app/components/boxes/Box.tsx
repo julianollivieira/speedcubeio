@@ -206,7 +206,6 @@ const BoxComponent = ({
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TimeListComponent
-                box={box}
                 showControls={showControls}
                 sx={{
                   position: 'fixed',

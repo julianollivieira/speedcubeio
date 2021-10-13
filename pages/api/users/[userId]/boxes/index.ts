@@ -26,10 +26,10 @@ export default async function handler(
     const boxesDocuments = await boxesReference.get();
     const boxes: Box[] = boxesDocuments.docs.map(
       (boxDoc) =>
-      ({
-        id: boxDoc.id,
-        ...boxDoc.data(),
-      } as Box)
+        ({
+          id: boxDoc.id,
+          ...boxDoc.data(),
+        } as Box)
     );
 
     console.log(`📦🔢 Read ${boxes.length} box${boxes.length === 1 ? '' : 'es'}`);

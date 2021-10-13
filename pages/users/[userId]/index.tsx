@@ -13,7 +13,7 @@ const ProfilePage: NextPage = () => {
   const router = useRouter();
   const { userId } = router.query;
 
-  const { data, error } = useSWR<{ user: User; profile: ProfileType }>(
+  const { data } = useSWR<{ user: User; profile: ProfileType }>(
     userId ? `/api/users/${userId}/profile` : null,
     fetcher
   );

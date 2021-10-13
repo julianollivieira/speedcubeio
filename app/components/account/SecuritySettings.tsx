@@ -2,13 +2,13 @@ import { Box, Typography, Button, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { changePasswordValidationSchema } from '@/validations';
 import { useState, ReactElement } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useData } from '@/hooks/useData';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 
 const SecuritySettings = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { changePassword } = useAuth();
+  const { changePassword } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const formik = useFormik({
