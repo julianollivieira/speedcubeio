@@ -46,7 +46,7 @@ const TimeListComponent = ({
 }: Props): ReactElement => {
   const { deleteTime, box } = useData();
   const [timeList, setTimeList] = useState<TimeList>();
-  const [open, setOpen] = useState<number | null>();
+  const [open, setOpen] = useState<number | null>(null);
   const [deletingTime, setDeletingTime] = useState<Time | null>(null);
 
   useEffect(() => {
@@ -180,7 +180,8 @@ const TimeListComponent = ({
           time={deletingTime}
           handleClose={() => setDeletingTime(null)}
           deleteTime={async (): Promise<void> => {
-            deleteTime(deletingTime.id);
+            await deleteTime(deletingTime.id);
+            setOpen(null);
           }}
         />
       ) : (

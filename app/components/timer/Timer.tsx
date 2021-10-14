@@ -4,7 +4,14 @@ import TimerClass from '@/classes/Timer';
 import { useData } from '@/hooks/useData';
 
 const Timer = (): ReactElement => {
-  const { createTime, box, setTimerActive, currentPuzzle } = useData();
+  const {
+    scramble,
+    createTime,
+    box,
+    setTimerActive,
+    currentPuzzle,
+    generateNewScramble,
+  } = useData();
   const [time, setTime] = useState(0);
   const [readying, setReadying] = useState(false);
   const [ready, setReady] = useState(false);
@@ -35,8 +42,9 @@ const Timer = (): ReactElement => {
         await createTime({
           time: time,
           puzzle: currentPuzzle,
-          scramble: 'A A B B C C D D E E',
+          scramble: scramble?.scramble_string,
         });
+        generateNewScramble();
       },
     });
 

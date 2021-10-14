@@ -3920,6 +3920,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "commander@npm:8.2.0"
+  checksum: e868805bc266777f7a9c8a740e15b9e02b8148d8251f577ea9b9ef373ac0bdeb77b9b60cfc033592c9e1affea89993be08c13c623f0c619f9bf152c0e4d12cb0
+  languageName: node
+  linkType: hard
+
 "commondir@npm:^1.0.1":
   version: 1.0.1
   resolution: "commondir@npm:1.0.1"
@@ -8362,6 +8369,17 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"scrambow@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "scrambow@npm:1.7.0"
+  dependencies:
+    commander: ^8.2.0
+  bin:
+    scrambow: dist/cli.js
+  checksum: 58e2e72e752b5a956295c388d7dbcc426ebc6cd267b99fdafce045108e7dbebf3de2ea9a642722af87e0fced097feec0509d4da99b6a31639ba738e3c849c782
+  languageName: node
+  linkType: hard
+
 "screenfull@npm:^5.1.0":
   version: 5.1.0
   resolution: "screenfull@npm:5.1.0"
@@ -8681,6 +8699,7 @@ resolve@^2.0.0-next.3:
     react-color: ^2.19.3
     react-dom: 17.0.2
     react-use: ^17.3.1
+    scrambow: ^1.7.0
     swr: ^1.0.1
     typescript: 4.4.3
     yup: ^0.32.9

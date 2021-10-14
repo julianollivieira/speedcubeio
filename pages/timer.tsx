@@ -1,10 +1,11 @@
 import type { NextPage } from 'next';
-import { Box as MUIBox } from '@mui/material';
+import { Box as MUIBox, Typography } from '@mui/material';
 import Layout from '@/components/layout/Layout';
 import BoxSelector from '@/components/misc/BoxSelector';
 import TimeList from '@/components/timer/TimeList';
 import Timer from '@/components/timer/Timer';
 import PuzzleSelector from '@/components/misc/PuzzleSelector';
+import ScrambleComponent from '@/components/timer/ScrambleComponent';
 
 const TimerPage: NextPage = () => {
   return (
@@ -32,10 +33,13 @@ const TimerPage: NextPage = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <MUIBox>{/* <PuzzleSelector /> */}</MUIBox>
               <MUIBox sx={{ width: 359 }}>
                 <PuzzleSelector />
               </MUIBox>
+              <MUIBox>
+                <ScrambleComponent />
+              </MUIBox>
+              <MUIBox sx={{ width: 359 }}>{/* Extra buttons */}</MUIBox>
             </MUIBox>
             <MUIBox sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
               <Timer />

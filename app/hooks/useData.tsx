@@ -35,6 +35,8 @@ import useLocalStorage from '@/hooks/useLocalStorage';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
+import { Scrambow } from 'scrambow';
+import type { Scramble } from 'scrambow';
 
 const auth = getAuth(app);
 const storage = getStorage(app);
@@ -84,6 +86,10 @@ interface Context {
 
   setTimerActive: (state: boolean) => void;
   changePuzzle: (puzzle: Puzzle) => void;
+
+  scramble: Scramble | null;
+  scrambles: Scramble[];
+  generateNewScramble: () => void;
 }
 
 const DataContext = createContext<Context>({} as Context);
@@ -98,6 +104,35 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   const [currentBoxId, setCurrentBoxId] = useLocalStorage('currentBoxId', null);
   const [currentPuzzle, setCurrentPuzzle] = useLocalStorage('currentPuzzle', null);
   const [timerActive, setTimerState] = useState<Context['timerActive']>(false);
+  const [scrambow, setScrambow] = useState<Scrambow | null>(null);
+  const [scramble, setScramble] = useState<Scramble | null>(null);
+  const [scrambles, setScrambles] = useState<Scramble[]>([]);
+
+  useEffect(() => {
+    const arr = ['2x2x2', '3x3x3', '4x4x4', '5x5x5', '6x6x6', '7x7x7'];
+    const removeLast2chars = arr.includes(currentPuzzle);
+    const scrambowPuzzleType = removeLast2chars
+      ? currentPuzzle.slice(0, -2)
+      : currentPuzzle;
+    setScrambow(new Scrambow(scrambowPuzzleType));
+  }, [currentPuzzle]);
+
+  useEffect(() => {
+    if (scrambow) {
+      generateNewScramble();
+    }
+  }, [scrambow]);
+
+  const generateNewScramble = (): void => {
+    if (!scrambow) return;
+    const scramble = scrambow.get(1)[0];
+    console.log(`🧩 Scramble generated for type ${scrambow.type}`);
+    setScramble(scramble);
+    setScrambles((prevState) => {
+      prevState.push(scramble);
+      return prevState;
+    });
+  };
 
   // Set user on page load
   useEffect(() => {
@@ -526,6 +561,9 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     setBoxPrivate,
     setTimerActive,
     changePuzzle,
+    scramble,
+    scrambles,
+    generateNewScramble,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
