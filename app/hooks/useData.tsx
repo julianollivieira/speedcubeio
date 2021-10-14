@@ -88,7 +88,7 @@ interface Context {
   changePuzzle: (puzzle: Puzzle) => void;
 
   scramble: Scramble | null;
-  scrambles: Scramble[];
+  // scrambles: Scramble[];
   generateNewScramble: () => void;
 }
 
@@ -104,9 +104,8 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   const [currentBoxId, setCurrentBoxId] = useLocalStorage('currentBoxId', null);
   const [currentPuzzle, setCurrentPuzzle] = useLocalStorage('currentPuzzle', null);
   const [timerActive, setTimerState] = useState<Context['timerActive']>(false);
-  const [scrambow, setScrambow] = useState<Scrambow | null>(null);
   const [scramble, setScramble] = useState<Scramble | null>(null);
-  const [scrambles, setScrambles] = useState<Scramble[]>([]);
+  // const [scrambles, setScrambles] = useState<Scramble[]>([]);
 
   useEffect(() => {
     const arr = ['2x2x2', '3x3x3', '4x4x4', '5x5x5', '6x6x6', '7x7x7'];
@@ -114,24 +113,18 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     const scrambowPuzzleType = removeLast2chars
       ? currentPuzzle.slice(0, -2)
       : currentPuzzle;
-    setScrambow(new Scrambow(scrambowPuzzleType));
+
+    setScramble(new Scrambow().setType(scrambowPuzzleType).get()[0]);
   }, [currentPuzzle]);
 
-  useEffect(() => {
-    if (scrambow) {
-      generateNewScramble();
-    }
-  }, [scrambow]);
-
   const generateNewScramble = (): void => {
-    if (!scrambow) return;
-    const scramble = scrambow.get(1)[0];
-    console.log(`🧩 Scramble generated for type ${scrambow.type}`);
-    setScramble(scramble);
-    setScrambles((prevState) => {
-      prevState.push(scramble);
-      return prevState;
-    });
+    const arr = ['2x2x2', '3x3x3', '4x4x4', '5x5x5', '6x6x6', '7x7x7'];
+    const removeLast2chars = arr.includes(currentPuzzle);
+    const scrambowPuzzleType = removeLast2chars
+      ? currentPuzzle.slice(0, -2)
+      : currentPuzzle;
+
+    setScramble(new Scrambow().setType(scrambowPuzzleType).get()[0]);
   };
 
   // Set user on page load
@@ -562,7 +555,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     setTimerActive,
     changePuzzle,
     scramble,
-    scrambles,
+    // scrambles,
     generateNewScramble,
   };
 

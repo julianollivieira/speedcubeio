@@ -83,7 +83,7 @@ const Timer = (): ReactElement => {
       document.removeEventListener('keydown', keyDown);
       document.removeEventListener('keyup', keyUp);
     };
-  }, [box, currentPuzzle]);
+  }, [box, currentPuzzle, scramble]);
 
   return (
     <MUIBox>
