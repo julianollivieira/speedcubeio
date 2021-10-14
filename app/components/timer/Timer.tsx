@@ -42,7 +42,7 @@ const Timer = (): ReactElement => {
         await createTime({
           time: time,
           puzzle: currentPuzzle,
-          scramble: scramble?.scramble_string,
+          scramble: scramble?.scramble_string ?? '',
         });
         generateNewScramble();
       },
