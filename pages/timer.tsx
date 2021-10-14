@@ -32,9 +32,7 @@ const TimerPage: NextPage = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <MUIBox>
-                <PuzzleSelector />
-              </MUIBox>
+              <MUIBox>{/* <PuzzleSelector /> */}</MUIBox>
               <MUIBox sx={{ width: 359 }}>
                 <PuzzleSelector />
               </MUIBox>
@@ -61,6 +59,7 @@ const TimerPage: NextPage = () => {
             <BoxSelector />
           </MUIBox>
           <TimeList
+            showControls
             sx={{
               bgcolor: 'background.paper',
             }}

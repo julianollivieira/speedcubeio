@@ -30,7 +30,7 @@ import {
   getDoc,
 } from '@firebase/firestore';
 import app from '@/utils/firebase/client';
-import type { Box, Time, Profile, SocialLink, SocialLinkId } from '@/types';
+import type { Box, Time, Profile, SocialLink, SocialLinkId, Puzzle } from '@/types';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -46,6 +46,7 @@ interface Context {
   box: Box | undefined;
   profile: Profile | undefined;
   timerActive: boolean;
+  currentPuzzle: Puzzle;
 
   logIn: (email: string, password: string) => Promise<UserCredential>;
   logOut: () => Promise<void>;
@@ -82,6 +83,7 @@ interface Context {
   setBoxPrivate: (isPrivate: boolean) => Promise<boolean>;
 
   setTimerActive: (state: boolean) => void;
+  changePuzzle: (puzzle: Puzzle) => void;
 }
 
 const DataContext = createContext<Context>({} as Context);
@@ -94,6 +96,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   const [box, setBox] = useState<Context['box']>(undefined);
   const [profile, setProfile] = useState<Context['profile']>(undefined);
   const [currentBoxId, setCurrentBoxId] = useLocalStorage('currentBoxId', null);
+  const [currentPuzzle, setCurrentPuzzle] = useLocalStorage('currentPuzzle', null);
   const [timerActive, setTimerState] = useState<Context['timerActive']>(false);
 
   // Set user on page load
@@ -488,8 +491,12 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     return isPrivate;
   };
 
-  const setTimerActive = (state: boolean) => {
+  const setTimerActive = (state: boolean): void => {
     setTimerState(state);
+  };
+
+  const changePuzzle = (puzzle: Puzzle): void => {
+    setCurrentPuzzle(puzzle);
   };
 
   const value: Context = {
@@ -498,6 +505,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     box,
     profile,
     timerActive,
+    currentPuzzle,
     logIn,
     logOut,
     signUp,
@@ -517,6 +525,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     setProfilePrivate,
     setBoxPrivate,
     setTimerActive,
+    changePuzzle,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

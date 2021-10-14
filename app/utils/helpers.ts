@@ -5,6 +5,12 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
 
+// Capitalize first letter
+export const capitalizeFirstLetter = (string?: string): string | null => {
+  if (!string) return null;
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 // Return a well formatted time string from input time (ms)
 export const msToTime = (ms: number | null = null, dash = false): string => {
   if (dash && ms === null) return '-';

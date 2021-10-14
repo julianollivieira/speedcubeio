@@ -10,22 +10,20 @@ import {
 } from '@mui/material';
 import { ReactElement } from 'react';
 import puzzles from '@/utils/puzzles';
-
-const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
+import { capitalizeFirstLetter } from '@/utils/helpers';
 
 const PuzzleSelector = (): ReactElement => {
-  const { changeBox, timerActive } = useData();
+  const { currentPuzzle, changePuzzle, timerActive } = useData();
 
   return (
     <FormControl fullWidth>
       <InputLabel shrink={true}>Current puzzle</InputLabel>
       <Select
+        value={currentPuzzle ?? ''}
         disabled={timerActive ? true : puzzles.length == 0}
         input={<OutlinedInput notched={true} label="Current puzzle"></OutlinedInput>}
         onChange={(event: SelectChangeEvent) => {
-          changeBox(event.target.value);
+          changePuzzle(event.target.value as Puzzle);
         }}
       >
         {puzzles.map((puzzleItem: Puzzle) => (

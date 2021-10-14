@@ -4,7 +4,7 @@ import TimerClass from '@/classes/Timer';
 import { useData } from '@/hooks/useData';
 
 const Timer = (): ReactElement => {
-  const { createTime, box, setTimerActive } = useData();
+  const { createTime, box, setTimerActive, currentPuzzle } = useData();
   const [time, setTime] = useState(0);
   const [readying, setReadying] = useState(false);
   const [ready, setReady] = useState(false);
@@ -34,7 +34,7 @@ const Timer = (): ReactElement => {
         setTimerActive(false);
         await createTime({
           time: time,
-          puzzle: '3x3x3',
+          puzzle: currentPuzzle,
           scramble: 'A A B B C C D D E E',
         });
       },
@@ -75,7 +75,7 @@ const Timer = (): ReactElement => {
       document.removeEventListener('keydown', keyDown);
       document.removeEventListener('keyup', keyUp);
     };
-  }, [box]);
+  }, [box, currentPuzzle]);
 
   return (
     <MUIBox>

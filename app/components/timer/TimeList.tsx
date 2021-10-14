@@ -31,6 +31,7 @@ import { Fragment, ReactElement } from 'react';
 import TimeList from '@/classes/TimeList';
 import DeleteTimeDialog from '@/components/timer/dialogs/DeleteTimeDialog';
 import { useData } from '@/hooks/useData';
+import { capitalizeFirstLetter } from '@/utils/helpers';
 
 interface Props {
   sx?: SxProps<Theme>;
@@ -100,7 +101,7 @@ const TimeListComponent = ({
                               </ListItemIcon>
                               <ListItemText
                                 primary="Puzzle"
-                                secondary={timeData?.puzzle}
+                                secondary={capitalizeFirstLetter(timeData?.puzzle)}
                               />
                             </ListItem>
                             <ListItem>
