@@ -25,7 +25,7 @@ const BoxPage: NextPage = () => {
   };
 
   return (
-    <Layout title="Box" isApp>
+    <Layout title="Box" allowUnauthorized>
       <MUIBox
         sx={{
           pt: '64px',

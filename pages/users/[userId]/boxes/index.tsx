@@ -27,7 +27,7 @@ const BoxPage: NextPage = () => {
   };
 
   return (
-    <Layout title="Boxes">
+    <Layout title="Boxes" allowUnauthorized>
       <Box
         sx={{
           pt: '64px',

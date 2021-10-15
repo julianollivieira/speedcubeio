@@ -21,7 +21,7 @@ const ProfilePage: NextPage = () => {
   const { user, profile } = data || { user: undefined, profile: undefined };
 
   return (
-    <Layout title={`${user?.displayName ?? 'Someone'}'s profile`}>
+    <Layout title={`${user?.displayName ?? 'Someone'}'s profile`} allowUnauthorized>
       <Container sx={{ pt: '64px' }}>
         <Profile profile={profile} user={user} hideIfPrivate />
       </Container>

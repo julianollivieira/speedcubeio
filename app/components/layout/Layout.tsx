@@ -11,9 +11,15 @@ type Props = {
   title?: string;
   children: ReactNode;
   isApp?: boolean;
+  allowUnauthorized?: boolean;
 };
 
-const Layout = ({ title, children, isApp = false }: Props): ReactElement => {
+const Layout = ({
+  title,
+  children,
+  isApp = false,
+  allowUnauthorized = false,
+}: Props): ReactElement => {
   const [open, setOpen] = useLocalStorage('drawerOpen', false);
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
@@ -21,7 +27,7 @@ const Layout = ({ title, children, isApp = false }: Props): ReactElement => {
   const { user } = useData();
 
   useEffect(() => {
-    if (user === null) {
+    if (user === null && !allowUnauthorized) {
       Router.push('/login');
     }
   }, [user]);
