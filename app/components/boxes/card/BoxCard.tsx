@@ -52,7 +52,9 @@ const BoxCard = ({
 
   return (
     <Card onMouseEnter={handleShowMenu} onMouseLeave={handleHideMenu}>
-      <Link href={`${user ? `/users/${user.uid}` : ''}/boxes/${box.id}`}>
+      <Link
+        href={`${!showControls && user ? `/users/${user?.uid}` : ''}/boxes/${box.id}`}
+      >
         <CardActionArea>
           <MUIBox
             sx={{
