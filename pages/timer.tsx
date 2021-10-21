@@ -1,5 +1,9 @@
 import type { NextPage } from 'next';
-import { Box as MUIBox, Typography } from '@mui/material';
+import { Box as MUIBox, IconButton, Fab } from '@mui/material';
+import {
+  Visibility as VisibilityIcon,
+  FormatListNumbered as FormatListNumberedIcon,
+} from '@mui/icons-material';
 import Layout from '@/components/layout/Layout';
 import BoxSelector from '@/components/misc/BoxSelector';
 import TimeList from '@/components/timer/TimeList';
@@ -33,13 +37,29 @@ const TimerPage: NextPage = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <MUIBox sx={{ width: 359 }}>
+              <MUIBox sx={{ width: { xs: 0.5, xl: 200 } }}>
                 <PuzzleSelector />
               </MUIBox>
-              <MUIBox>
+              <MUIBox sx={{ px: 3, display: { xs: 'none', xl: 'flex' } }}>
                 <ScrambleComponent />
               </MUIBox>
-              <MUIBox sx={{ width: 359 }}>{/* Extra buttons */}</MUIBox>
+              <MUIBox
+                sx={{
+                  width: { xs: 0.5, xl: 200 },
+                  display: 'flex',
+                  justifyContent: 'end',
+                  alignItems: 'center',
+                }}
+              >
+                <MUIBox>
+                  <IconButton size="large">
+                    <VisibilityIcon />
+                  </IconButton>
+                </MUIBox>
+              </MUIBox>
+            </MUIBox>
+            <MUIBox sx={{ px: { xs: 5, md: 3 }, display: { sx: 'flex', xl: 'none' } }}>
+              <ScrambleComponent />
             </MUIBox>
             <MUIBox sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
               <Timer />
@@ -76,6 +96,18 @@ const TimerPage: NextPage = () => {
           />
         </MUIBox>
       </MUIBox>
+      <Fab
+        color="primary"
+        sx={{
+          position: 'fixed',
+          right: 25,
+          bottom: 25,
+          display: { xs: 'flex', lg: 'none' },
+        }}
+      // onClick={() => setEditingBox(box ?? null)}
+      >
+        <FormatListNumberedIcon />
+      </Fab>
     </Layout>
   );
 };
