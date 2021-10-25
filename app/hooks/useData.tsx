@@ -5,6 +5,7 @@ import {
   getAuth,
   reauthenticateWithCredential,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   updatePassword,
@@ -58,6 +59,7 @@ interface Context {
     password: string
   ) => Promise<UserCredential>;
   resendEmailVerification: (email: string, password: string) => Promise<void>;
+  requestPasswordResetLink: (email: string) => Promise<void>;
 
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
   changeProfilePicture: (newProfilePicture: Blob) => Promise<void>;
@@ -235,6 +237,11 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
       throw { code: 'auth/email-already-verified' };
     }
     signOut(auth);
+  };
+
+  // Request password reset link
+  const requestPasswordResetLink = async (email: string): Promise<void> => {
+    await sendPasswordResetEmail(auth, email);
   };
 
   // Reauthenticate the user and change the user's password
@@ -553,6 +560,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     logOut,
     signUp,
     resendEmailVerification,
+    requestPasswordResetLink,
     changePassword,
     changeProfilePicture,
     removeProfilePicture,

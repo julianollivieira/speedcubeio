@@ -50,3 +50,10 @@ export const changePasswordValidationSchema = yup.object().shape({
     .required('Password is required')
     .min(8, 'Password should be at least 8 characters'),
 });
+
+export const requestPasswordResetValidationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .required('Email address is required')
+    .email('Enter a valid email address'),
+});

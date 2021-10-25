@@ -1,7 +1,7 @@
 import { Paper, Typography, Box, TextField, Button, LinearProgress } from '@mui/material';
 import Link from '@/components/misc/Link';
 import { useFormik } from 'formik';
-import { loginValidationSchema } from '@/validations';
+import { requestPasswordResetValidationSchema } from '@/validations';
 import { useState, ReactElement } from 'react';
 import Logo from '@/components/misc/Logo';
 import createSnackbar from '@/utils/snackbar';
@@ -14,28 +14,33 @@ interface Error {
   code: string;
 }
 
-const ResendEmailVerificationForm = (): ReactElement => {
+const RequestPasswordResetForm = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { resendEmailVerification } = useData();
+  const { requestPasswordResetLink } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
-    validationSchema: loginValidationSchema,
+    validationSchema: requestPasswordResetValidationSchema,
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        await resendEmailVerification(values.email, values.password);
-        createSnackbar(enqueueSnackbar, closeSnackbar, 'Verification email sent', 'info');
-        setLoading(false);
+        await requestPasswordResetLink(values.email);
+        createSnackbar(
+          enqueueSnackbar,
+          closeSnackbar,
+          'Password reset link sent',
+          'info'
+        );
         Router.push('/login');
+        setLoading(false);
       } catch (error: unknown) {
         setLoading(false);
         createSnackbar(
           enqueueSnackbar,
           closeSnackbar,
           authErrors[(error as Error).code],
-          (error as Error).code === 'auth/email-already-verified' ? 'success' : 'error'
+          'error'
         );
       }
     },
@@ -68,7 +73,7 @@ const ResendEmailVerificationForm = (): ReactElement => {
               mb: { xs: 0, sm: 5 },
             }}
           >
-            Resend email verification
+            Request password reset link
           </Typography>
         </Box>
         <TextField
@@ -79,17 +84,6 @@ const ResendEmailVerificationForm = (): ReactElement => {
           onChange={formik.handleChange}
           error={formik.touched.email && !!formik.errors.email}
           helperText={formik.touched.email && formik.errors.email}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          name="password"
-          type="password"
-          label="Password"
-          variant="outlined"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && !!formik.errors.password}
-          helperText={formik.touched.password && formik.errors.password}
           sx={{ mb: 3 }}
         />
         <Box sx={{ py: 1, display: 'flex', justifyContent: 'space-between' }}>
@@ -103,7 +97,7 @@ const ResendEmailVerificationForm = (): ReactElement => {
             disabled={loading}
             sx={{ px: 3 }}
           >
-            Resend
+            Request
           </Button>
         </Box>
       </Box>
@@ -122,4 +116,4 @@ const ResendEmailVerificationForm = (): ReactElement => {
   );
 };
 
-export default ResendEmailVerificationForm;
+export default RequestPasswordResetForm;
