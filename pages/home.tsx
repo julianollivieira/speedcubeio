@@ -1,21 +1,22 @@
-import { useAuth } from '@/utils/auth';
 import type { NextPage } from 'next';
-import { ReactElement } from 'react';
-import { Typography, Divider } from '@material-ui/core';
-import UserLayout from '@/components/layout/UserLayout';
-import { getDaypart } from '@/utils/time';
+import Layout from '@/components/layout/Layout';
+import { Box, Typography } from '@mui/material';
 
-const Home: NextPage = (): ReactElement => {
-  const { currentUser } = useAuth();
-
+const HomePage: NextPage = () => {
   return (
-    <UserLayout title="Home">
-      <Typography variant="h3">
-        {`Good${getDaypart()}`}, {currentUser?.displayName}
-      </Typography>
-      <Divider sx={{ my: 3 }} />
-    </UserLayout>
+    <Layout title="Home" isApp>
+      <Box
+        sx={{
+          pt: '64px',
+          px: { md: '240px' },
+        }}
+      >
+        <Box sx={{ px: 2 }}>
+          <Typography>Home page</Typography>
+        </Box>
+      </Box>
+    </Layout>
   );
 };
 
-export default Home;
+export default HomePage;

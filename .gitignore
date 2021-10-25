@@ -33,5 +33,11 @@ yarn-error.log*
 # vercel
 .vercel
 
-# firebase
-serviceAccountKey.json
+# yarn non-zero installs
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

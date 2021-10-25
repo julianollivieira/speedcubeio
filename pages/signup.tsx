@@ -1,12 +1,23 @@
-import type { NextPage } from 'next';
+import { Box, CircularProgress, Container } from '@mui/material';
 import Head from 'next/head';
-import { ReactElement } from 'react';
-import { Container, Box } from '@material-ui/core';
-import SignupForm from '@/components/signup/SignupForm';
-import Link from '@/components/general/Link';
+import Link from '@/components/misc/Link';
+import Logo from '@/components/misc/Logo';
+import type { NextPage } from 'next';
+import Router from 'next/router';
+import SignupForm from '@/components/auth/SignupForm';
+import { useData } from '@/hooks/useData';
+import { useEffect } from 'react';
 
-const Signup: NextPage = (): ReactElement => {
-  return (
+const SignupPage: NextPage = () => {
+  const { user } = useData();
+
+  useEffect(() => {
+    if (user !== null && user !== undefined) {
+      Router.push('/home');
+    }
+  }, [user]);
+
+  return user === null ? (
     <>
       <Head>
         <title>Sign up | Speedcube.io</title>
@@ -14,25 +25,34 @@ const Signup: NextPage = (): ReactElement => {
       <Container
         maxWidth="xs"
         sx={{
-          height: '100vh',
+          alignItems: 'center',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          height: { xs: '100vh', sm: '80vh' },
           justifyContent: 'center',
         }}
       >
-        <Link href="/">
-          <Box
-            component="img"
-            src="/images/logos/black_logo_big.png"
-            alt="Speedcube.io logo"
-            sx={{ width: 1, mb: 5 }}
-          />
-        </Link>
+        <Box sx={{ py: 7, display: { xs: 'none', sm: 'flex' } }}>
+          <Link href="/" passHref>
+            <Logo sx={{ height: { xs: 150, sm: 200 } }} />
+          </Link>
+        </Box>
         <SignupForm />
       </Container>
     </>
+  ) : (
+    <Box
+      sx={{
+        alignItems: 'center',
+        display: 'flex',
+        height: '100vh',
+        justifyContent: 'center',
+        width: '100vw',
+      }}
+    >
+      <CircularProgress />
+    </Box>
   );
 };
 
-export default Signup;
+export default SignupPage;
