@@ -57,6 +57,7 @@ interface Context {
     email: string,
     password: string
   ) => Promise<UserCredential>;
+  resendEmailVerification: (email: string, password: string) => Promise<void>;
 
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
   changeProfilePicture: (newProfilePicture: Blob) => Promise<void>;
@@ -222,6 +223,20 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     return userCredential;
   };
 
+  // Resend email verification
+  const resendEmailVerification = async (
+    email: string,
+    password: string
+  ): Promise<void> => {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    if (!userCredential.user.emailVerified) {
+      await sendEmailVerification(userCredential.user);
+    } else {
+      throw { code: 'auth/email-already-verified' };
+    }
+    signOut(auth);
+  };
+
   // Reauthenticate the user and change the user's password
   const changePassword = async (
     currentPassword: string,
@@ -242,10 +257,10 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
       await updateProfile(user, { photoURL: downloadURL });
       setUser(
         (prevState) =>
-        ({
-          ...prevState,
-          photoURL: downloadURL,
-        } as User)
+          ({
+            ...prevState,
+            photoURL: downloadURL,
+          } as User)
       );
     });
   };
@@ -258,10 +273,10 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     await updateProfile(user, { photoURL: null });
     setUser(
       (prevState) =>
-      ({
-        ...prevState,
-        photoURL: '/images/default_user_profile.jpg',
-      } as User)
+        ({
+          ...prevState,
+          photoURL: '/images/default_user_profile.jpg',
+        } as User)
     );
   };
 
@@ -339,10 +354,10 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 
     setBox(
       (prevState) =>
-      ({
-        ...prevState,
-        times: boxData.times,
-      } as Box)
+        ({
+          ...prevState,
+          times: boxData.times,
+        } as Box)
     );
   };
 
@@ -363,10 +378,10 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 
     setBox(
       (prevState) =>
-      ({
-        ...prevState,
-        times: boxData.times,
-      } as Box)
+        ({
+          ...prevState,
+          times: boxData.times,
+        } as Box)
     );
   };
 
@@ -396,10 +411,10 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 
     setBox(
       (prevState) =>
-      ({
-        ...prevState,
-        times: boxData.times,
-      } as Box)
+        ({
+          ...prevState,
+          times: boxData.times,
+        } as Box)
     );
   };
 
@@ -429,10 +444,10 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 
     setProfile(
       (prevState) =>
-      ({
-        ...prevState,
-        socialLinks: profileData.socialLinks,
-      } as Profile)
+        ({
+          ...prevState,
+          socialLinks: profileData.socialLinks,
+        } as Profile)
     );
   };
 
@@ -455,10 +470,10 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 
     setProfile(
       (prevState) =>
-      ({
-        ...prevState,
-        socialLinks: profileData.socialLinks,
-      } as Profile)
+        ({
+          ...prevState,
+          socialLinks: profileData.socialLinks,
+        } as Profile)
     );
   };
 
@@ -488,10 +503,10 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 
     setProfile(
       (prevState) =>
-      ({
-        ...prevState,
-        socialLinks: profileData.socialLinks,
-      } as Profile)
+        ({
+          ...prevState,
+          socialLinks: profileData.socialLinks,
+        } as Profile)
     );
   };
 
@@ -537,6 +552,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     logIn,
     logOut,
     signUp,
+    resendEmailVerification,
     changePassword,
     changeProfilePicture,
     removeProfilePicture,

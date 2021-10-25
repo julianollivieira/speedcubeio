@@ -3,12 +3,12 @@ import Router from 'next/router';
 import Head from 'next/head';
 import { useEffect } from 'react';
 import { Box, CircularProgress, Container, Button } from '@mui/material';
-import LoginForm from '@/components/auth/LoginForm';
+import ResendEmailVerificationForm from '@/components/auth/ResendEmailVerificationForm';
 import Logo from '@/components/misc/Logo';
 import Link from '@/components/misc/Link';
 import { useData } from '@/hooks/useData';
 
-const LoginPage: NextPage = () => {
+const ResendEmailVerification: NextPage = () => {
   const { user } = useData();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const LoginPage: NextPage = () => {
       {user === null ? (
         <>
           <Head>
-            <title>Log in | Speedcube.io</title>
+            <title>Resend email verification | Speedcube.io</title>
           </Head>
           <Container
             maxWidth="xs"
@@ -39,16 +39,9 @@ const LoginPage: NextPage = () => {
                 <Logo sx={{ height: { xs: 150, sm: 200 } }} />
               </Link>
             </Box>
-            <LoginForm />
-            <Link href="/forgot-password" passHref sx={{ mt: 3, textDecoration: 'none' }}>
-              <Button color="primary">Forgot your password?</Button>
-            </Link>
-            <Link
-              href="/resend-email-verification"
-              passHref
-              sx={{ textDecoration: 'none' }}
-            >
-              <Button color="primary">Resend email verification</Button>
+            <ResendEmailVerificationForm />
+            <Link href="/signup" passHref sx={{ mt: 3, textDecoration: 'none' }}>
+              <Button color="primary">Create an account instead</Button>
             </Link>
           </Container>
         </>
@@ -69,4 +62,4 @@ const LoginPage: NextPage = () => {
   );
 };
 
-export default LoginPage;
+export default ResendEmailVerification;
