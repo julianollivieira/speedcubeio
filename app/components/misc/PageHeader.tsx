@@ -16,10 +16,21 @@ const PageHeader = ({ title, icon }: Props): ReactElement => {
         justifyContent: { xs: 'center', lg: 'start' },
       }}
     >
-      <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
+      <Typography
+        variant="h3"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         {createElement(icon, {
-          sx: { fontSize: '1em', mr: 2 },
+          sx: { fontSize: '1em' },
         })}
+      </Typography>
+      <Typography
+        variant="h3"
+        sx={{ ml: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+      >
         {title}
       </Typography>
     </Box>

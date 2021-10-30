@@ -237,7 +237,7 @@ const BoxComponent = ({
       )}
       <TimeListDrawer
         open={TimeListDrawerOpen}
-        showControls
+        showControls={showControls}
         closeDrawer={() => setTimeListDrawerOpen(false)}
       />
     </>

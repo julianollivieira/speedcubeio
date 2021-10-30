@@ -13,7 +13,7 @@ const TimerPage: NextPage = () => {
   const [TimeListDrawerOpen, setTimeListDrawerOpen] = useState(false);
 
   return (
-    <Layout fluid title="Timer" isApp>
+    <Layout fluid title="Timer">
       <Box
         sx={{
           px: { lg: `${360 - 73}px` },

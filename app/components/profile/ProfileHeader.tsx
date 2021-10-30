@@ -6,15 +6,7 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
-import {
-  Avatar,
-  Box,
-  Chip,
-  Grid,
-  IconButton,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Avatar, Box, Chip, IconButton, Typography, useMediaQuery } from '@mui/material';
 import Link from '@/components/misc/Link';
 import { ReactElement, useState } from 'react';
 import type { Profile } from '@/types';
@@ -30,14 +22,14 @@ interface Props {
   user: User | null | undefined;
   profile: Profile | undefined;
   showControls?: boolean;
-  hide: boolean;
+  hide?: boolean;
 }
 
 const ProfileHeader = ({
   user,
   profile,
   showControls = false,
-  hide,
+  hide = false,
 }: Props): ReactElement => {
   const { setProfilePrivate } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -151,11 +143,13 @@ const ProfileHeader = ({
           <IconButton size="large" onClick={handleShare}>
             <ShareIcon />
           </IconButton>
-          <Link href={`/users/${user?.uid}/boxes`} passHref>
-            <IconButton size="large">
-              <AllInboxIcon />
-            </IconButton>
-          </Link>
+          {!hide && (
+            <Link href={`/users/${user?.uid}/boxes`} passHref>
+              <IconButton size="large">
+                <AllInboxIcon />
+              </IconButton>
+            </Link>
+          )}
           {showControls && (
             <>
               <IconButton

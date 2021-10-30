@@ -23,12 +23,12 @@ import { useData } from '@/hooks/useData';
 import Router from 'next/router';
 
 interface Props {
-  isApp?: boolean;
+  isNotApp?: boolean;
   toggleNavigationDrawer?: () => void;
 }
 
 const NavigationBar = ({
-  isApp = false,
+  isNotApp = false,
   toggleNavigationDrawer,
 }: Props): ReactElement => {
   const { user, logOut } = useData();
@@ -50,12 +50,12 @@ const NavigationBar = ({
         position="fixed"
         sx={{ bgcolor: 'background.paper', zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Container maxWidth={isApp ? false : 'lg'}>
+        <Container maxWidth={!isNotApp ? false : 'lg'}>
           <Toolbar
             sx={{ justifyContent: 'space-between', height: '64px' }}
             disableGutters
           >
-            {user && isApp ? (
+            {user && !isNotApp ? (
               <IconButton
                 aria-label="delete"
                 size="large"
@@ -69,7 +69,7 @@ const NavigationBar = ({
             )}
             <Logo expanded sx={{ py: 1, height: 0.9 }} />
             {user ? (
-              isApp ? (
+              !isNotApp ? (
                 <>
                   <Box sx={{ height: 1, p: 0.5 }}>
                     <IconButton sx={{ height: 1 }} onClick={handleClick}>

@@ -7,7 +7,7 @@ const ProfilePage: NextPage = () => {
   const { user, profile } = useData();
 
   return (
-    <Layout title="Your profile" isApp>
+    <Layout title="Your profile">
       <Profile profile={profile} showControls user={user} />
     </Layout>
   );

@@ -19,7 +19,7 @@ const BoxPage: NextPage = () => {
   }, [id, boxes]);
 
   return (
-    <Layout title="Box" isApp>
+    <Layout title="Box">
       <MUIBox sx={{ mr: { lg: `${360 - 73}px` } }}>
         <Box user={user} box={box} profile={profile} showControls />
       </MUIBox>

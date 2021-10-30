@@ -26,16 +26,8 @@ const BoxPage: NextPage = () => {
 
   return (
     <Layout title="Box" allowUnauthorized>
-      <MUIBox
-        sx={{
-          pt: '64px',
-          pl: { md: '240px' },
-          pr: { md: '240px', lg: `${360 + (240 - 73)}px` },
-        }}
-      >
-        <MUIBox sx={{ px: 2 }}>
-          <Box user={user} box={box} profile={profile} />
-        </MUIBox>
+      <MUIBox sx={{ mr: { lg: `${360 - 73}px` } }}>
+        <Box user={user} box={box} profile={profile} />
       </MUIBox>
     </Layout>
   );

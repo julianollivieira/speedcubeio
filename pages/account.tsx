@@ -7,7 +7,7 @@ import AccountSettings from '@/components/account/AccountSettings';
 
 const AccountPage: NextPage = () => {
   return (
-    <Layout title="Account & Settings" isApp>
+    <Layout title="Account & Settings">
       <PageHeader title="Account & Settings" icon={SettingsIcon} />
       <Divider sx={{ mb: 3 }} />
       <AccountSettings />

@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 
 const HomePage: NextPage = () => {
   return (
-    <Layout title="Home" isApp>
+    <Layout title="Home">
       <Typography>Home page</Typography>
     </Layout>
   );

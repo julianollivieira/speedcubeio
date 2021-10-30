@@ -10,7 +10,7 @@ const BoxesPage: NextPage = () => {
   const { user, boxes, profile } = useData();
 
   return (
-    <Layout title="Boxes" isApp>
+    <Layout title="Boxes">
       <PageHeader title="Your boxes" icon={AllInboxIcon} />
       <Divider sx={{ mb: 3 }} />
       <BoxGrid user={user} boxes={boxes} profile={profile} showControls={true} />

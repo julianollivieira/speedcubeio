@@ -28,18 +28,9 @@ const BoxPage: NextPage = () => {
 
   return (
     <Layout title="Boxes" allowUnauthorized>
-      <Box
-        sx={{
-          pt: '64px',
-          px: { md: '240px' },
-        }}
-      >
-        <Box sx={{ px: 2 }}>
-          <PageHeader title={`${user?.displayName}'s boxes`} icon={AllInboxIcon} />
-          <Divider sx={{ mb: 3 }} />
-          <BoxGrid user={user} boxes={boxes} profile={profile} hideIfPrivate />
-        </Box>
-      </Box>
+      <PageHeader title={`${user?.displayName}'s boxes`} icon={AllInboxIcon} />
+      <Divider sx={{ mb: 3 }} />
+      <BoxGrid user={user} boxes={boxes} profile={profile} hideIfPrivate />
     </Layout>
   );
 };
