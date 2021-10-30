@@ -19,6 +19,7 @@ import TimeListRow from '@/components/timelist/TimeListRow';
 import { Time } from '@/types';
 import DeleteTimeDialog from '@/components/timer/dialogs/DeleteTimeDialog';
 import BoxSelector from '@/components/misc/BoxSelector';
+import PuzzleSelector from '@/components/misc/PuzzleSelector';
 
 const drawerWidth = 360;
 
@@ -64,6 +65,7 @@ interface Props {
   open: boolean;
   showControls?: boolean;
   showBoxSelector?: boolean;
+  showPuzzleSelector?: boolean;
   closeDrawer: () => void;
 }
 
@@ -71,6 +73,7 @@ const TimeListDrawer = ({
   open,
   showControls = false,
   showBoxSelector = false,
+  showPuzzleSelector = false,
   closeDrawer,
 }: Props): ReactElement => {
   const theme = useTheme();
@@ -99,13 +102,24 @@ const TimeListDrawer = ({
         <>
           <Box sx={{ marginTop: '64px' }}>
             {showBoxSelector && (
-              <Box sx={{ p: 2, height: 100 }}>
+              <Box
+                sx={{
+                  px: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: 100,
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+                  backgroundColor: '#151C24',
+                }}
+              >
                 <BoxSelector />
               </Box>
             )}
             <TableContainer
               sx={{
-                height: `calc(100vh - ${showBoxSelector ? 164 : 64}px)`,
+                height: `calc(100vh - ${
+                  showBoxSelector ? (showPuzzleSelector ? 264 : 164) : 64
+                }px)`,
                 overflowY: 'auto',
               }}
             >
@@ -141,6 +155,20 @@ const TimeListDrawer = ({
                 </TableBody>
               </Table>
             </TableContainer>
+            {showPuzzleSelector && (
+              <Box
+                sx={{
+                  px: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: 100,
+                  borderTop: '1px solid rgba(255, 255, 255, 0.12)',
+                  backgroundColor: '#151C24',
+                }}
+              >
+                <PuzzleSelector />
+              </Box>
+            )}
           </Box>
           {showControls && deletingTime ? (
             <DeleteTimeDialog

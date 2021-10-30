@@ -67,6 +67,7 @@ const TimerPage: NextPage = () => {
       <TimeListDrawer
         open={timeListDrawerOpen}
         showBoxSelector
+        showPuzzleSelector
         showControls
         closeDrawer={() => setTimeListDrawerOpen(false)}
       />
