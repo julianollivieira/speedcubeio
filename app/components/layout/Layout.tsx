@@ -45,7 +45,7 @@ const Layout = ({
           handleDrawerClose={handleDrawerClose}
         />
       )}
-      <Box>{children}</Box>
+      {children}
       {/* Add circular progress when loading user/boxes/profile? */}
     </>
   );

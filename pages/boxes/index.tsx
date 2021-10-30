@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { Box, Divider } from '@mui/material';
+import { Box, Divider, Container } from '@mui/material';
 import { useData } from '@/hooks/useData';
 import { AllInbox as AllInboxIcon } from '@mui/icons-material';
 import Layout from '@/components/layout/Layout';

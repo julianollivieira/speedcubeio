@@ -5,13 +5,17 @@ import {
   FormatListNumbered as FormatListNumberedIcon,
 } from '@mui/icons-material';
 import Layout from '@/components/layout/Layout';
-import BoxSelector from '@/components/misc/BoxSelector';
-import TimeList from '@/components/timer/TimeList';
+// import BoxSelector from '@/components/misc/BoxSelector';
+// import TimeList from '@/components/timer/TimeList';
 import Timer from '@/components/timer/Timer';
 import PuzzleSelector from '@/components/misc/PuzzleSelector';
 import ScrambleComponent from '@/components/timer/ScrambleComponent';
+import TimeListDrawer from '@/components/timelist/TimeListDrawer';
+import { useState } from 'react';
 
 const TimerPage: NextPage = () => {
+  const [TimeListDrawerOpen, setTimeListDrawerOpen] = useState(false);
+
   return (
     <Layout title="Timer" isApp>
       <MUIBox sx={{ display: 'flex', pt: '64px', width: '100vw', height: '100vh' }}>
@@ -71,6 +75,17 @@ const TimerPage: NextPage = () => {
           sx={{
             width: 360,
             display: { xs: 'none', lg: 'flex' },
+            // borderLeft: 1,
+            // borderColor: (theme) =>
+            //   theme.palette.mode === 'dark'
+            //     ? 'rgba(255, 255, 255, 0.12)'
+            //     : 'rgba(0, 0, 0, 0.12)',
+          }}
+        ></MUIBox>
+        {/* <MUIBox
+          sx={{
+            width: 360,
+            display: { xs: 'none', lg: 'flex' },
             flexDirection: 'column',
             borderLeft: 1,
             borderColor: (theme) =>
@@ -94,7 +109,7 @@ const TimerPage: NextPage = () => {
               },
             }}
           />
-        </MUIBox>
+        </MUIBox> */}
       </MUIBox>
       <Fab
         color="primary"
@@ -104,10 +119,11 @@ const TimerPage: NextPage = () => {
           bottom: 25,
           display: { xs: 'flex', lg: 'none' },
         }}
-      // onClick={() => setEditingBox(box ?? null)}
+        onClick={() => setTimeListDrawerOpen(true)}
       >
         <FormatListNumberedIcon />
       </Fab>
+      <TimeListDrawer open={TimeListDrawerOpen} showBoxSelector showControls />
     </Layout>
   );
 };

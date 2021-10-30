@@ -14,6 +14,7 @@ import {
   Delete as DeleteIcon,
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
+  FormatListNumbered as FormatListNumberedIcon,
 } from '@mui/icons-material';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { Box, Profile } from '@/types';
@@ -21,7 +22,7 @@ import { useData } from '@/hooks/useData';
 import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
-import TimeListComponent from '@/components/timer/TimeList';
+import TimeListDrawer from '@/components/timelist/TimeListDrawer';
 import { ReactElement, useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import Router from 'next/router';
@@ -45,6 +46,7 @@ const BoxComponent = ({
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
   const [visibilityLoading, setVisibilityLoading] = useState(false);
+  const [TimeListDrawerOpen, setTimeListDrawerOpen] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -150,7 +152,6 @@ const BoxComponent = ({
                     <span>
                       <IconButton
                         size="large"
-                        sx={{ display: { xs: 'none', lg: 'flex' } }}
                         onClick={toggleVisibility}
                         disabled={visibilityLoading}
                       >
@@ -164,18 +165,10 @@ const BoxComponent = ({
                       </IconButton>
                     </span>
                   </Tooltip>
-                  <IconButton
-                    size="large"
-                    sx={{ display: { xs: 'none', lg: 'flex' } }}
-                    onClick={() => setEditingBox(box ?? null)}
-                  >
+                  <IconButton size="large" onClick={() => setEditingBox(box ?? null)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton
-                    size="large"
-                    sx={{ display: { xs: 'none', lg: 'flex' } }}
-                    onClick={() => setDeletingBox(box ?? null)}
-                  >
+                  <IconButton size="large" onClick={() => setDeletingBox(box ?? null)}>
                     <DeleteIcon />
                   </IconButton>
                 </>
@@ -205,7 +198,7 @@ const BoxComponent = ({
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TimeListComponent
+              {/* <TimeListComponent
                 showControls={showControls}
                 sx={{
                   position: 'fixed',
@@ -217,7 +210,7 @@ const BoxComponent = ({
                   borderLeft: '1px solid rgba(255, 255, 255, 0.12)',
                   display: { xs: 'none', lg: 'flex' },
                 }}
-              />
+              /> */}
             </Grid>
           </Grid>
         </>
@@ -247,7 +240,7 @@ const BoxComponent = ({
           }}
         />
       )}
-      {showControls ?? (
+      {showControls && (
         <Fab
           color="primary"
           sx={{
@@ -256,11 +249,12 @@ const BoxComponent = ({
             bottom: 25,
             display: { xs: 'flex', lg: 'none' },
           }}
-          onClick={() => setEditingBox(box ?? null)}
+          onClick={() => setTimeListDrawerOpen(true)}
         >
-          <EditIcon />
+          <FormatListNumberedIcon />
         </Fab>
       )}
+      <TimeListDrawer open={TimeListDrawerOpen} showControls />
     </>
   );
 };

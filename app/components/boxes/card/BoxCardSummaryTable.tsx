@@ -26,6 +26,7 @@ const BoxCardSummaryTable = ({ box }: Props): ReactElement => {
             <TableCell>#</TableCell>
             <TableCell>Last</TableCell>
             <TableCell>Best</TableCell>
+            <TableCell>Worst</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -33,16 +34,19 @@ const BoxCardSummaryTable = ({ box }: Props): ReactElement => {
             <TableCell>Time</TableCell>
             <TableCell>{msToTime(timeList?.getLastTime(), true)}</TableCell>
             <TableCell>{msToTime(timeList?.getBestTime(), true)}</TableCell>
+            <TableCell>{msToTime(timeList?.getWorstTime(), true)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>AO5</TableCell>
             <TableCell>{msToTime(timeList?.getLastAverageOf5(), true)}</TableCell>
             <TableCell>{msToTime(timeList?.getBestAverageOf5(), true)}</TableCell>
+            <TableCell>{msToTime(timeList?.getWorstAverageOf5(), true)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>AO12</TableCell>
             <TableCell>{msToTime(timeList?.getLastAverageOf12(), true)}</TableCell>
             <TableCell>{msToTime(timeList?.getBestAverageOf12(), true)}</TableCell>
+            <TableCell>{msToTime(timeList?.getWorstAverageOf12(), true)}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

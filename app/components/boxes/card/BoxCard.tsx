@@ -64,37 +64,65 @@ const BoxCard = ({
             }}
           >
             <CardHeader
+              sx={{
+                flex: 1,
+                pr: 0,
+                width: 'calc(100% - 72px)',
+                '& .MuiCardHeader-content': { overflow: 'hidden' },
+              }}
               title={box.name}
-              titleTypographyProps={{ noWrap: true }}
               subheader={`Last used ${UnixEpochToDaysAgo(
                 getBoxLastUseOrCreationTime(box)
               )}`}
+              titleTypographyProps={{
+                sx: {
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
+              subheaderTypographyProps={{
+                sx: {
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
               avatar={
                 <Avatar sx={{ bgcolor: box.color }} variant="rounded">
                   {box.icon}
                 </Avatar>
               }
             />
-            <IconButton
-              size="large"
+            <MUIBox
               sx={{
-                mr: 2,
-                display: { xs: 'flex', lg: showMenuButtons ? 'flex' : 'none' },
-              }}
-              onTouchStart={(event) => {
-                event.stopPropagation();
-              }}
-              onMouseDown={(event) => {
-                event.stopPropagation();
-              }}
-              onClick={(event) => {
-                event.stopPropagation();
-                event.preventDefault();
-                handleMenuOpen(event);
+                width: '72px',
+                height: '72px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              <MoreVertIcon />
-            </IconButton>
+              <IconButton
+                size="large"
+                sx={{
+                  display: { xs: 'flex', lg: showMenuButtons ? 'flex' : 'none' },
+                }}
+                onTouchStart={(event) => {
+                  event.stopPropagation();
+                }}
+                onMouseDown={(event) => {
+                  event.stopPropagation();
+                }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  handleMenuOpen(event);
+                }}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            </MUIBox>
           </MUIBox>
           <CardContent>
             <BoxCardSummaryTable box={box} />
