@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { ReactElement, ReactNode, useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, Container, useMediaQuery } from '@mui/material';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import NavigationBar from '@/components/navigation/NavigationBar';
 import NavigationDrawer from '@/components/navigation/NavigationDrawer';
@@ -8,6 +8,7 @@ import { useData } from '@/hooks/useData';
 import Router from 'next/router';
 
 type Props = {
+  fluid?: boolean;
   title?: string;
   children: ReactNode;
   isApp?: boolean;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 const Layout = ({
+  fluid = false,
   title,
   children,
   isApp = false,
@@ -25,6 +27,8 @@ const Layout = ({
   const handleDrawerClose = () => setOpen(false);
   const toggleNavigationDrawer = () => setOpen(!open);
   const { user } = useData();
+
+  const matches = useMediaQuery((theme: any) => theme.breakpoints.up('md'));
 
   useEffect(() => {
     if (user === null && !allowUnauthorized) {
@@ -45,7 +49,9 @@ const Layout = ({
           handleDrawerClose={handleDrawerClose}
         />
       )}
-      {children}
+      <Container fixed={!fluid && matches} sx={{ pt: '64px' }} maxWidth={false}>
+        <Box sx={{ px: { md: '73px' } }}>{children}</Box>
+      </Container>
       {/* Add circular progress when loading user/boxes/profile? */}
     </>
   );

@@ -6,7 +6,15 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
-import { Avatar, Box, Chip, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Chip,
+  Grid,
+  IconButton,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import Link from '@/components/misc/Link';
 import { ReactElement, useState } from 'react';
 import type { Profile } from '@/types';
@@ -52,147 +60,119 @@ const ProfileHeader = ({
     console.log(`localhost:3000/users/${user?.uid}`);
   };
 
+  const matches = useMediaQuery((theme: any) => theme.breakpoints.between('sm', 'lg'));
+  const profilePictureHeight = matches ? 120 : 150;
+
   return (
-    <Grid container sx={{ py: 3 }}>
-      <Grid
-        item
-        lg={2}
-        sx={{
-          alignItems: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-        xs={12}
-      >
+    <Box sx={{ py: 3, display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
+      <Box sx={{ pb: { xs: 3, sm: 0 }, display: 'flex', justifyContent: 'center' }}>
         <Avatar
           src={user?.photoURL ?? ''}
           sx={{
             border: 1,
             borderRadius: '50%',
-            height: 150,
-            mb: { xs: 5, lg: 0 },
-            width: 150,
+            height: profilePictureHeight,
+            width: profilePictureHeight,
           }}
         />
-      </Grid>
-      <Grid item lg={8} sx={{ display: 'flex', alignItems: 'center' }} xs={12}>
+      </Box>
+      <Box
+        sx={{
+          width: { xs: 1, sm: `calc(100% - ${profilePictureHeight}px)` },
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+        }}
+      >
         <Box
           sx={{
-            alignItems: 'center',
+            height: { sm: `${profilePictureHeight}px` },
+            pl: { xs: 0, sm: 3 },
+            width: { xs: 1, md: 'calc(100% - 220px)' },
             display: 'flex',
-            flexGrow: 1,
-            justifyContent: 'space-between',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: { xs: 'center', sm: 'flex-start' },
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              pl: 3,
-              flexDirection: 'column',
-              flexGrow: 1,
-            }}
-          >
-            <Box
-              sx={{
-                alignItems: 'center',
-                display: 'flex',
-                justifyContent: { xs: 'center', lg: 'flex-start' },
-              }}
-            >
-              <Typography sx={{ fontSize: { xs: '2em', lg: '2.5em' } }} variant="h3">
-                {user ? user?.displayName : 'User not found'}
-              </Typography>
-              {profile?.isVerified ? (
-                <VerifiedIcon color="info" fontSize="large" sx={{ ml: 2 }} />
-              ) : (
-                ''
-              )}
-            </Box>
+          <Box sx={{ width: 1, display: 'flex', alignItems: 'center' }}>
             <Typography
               sx={{
-                display: 'flex',
-                justifyContent: { xs: 'center', lg: 'flex-start' },
+                fontSize: '2.5em',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                textAlign: { xs: 'center', sm: 'start' },
               }}
-              variant="subtitle1"
+              variant="h3"
             >
-              {'Joined on '}
-              {dayjs(user?.metadata.creationTime).utc().format('MMMM D YYYY')}
+              {user ? user?.displayName : 'User not found'}
             </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: { xs: 'center', lg: 'flex-start' },
-                my: 1,
-              }}
-            >
-              <Box>
-                <Chip
-                  color="error"
-                  label="PRO MEMBER"
-                  size="small"
-                  sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                />
-                <Chip
-                  color="warning"
-                  label="BETA TESTER"
-                  size="small"
-                  sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                />
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Grid>
-      {user ? (
-        <Grid
-          item
-          lg={2}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            pt: { xs: 3, lg: 0 },
-          }}
-          xs={12}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <IconButton size="large" onClick={handleShare}>
-              <ShareIcon />
-            </IconButton>
-            {showControls ? (
-              <>
-                <IconButton
-                  size="large"
-                  sx={{ display: { xs: 'none', lg: 'flex' } }}
-                  onClick={toggleVisibility}
-                  disabled={visibilityLoading}
-                >
-                  {!profile?.isPrivate ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </IconButton>
-                <IconButton size="large" sx={{ display: { xs: 'none', lg: 'flex' } }}>
-                  <EditIcon />
-                </IconButton>
-              </>
-            ) : hide ? (
-              ''
+            {profile?.isVerified ? (
+              <VerifiedIcon color="info" fontSize="large" sx={{ ml: 2 }} />
             ) : (
-              <Link href={`/users/${user.uid}/boxes`} passHref>
-                <IconButton size="large">
-                  <AllInboxIcon />
-                </IconButton>
-              </Link>
+              ''
             )}
           </Box>
-        </Grid>
-      ) : (
-        ''
-      )}
-    </Grid>
+          <Typography
+            sx={{
+              display: 'flex',
+              justifyContent: { xs: 'center', md: 'flex-start' },
+            }}
+            variant="subtitle1"
+          >
+            {'Joined on '}
+            {dayjs(user?.metadata.creationTime).utc().format('MMMM D YYYY')}
+          </Typography>
+          <Box sx={{ pt: { xs: 3, sm: 1 } }}>
+            <Chip
+              color="error"
+              label="PRO MEMBER"
+              size="small"
+              sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+            />
+            <Chip
+              color="warning"
+              label="BETA TESTER"
+              size="small"
+              sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            pt: { xs: 3, md: 0 },
+            pr: { sm: `${profilePictureHeight}px`, md: 0 },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: { xs: 'center', md: 'flex-end' },
+            width: { xs: 1, md: showControls ? '220px' : `${profilePictureHeight}px` },
+          }}
+        >
+          <IconButton size="large" onClick={handleShare}>
+            <ShareIcon />
+          </IconButton>
+          <Link href={`/users/${user?.uid}/boxes`} passHref>
+            <IconButton size="large">
+              <AllInboxIcon />
+            </IconButton>
+          </Link>
+          {showControls && (
+            <>
+              <IconButton
+                size="large"
+                onClick={toggleVisibility}
+                disabled={visibilityLoading}
+              >
+                {!profile?.isPrivate ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </IconButton>
+              <IconButton size="large">
+                <EditIcon />
+              </IconButton>
+            </>
+          )}
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

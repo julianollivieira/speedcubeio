@@ -3,7 +3,6 @@ import Layout from '@/components/layout/Layout';
 import Profile from '@/components/profile/Profile';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { Container } from '@mui/material';
 import { User } from 'firebase/auth';
 import { Profile as ProfileType } from '@/types';
 
@@ -22,9 +21,7 @@ const ProfilePage: NextPage = () => {
 
   return (
     <Layout title={`${user?.displayName ?? 'Someone'}'s profile`} allowUnauthorized>
-      <Container sx={{ pt: '64px' }}>
-        <Profile profile={profile} user={user} hideIfPrivate />
-      </Container>
+      <Profile profile={profile} hideIfPrivate user={user} />
     </Layout>
   );
 };

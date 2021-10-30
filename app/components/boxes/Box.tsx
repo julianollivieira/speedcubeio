@@ -74,149 +74,130 @@ const BoxComponent = ({
 
   return (
     <>
-      <Grid container sx={{ py: 3 }}>
-        <Grid item xs={12} lg={10}>
-          <MUIBox sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h3">
-              <Avatar
-                sx={{
-                  bgcolor: box?.color,
-                  height: 75,
-                  width: 75,
-                  fontSize: '0.75em',
-                  mr: 3,
-                }}
-                variant="rounded"
-              >
-                {box?.icon}
-              </Avatar>
-            </Typography>
-            <MUIBox sx={{ display: 'flex', flexDirection: 'column' }}>
-              {box ? (
-                <>
-                  <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
-                    {box?.name}
-                  </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{
-                      display: 'flex',
-                      justifyContent: { xs: 'center', lg: 'flex-start' },
-                    }}
-                  >
-                    Created {UnixEpochToDaysAgo(box?.createdAt)} / Last used{' '}
-                    {UnixEpochToDaysAgo(getBoxLastUseOrCreationTime(box))}
-                    {/* {!loggedInUser ? ` / By ${user?.displayName}` : <></>} */}
-                  </Typography>
-                </>
-              ) : (
-                // <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center' }}>
-                //   {!user ? 'User' : 'Box'} not found
-                // </Typography>
-                ''
-              )}
-            </MUIBox>
-          </MUIBox>
-        </Grid>
-        {box ? (
-          <Grid
-            item
-            xs={12}
-            lg={2}
+      <MUIBox sx={{ py: 3, display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
+        <MUIBox
+          sx={{
+            pb: { xs: 3, sm: 0 },
+            display: 'flex',
+            justifyContent: 'center',
+            width: { xs: 1, sm: '75px' },
+          }}
+        >
+          <Typography variant="h3">
+            <Avatar
+              sx={{
+                bgcolor: box?.color,
+                height: { xs: 100, sm: 75 },
+                width: { xs: 100, sm: 75 },
+                fontSize: '0.75em',
+              }}
+              variant="rounded"
+            >
+              {box?.icon}
+            </Avatar>
+          </Typography>
+        </MUIBox>
+        <MUIBox
+          sx={{
+            width: { xs: 1, sm: 'calc(100% - 75px)' },
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+          }}
+        >
+          <MUIBox
             sx={{
+              width: { xs: 1, md: 'calc(100% - 220px)' },
+              pl: { xs: 0, sm: 3 },
               display: 'flex',
-              justifyContent: { xs: 'center', lg: 'end' },
-              pt: { xs: 3, lg: 0 },
-              pr: { xs: 0, lg: 2 },
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: { xs: 'center', sm: 'flex-start' },
             }}
           >
-            <MUIBox
+            <Typography
+              variant="h3"
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                fontSize: '2em',
+                width: 1,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                textAlign: { xs: 'center', sm: 'start' },
               }}
             >
-              <IconButton size="large" onClick={handleShare}>
-                <ShareIcon />
-              </IconButton>
-              {showControls && (
-                <>
-                  <Tooltip
-                    title={
-                      profile?.isPrivate
-                        ? "Can't change visibility because profile is private"
-                        : `Make box ${box?.isPrivate ? 'public' : 'private'}`
-                    }
-                  >
-                    <span>
-                      <IconButton
-                        size="large"
-                        onClick={toggleVisibility}
-                        disabled={visibilityLoading}
-                      >
-                        {profile?.isPrivate ? (
-                          <VisibilityOffIcon />
-                        ) : !box?.isPrivate ? (
-                          <VisibilityIcon />
-                        ) : (
-                          <VisibilityOffIcon />
-                        )}
-                      </IconButton>
-                    </span>
-                  </Tooltip>
-                  <IconButton size="large" onClick={() => setEditingBox(box ?? null)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton size="large" onClick={() => setDeletingBox(box ?? null)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </>
-              )}
-            </MUIBox>
-          </Grid>
-        ) : (
-          ''
-        )}
-      </Grid>
+              {box?.name}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                display: 'flex',
+              }}
+            >
+              Created {UnixEpochToDaysAgo(box?.createdAt)} / Last used{' '}
+              {UnixEpochToDaysAgo(getBoxLastUseOrCreationTime(box))}
+            </Typography>
+          </MUIBox>
+          <MUIBox
+            sx={{
+              pt: { xs: 3, md: 0 },
+              pr: { sm: '75px', md: 0 },
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: { xs: 'center', md: 'flex-end' },
+              width: { xs: 1, md: showControls ? '220px' : '75px' },
+            }}
+          >
+            <IconButton size="large" onClick={handleShare}>
+              <ShareIcon />
+            </IconButton>
+            {showControls && (
+              <>
+                <Tooltip
+                  title={
+                    profile?.isPrivate
+                      ? "Can't change visibility because profile is private"
+                      : `Make box ${box?.isPrivate ? 'public' : 'private'}`
+                  }
+                >
+                  <span>
+                    <IconButton
+                      size="large"
+                      onClick={toggleVisibility}
+                      disabled={visibilityLoading}
+                    >
+                      {profile?.isPrivate ? (
+                        <VisibilityOffIcon />
+                      ) : !box?.isPrivate ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </span>
+                </Tooltip>
+                <IconButton size="large" onClick={() => setEditingBox(box ?? null)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton size="large" onClick={() => setDeletingBox(box ?? null)}>
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            )}
+          </MUIBox>
+        </MUIBox>
+      </MUIBox>
       <Divider sx={{ mb: 3 }} />
-      {box ? (
-        <>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={12} xl={6}>
-              <SummaryTableCard box={box} />
-            </Grid>
-            {/* <Grid item xs={12} sm={6} md={12} xl={6}>
-          <BoxSummaryCard timeList={timeList} />
+      <Grid container spacing={2}>
+        <Grid item xs={12} xl={6}>
+          <SummaryTableCard box={box} />
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <TimesGraphCard timeList={timeList} />
         </Grid>
         <Grid item xs={12} xl={6}>
           <PuzzlesPieChartCard timeList={timeList} />
         </Grid> */}
-          </Grid>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              {/* <TimeListComponent
-                showControls={showControls}
-                sx={{
-                  position: 'fixed',
-                  top: 64,
-                  right: 0,
-                  width: 360,
-                  height: 'calc(100vh - 64px)',
-                  bgcolor: 'background.paper',
-                  borderLeft: '1px solid rgba(255, 255, 255, 0.12)',
-                  display: { xs: 'none', lg: 'flex' },
-                }}
-              /> */}
-            </Grid>
-          </Grid>
-        </>
-      ) : (
-        ''
-      )}
+      </Grid>
       {showControls && deletingBox && (
         <DeleteBoxDialog
           box={deletingBox}
@@ -254,7 +235,11 @@ const BoxComponent = ({
           <FormatListNumberedIcon />
         </Fab>
       )}
-      <TimeListDrawer open={TimeListDrawerOpen} showControls />
+      <TimeListDrawer
+        open={TimeListDrawerOpen}
+        showControls
+        closeDrawer={() => setTimeListDrawerOpen(false)}
+      />
     </>
   );
 };
