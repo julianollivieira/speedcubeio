@@ -43,7 +43,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
             main: '#2D9C93',
           },
           secondary: {
-            main: '#873FAD',
+            main: '#313740',
           },
           ...(prefersDarkMode ? darkModePalette : lightModePalette),
         },

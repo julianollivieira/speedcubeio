@@ -9,6 +9,7 @@ import { useState } from 'react';
 import TimeListDrawer from '@/components/timelist/TimeListDrawer';
 import Layout from '@/components/layout/Layout';
 import Timer from '@/components/timer/Timer';
+import ScrambleComponent from '@/components/timer/ScrambleComponent';
 
 const TimerPage: NextPage = () => {
   const [timeListDrawerOpen, setTimeListDrawerOpen] = useState(false);
@@ -24,7 +25,17 @@ const TimerPage: NextPage = () => {
           flexDirection: 'column',
         }}
       >
-        <Box sx={{ width: 1, height: 100 }}></Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            pt: 2.5,
+            width: 1,
+            height: 100,
+          }}
+        >
+          <ScrambleComponent />
+        </Box>
         <Box
           sx={{
             flex: 1,
