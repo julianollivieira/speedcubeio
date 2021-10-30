@@ -103,7 +103,12 @@ const TimeListDrawer = ({
                 <BoxSelector />
               </Box>
             )}
-            <TableContainer>
+            <TableContainer
+              sx={{
+                height: `calc(100vh - ${showBoxSelector ? 164 : 64}px)`,
+                overflowY: 'auto',
+              }}
+            >
               <Table stickyHeader sx={{ maxWidth: '360px' }}>
                 <TableHead>
                   <TableRow>

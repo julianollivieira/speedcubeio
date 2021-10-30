@@ -3,6 +3,7 @@ import { Box, IconButton, Fab } from '@mui/material';
 import {
   Visibility as VisibilityIcon,
   FormatListNumbered as FormatListNumberedIcon,
+  ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
 import TimeListDrawer from '@/components/timelist/TimeListDrawer';
@@ -10,7 +11,7 @@ import Layout from '@/components/layout/Layout';
 import Timer from '@/components/timer/Timer';
 
 const TimerPage: NextPage = () => {
-  const [TimeListDrawerOpen, setTimeListDrawerOpen] = useState(false);
+  const [timeListDrawerOpen, setTimeListDrawerOpen] = useState(false);
 
   return (
     <Layout fluid title="Timer">
@@ -48,8 +49,23 @@ const TimerPage: NextPage = () => {
       >
         <FormatListNumberedIcon />
       </Fab>
+      {timeListDrawerOpen && (
+        <Fab
+          color="primary"
+          sx={{
+            position: 'fixed',
+            right: 25,
+            bottom: 25,
+            display: { xs: 'flex', lg: 'none' },
+            zIndex: 1300,
+          }}
+          onClick={() => setTimeListDrawerOpen(false)}
+        >
+          <ChevronRightIcon />
+        </Fab>
+      )}
       <TimeListDrawer
-        open={TimeListDrawerOpen}
+        open={timeListDrawerOpen}
         showBoxSelector
         showControls
         closeDrawer={() => setTimeListDrawerOpen(false)}

@@ -71,6 +71,7 @@ const TimeListRow = ({
                   <ExtensionIcon />
                 </ListItemIcon>
                 <ListItemText
+                  sx={{ whiteSpace: 'normal' }}
                   primary="Puzzle"
                   secondary={capitalizeFirstLetter(timeData?.puzzle)}
                 />
@@ -79,13 +80,18 @@ const TimeListRow = ({
                 <ListItemIcon>
                   <FormatListNumberedIcon />
                 </ListItemIcon>
-                <ListItemText primary="Scramble" secondary={timeData?.scramble} />
+                <ListItemText
+                  sx={{ whiteSpace: 'normal' }}
+                  primary="Scramble"
+                  secondary={timeData?.scramble}
+                />
               </ListItem>
               <ListItem>
                 <ListItemIcon>
                   <CalendarTodayIcon />
                 </ListItemIcon>
                 <ListItemText
+                  sx={{ whiteSpace: 'normal' }}
                   primary="Date"
                   secondary={UnixEpochToUTC(timeData?.createdAt)}
                 />
@@ -95,6 +101,7 @@ const TimeListRow = ({
                   <DescriptionIcon />
                 </ListItemIcon>
                 <ListItemText
+                  sx={{ whiteSpace: 'normal' }}
                   primary="Comment"
                   secondary={
                     <span
