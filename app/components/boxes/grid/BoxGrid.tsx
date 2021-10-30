@@ -57,7 +57,7 @@ const BoxGrid = ({
           {hide
             ? ''
             : boxes.map((box) => (
-                <Grid xs={12} md={6} lg={4} item key={box.id}>
+                <Grid xs={12} lg={6} xl={4} item key={box.id}>
                   <BoxCard
                     user={user}
                     box={box}
