@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Layout from '@/components/layout/Layout';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { Box, Divider } from '@mui/material';
+import { Box, Divider, Backdrop, CircularProgress } from '@mui/material';
 import { AllInbox as AllInboxIcon } from '@mui/icons-material';
 import PageHeader from '@/components/misc/PageHeader';
 import BoxGrid from '@/components/boxes/grid/BoxGrid';
@@ -28,9 +28,17 @@ const BoxPage: NextPage = () => {
 
   return (
     <Layout title="Boxes" allowUnauthorized>
-      <PageHeader title={`${user?.displayName}'s boxes`} icon={AllInboxIcon} />
-      <Divider sx={{ mb: 3 }} />
-      <BoxGrid user={user} boxes={boxes} profile={profile} hideIfPrivate />
+      {data ? (
+        <>
+          <PageHeader title={`${user?.displayName}'s boxes`} icon={AllInboxIcon} />
+          <Divider sx={{ mb: 3 }} />
+          <BoxGrid user={user} boxes={boxes} profile={profile} hideIfPrivate />
+        </>
+      ) : (
+        <Backdrop open sx={{ color: '#fff', zIndex: 9999 }}>
+          <CircularProgress />
+        </Backdrop>
+      )}
     </Layout>
   );
 };

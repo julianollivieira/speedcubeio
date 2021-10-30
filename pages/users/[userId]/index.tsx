@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { User } from 'firebase/auth';
 import { Profile as ProfileType } from '@/types';
+import { Backdrop, CircularProgress } from '@mui/material';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -21,7 +22,13 @@ const ProfilePage: NextPage = () => {
 
   return (
     <Layout title={`${user?.displayName ?? 'Someone'}'s profile`} allowUnauthorized>
-      <Profile profile={profile} hideIfPrivate user={user} />
+      {data ? (
+        <Profile profile={profile} hideIfPrivate user={user} />
+      ) : (
+        <Backdrop open sx={{ color: '#fff', zIndex: 9999 }}>
+          <CircularProgress />
+        </Backdrop>
+      )}
     </Layout>
   );
 };

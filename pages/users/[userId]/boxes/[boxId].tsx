@@ -3,7 +3,7 @@ import Layout from '@/components/layout/Layout';
 import { useRouter } from 'next/router';
 import Box from '@/components/boxes/Box';
 import useSWR from 'swr';
-import { Box as MUIBox } from '@mui/material';
+import { Box as MUIBox, Backdrop, CircularProgress } from '@mui/material';
 import { User } from 'firebase/auth';
 import { Box as BoxType, Profile } from '@/types';
 
@@ -26,9 +26,15 @@ const BoxPage: NextPage = () => {
 
   return (
     <Layout title="Box" allowUnauthorized>
-      <MUIBox sx={{ mr: { lg: `${360 - 73}px` } }}>
-        <Box user={user} box={box} profile={profile} />
-      </MUIBox>
+      {data ? (
+        <MUIBox sx={{ mr: { lg: `${360 - 73}px` } }}>
+          <Box user={user} box={box} profile={profile} />
+        </MUIBox>
+      ) : (
+        <Backdrop open sx={{ color: '#fff', zIndex: 9999 }}>
+          <CircularProgress />
+        </Backdrop>
+      )}
     </Layout>
   );
 };
