@@ -1,6 +1,5 @@
 import { Scrambow } from 'scrambow';
-import type { Scramble, Scrambler, Seed } from 'scrambow';
-import { Puzzle } from '@/types';
+import type { Scramble } from 'scrambow';
 import { useEffect, useState } from 'react';
 import { useData } from '@/hooks/useData';
 

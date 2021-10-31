@@ -17,7 +17,7 @@ const AccountSettings = (): ReactElement => {
   const [value, setValue] = useState(0);
   const { user } = useData();
 
-  const handleChange = (event: SyntheticEvent<Element, Event>, newValue: number) => {
+  const handleChange = (_: SyntheticEvent<Element, Event>, newValue: number) => {
     setValue(newValue);
   };
 

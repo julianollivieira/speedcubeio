@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Layout from '@/components/layout/Layout';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { Box, Divider, Backdrop, CircularProgress } from '@mui/material';
+import { Divider, Backdrop, CircularProgress } from '@mui/material';
 import { AllInbox as AllInboxIcon } from '@mui/icons-material';
 import PageHeader from '@/components/misc/PageHeader';
 import BoxGrid from '@/components/boxes/grid/BoxGrid';

@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
-import { Box, IconButton, Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import {
-  Visibility as VisibilityIcon,
   FormatListNumbered as FormatListNumberedIcon,
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';

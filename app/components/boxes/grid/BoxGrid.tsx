@@ -28,7 +28,7 @@ const BoxGrid = ({
   const [searchString, setSearchString] = useState<string | null>();
   const [view, setView] = useState<string | null>('grid');
 
-  const handleChangeView = (event: any, newView: string | null) => {
+  const handleChangeView = (_: any, newView: string | null) => {
     if (newView !== null) {
       setView(newView);
     }
@@ -45,7 +45,6 @@ const BoxGrid = ({
   return (
     <>
       <BoxGridToolbar
-        user={user}
         showControls={showControls}
         view={view}
         handleChangeView={handleChangeView}

@@ -8,12 +8,12 @@ class TimeList {
   public constructor(box: Box) {
     const sortedTimes = box.times?.sort((a, b) => a.createdAt - b.createdAt);
     this.times = (sortedTimes ?? []).map((time: Time) => time.time);
-    this.ao5s = this.times.map((item, index) => {
+    this.ao5s = this.times.map((_, index) => {
       if (index < 4) return null;
       const five = this.times.slice(index - 4, index + 1);
       return this.average(this.removeWorstAndBest(five));
     });
-    this.ao12s = this.times.map((item, index) => {
+    this.ao12s = this.times.map((_, index) => {
       if (index < 11) return null;
       const twelve = this.times.slice(index - 11, index + 1);
       return this.average(this.removeWorstAndBest(twelve));

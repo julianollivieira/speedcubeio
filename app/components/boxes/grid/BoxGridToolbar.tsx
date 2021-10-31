@@ -14,10 +14,8 @@ import {
   FormatListBulleted as FormatListBulletedIcon,
 } from '@mui/icons-material';
 import { ChangeEventHandler, ReactElement } from 'react';
-import { User } from 'firebase/auth';
 
 interface Props {
-  user: User | null | undefined;
   showControls: boolean;
   view: string | null;
   handleOpenCreateDialog?: () => void;
@@ -26,7 +24,6 @@ interface Props {
 }
 
 const BoxGridToolbar = ({
-  user,
   showControls,
   view,
   handleOpenCreateDialog,

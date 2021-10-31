@@ -521,8 +521,6 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   const setProfilePrivate = async (isPrivate: boolean): Promise<boolean> => {
     if (!user) throw 'User not found';
     const profileReference = doc(db, 'users', user.uid);
-    const profileSnapshot = await getDoc(profileReference);
-    const profileData = profileSnapshot.data() as Profile | undefined;
 
     await updateDoc(profileReference, { isPrivate: isPrivate });
     setProfile((prevState) => ({ ...prevState, isPrivate: isPrivate } as Profile));
@@ -533,8 +531,6 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   const setBoxPrivate = async (isPrivate: boolean): Promise<boolean> => {
     if (!box || !user) throw 'User not found';
     const boxReference = doc(db, 'users', user.uid, 'boxes', box.id);
-    const boxSnapshot = await getDoc(boxReference);
-    const boxData = boxSnapshot.data() as Box | undefined;
 
     await updateDoc(boxReference, { isPrivate: isPrivate });
     setBox((prevState) => ({ ...prevState, isPrivate: isPrivate } as Box));
