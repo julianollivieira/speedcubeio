@@ -14,8 +14,8 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import { useMemo } from 'react';
-import { AuthProvider } from '@/hooks/useAuth';
 import { SnackbarProvider } from 'notistack';
+import { DataProvider } from '@/hooks/useData';
 
 const darkModePalette: PaletteOptions = {
   background: {
@@ -43,7 +43,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
             main: '#2D9C93',
           },
           secondary: {
-            main: '#873FAD',
+            main: '#313740',
           },
           ...(prefersDarkMode ? darkModePalette : lightModePalette),
         },
@@ -81,11 +81,11 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AuthProvider>
+        <DataProvider>
           <SnackbarProvider maxSnack={3}>
             <Component {...pageProps} />
           </SnackbarProvider>
-        </AuthProvider>
+        </DataProvider>
       </ThemeProvider>
     </>
   );

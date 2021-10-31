@@ -5,16 +5,31 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
 
+// Capitalize first letter
+export const capitalizeFirstLetter = (string?: string): string | null => {
+  if (!string) return null;
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 // Return a well formatted time string from input time (ms)
-export const msToTime = (ms: number | null = null, dash: boolean = false): string => {
+export const msToTime = (ms: number | null = null, dash = false): string => {
   if (dash && ms === null) return '-';
   if (ms === null) return '';
-  const num = ms / 1000; // from ms to s
-  if (num > 60) {
-    return `${Math.floor(num / 60)}:${(num % 60).toFixed(2)}`; // Remainder and quotient
+
+  let result = '';
+
+  let seconds = ms / 1000;
+  if (seconds > 3600) {
+    result = dayjs.utc(ms).format('H:mm:ss.SSS');
+  } else if (seconds > 60) {
+    result = dayjs.utc(ms).format('m:ss.SSS');
   } else {
-    return num.toFixed(2); // to string with 2 decimals
+    result = dayjs.utc(ms).format('ss.SSS');
   }
+
+  let rest = result.substring(0, result.length - 6);
+
+  return `${rest}${parseFloat(result.slice(-6)).toFixed(2).padStart(5, '0')}`;
 };
 
 // TODO: CLEANUP msToTimeNull
@@ -33,9 +48,9 @@ export const msToTime = (ms: number | null = null, dash: boolean = false): strin
 export const getBoxLastUseOrCreationTime = (box: Box | undefined): number | undefined => {
   if (!box) return undefined;
   if (box.times?.length) {
-    return box.times[box.times.length - 1].creationTime;
+    return box.times[box.times.length - 1].createdAt;
   } else {
-    return box.creationTime.seconds;
+    return box.createdAt;
   }
 };
 

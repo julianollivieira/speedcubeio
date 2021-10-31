@@ -1,17 +1,14 @@
-import type { NextPage } from 'next';
 import Layout from '@/components/layout/Layout';
+import type { NextPage } from 'next';
 import Profile from '@/components/profile/Profile';
-import { useAuth } from '@/hooks/useAuth';
-import { Container } from '@mui/material';
+import { useData } from '@/hooks/useData';
 
 const ProfilePage: NextPage = () => {
-  const { user } = useAuth();
+  const { user, profile } = useData();
 
   return (
-    <Layout title="Your profile" isApp>
-      <Container sx={{ pt: '64px' }}>
-        <Profile user={user} showControls />
-      </Container>
+    <Layout title="Your profile">
+      <Profile profile={profile} showControls user={user} />
     </Layout>
   );
 };

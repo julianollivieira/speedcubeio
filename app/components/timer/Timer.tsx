@@ -1,33 +1,33 @@
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Box as MUIBox, Typography } from '@mui/material';
 import TimerClass from '@/classes/Timer';
-import { useAuth } from '@/hooks/useAuth';
-import { createTime } from '@/utils/data/times';
-import { Box } from '@/types';
+import { useData } from '@/hooks/useData';
 
-interface Props {
-  box: Box | undefined;
-}
-
-const Timer = ({ box }: Props) => {
+const Timer = (): ReactElement => {
+  const {
+    scramble,
+    createTime,
+    box,
+    setTimerActive,
+    currentPuzzle,
+    generateNewScramble,
+  } = useData();
   const [time, setTime] = useState(0);
   const [readying, setReadying] = useState(false);
   const [ready, setReady] = useState(false);
 
-  const { user, addTime: addTimeToState } = useAuth();
-
   useEffect(() => {
-    const timer = new TimerClass();
-
-    timer.init({
+    const timer = new TimerClass({
       onTick: (time: any) => {
         setTime(time);
       },
       onReadying: () => {
         setReadying(true);
+        setTimerActive(true);
       },
       onCancelReady: () => {
         setReadying(false);
+        setTimerActive(false);
       },
       onReady: () => {
         setReady(true);
@@ -38,20 +38,17 @@ const Timer = ({ box }: Props) => {
         setReadying(false);
       },
       onStop: async (time: number) => {
-        if (user && box?.id) {
-          const timeObject = await createTime(
-            user?.id,
-            box?.id,
-            time,
-            '3x3x3',
-            'U R L F B F B'
-          );
-          addTimeToState(box?.id, timeObject);
-        }
+        setTimerActive(false);
+        await createTime({
+          time: time,
+          puzzle: currentPuzzle,
+          scramble: scramble?.scramble_string ?? '',
+        });
+        generateNewScramble();
       },
     });
 
-    const keyDown = (event: any) => {
+    const keyDown = (event: KeyboardEvent) => {
       if (event.code == 'Space') {
         if (!timer.isReadying) {
           if (!timer.isRunning) {
@@ -64,7 +61,7 @@ const Timer = ({ box }: Props) => {
       }
     };
 
-    const keyUp = (event: any) => {
+    const keyUp = (event: KeyboardEvent) => {
       if (event.code == 'Space') {
         if (timer.justStopped) {
           timer.justStopped = false;
@@ -86,7 +83,7 @@ const Timer = ({ box }: Props) => {
       document.removeEventListener('keydown', keyDown);
       document.removeEventListener('keyup', keyUp);
     };
-  }, [box]);
+  }, [box, currentPuzzle, scramble]);
 
   return (
     <MUIBox>

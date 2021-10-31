@@ -1,19 +1,14 @@
-import {
-  Box,
-  Typography,
-  Button,
-  TextField,
-} from '@mui/material';
+import { Box, Typography, Button, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { changePasswordValidationSchema } from '@/validations';
-import { useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useState, ReactElement } from 'react';
+import { useData } from '@/hooks/useData';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 
-const SecuritySettings = () => {
+const SecuritySettings = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { changePassword } = useAuth();
+  const { changePassword } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const formik = useFormik({
@@ -22,18 +17,41 @@ const SecuritySettings = () => {
     onSubmit: async (values) => {
       try {
         await changePassword(values.currentPassword, values.newPassword);
-        createSnackbar(enqueueSnackbar, closeSnackbar, 'Succesfully changed password', 'success');
+        createSnackbar(
+          enqueueSnackbar,
+          closeSnackbar,
+          'Succesfully changed password',
+          'success'
+        );
       } catch (error: unknown) {
         setLoading(false);
-        createSnackbar(enqueueSnackbar, closeSnackbar, 'Something wen\'t wrong, please try again', 'error');
+        createSnackbar(
+          enqueueSnackbar,
+          closeSnackbar,
+          "Something wen't wrong, please try again",
+          'error'
+        );
       }
-    }
+    },
   });
 
   return (
-    <Box sx={{ pt: 3, px: { xs: 0, lg: 5 }, pb: { xs: 0, lg: 3 }, minWidth: { md: "600px" } }} >
-      <Typography variant="h4" sx={{ fontWeight: 'bold' }}>Security</Typography>
-      <Box sx={{ pt: 4, display: 'flex', flexDirection: 'column' }} component="form" onSubmit={formik.handleSubmit}>
+    <Box
+      sx={{
+        pt: 3,
+        px: { xs: 0, lg: 5 },
+        pb: { xs: 0, lg: 3 },
+        minWidth: { md: '600px' },
+      }}
+    >
+      <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+        Security
+      </Typography>
+      <Box
+        sx={{ pt: 4, display: 'flex', flexDirection: 'column' }}
+        component="form"
+        onSubmit={formik.handleSubmit}
+      >
         <Typography variant="h6">Change your password</Typography>
         <TextField
           name="currentPassword"
@@ -57,9 +75,16 @@ const SecuritySettings = () => {
           helperText={formik.touched.newPassword && formik.errors.newPassword}
           sx={{ mt: 1 }}
         />
-        <Button type="submit" variant="contained" sx={{ width: 'fit-content', px: 3, mt: 1 }} disabled={loading}>Save</Button>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ width: 'fit-content', px: 3, mt: 1 }}
+          disabled={loading}
+        >
+          Save
+        </Button>
       </Box>
-    </Box >
+    </Box>
   );
 };
 

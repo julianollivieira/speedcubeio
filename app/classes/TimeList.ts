@@ -1,21 +1,21 @@
 import { Box, Time } from '@/types';
 
 class TimeList {
-  times: number[] = [];
-  ao5s: (number | null)[] = [];
-  ao12s: (number | null)[] = [];
+  public times: number[] = [];
+  public ao5s: (number | null)[] = [];
+  public ao12s: (number | null)[] = [];
 
   public constructor(box: Box) {
-    const sortedTimes = box.times?.sort((a, b) => a.creationTime - b.creationTime);
+    const sortedTimes = box.times?.sort((a, b) => a.createdAt - b.createdAt);
     this.times = (sortedTimes ?? []).map((time: Time) => time.time);
-    this.ao5s = this.times.map((item, index) => {
+    this.ao5s = this.times.map((_, index) => {
       if (index < 4) return null;
-      const five = this.times.slice(index - 4, index);
+      const five = this.times.slice(index - 4, index + 1);
       return this.average(this.removeWorstAndBest(five));
     });
-    this.ao12s = this.times.map((item, index) => {
+    this.ao12s = this.times.map((_, index) => {
       if (index < 11) return null;
-      const twelve = this.times.slice(index - 11, index);
+      const twelve = this.times.slice(index - 11, index + 1);
       return this.average(this.removeWorstAndBest(twelve));
     });
   }
@@ -73,14 +73,14 @@ class TimeList {
   // Get the best average of 5
   public getBestAverageOf5(): number | null {
     if (this.ao5s.length < 4) return null;
-    let timesWithoutNull = <number[]>this.ao5s.filter((time) => time !== null);
+    const timesWithoutNull = <number[]>this.ao5s.filter((time) => time !== null);
     return Math.min(...timesWithoutNull);
   }
 
   // Get the worst average of 5
   public getWorstAverageOf5(): number | null {
     if (this.ao5s.length < 4) return null;
-    let timesWithoutNull = <number[]>this.ao5s.filter((time) => time !== null);
+    const timesWithoutNull = <number[]>this.ao5s.filter((time) => time !== null);
     return Math.max(...timesWithoutNull);
   }
 
@@ -93,14 +93,14 @@ class TimeList {
   // Get the best average of 12
   public getBestAverageOf12(): number | null {
     if (this.ao12s.length < 11) return null;
-    let timesWithoutNull = <number[]>this.ao12s.filter((time) => time !== null);
+    const timesWithoutNull = <number[]>this.ao12s.filter((time) => time !== null);
     return Math.min(...timesWithoutNull);
   }
 
   // Get the best average of 12
   public getWorstAverageOf12(): number | null {
     if (this.ao12s.length < 11) return null;
-    let timesWithoutNull = <number[]>this.ao12s.filter((time) => time !== null);
+    const timesWithoutNull = <number[]>this.ao12s.filter((time) => time !== null);
     return Math.max(...timesWithoutNull);
   }
 
@@ -112,7 +112,7 @@ class TimeList {
 
   // Return the average of a list of times
   private average(times: number[]): number {
-    let total: number = 0;
+    let total = 0;
     times.forEach((time) => (total += time));
     return total / times.length;
   }
@@ -121,8 +121,14 @@ class TimeList {
   private removeWorstAndBest(times: number[]): number[] {
     const best = Math.min(...times);
     const worst = Math.max(...times);
-    const withoutBest = times.filter((time) => time !== best);
-    return withoutBest.filter((time) => time !== worst);
+
+    const firstBestIndex = times.findIndex((time) => time === best);
+    times.slice(firstBestIndex, 1);
+
+    const firstWorstIndex = times.findIndex((time) => time === worst);
+    times.slice(firstWorstIndex, 1);
+
+    return times;
   }
 }
 

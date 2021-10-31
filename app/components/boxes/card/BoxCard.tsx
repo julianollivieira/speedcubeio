@@ -1,6 +1,7 @@
 import { Box } from '@/types';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
+import { User } from 'firebase/auth';
 import {
   Card,
   CardHeader,
@@ -9,7 +10,6 @@ import {
   CardActionArea,
   IconButton,
   Box as MUIBox,
-  CardActions,
   Typography,
   Menu,
   MenuItem,
@@ -20,12 +20,12 @@ import {
   Delete as DeleteIcon,
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
-  Close as CloseIcon,
 } from '@mui/icons-material';
 import BoxCardSummaryTable from '@/components/boxes/card/BoxCardSummaryTable';
 import Link from 'next/link';
 
 interface Props {
+  user: User | null | undefined;
   box: Box;
   showControls: boolean;
   openDeleteBoxDialog: () => void;
@@ -34,12 +34,13 @@ interface Props {
 }
 
 const BoxCard = ({
+  user,
   box,
   showControls,
   openDeleteBoxDialog,
   openEditBoxDialog,
-  share
-}: Props) => {
+  share,
+}: Props): ReactElement => {
   const [showMenuButtons, setShowMenuButtons] = useState(false);
   const handleShowMenu = () => setShowMenuButtons(true);
   const handleHideMenu = () => setShowMenuButtons(false);
@@ -51,7 +52,9 @@ const BoxCard = ({
 
   return (
     <Card onMouseEnter={handleShowMenu} onMouseLeave={handleHideMenu}>
-      <Link href={`/boxes/${box.id}`}>
+      <Link
+        href={`${!showControls && user ? `/users/${user?.uid}` : ''}/boxes/${box.id}`}
+      >
         <CardActionArea>
           <MUIBox
             sx={{
@@ -61,37 +64,65 @@ const BoxCard = ({
             }}
           >
             <CardHeader
+              sx={{
+                flex: 1,
+                pr: 0,
+                width: 'calc(100% - 72px)',
+                '& .MuiCardHeader-content': { overflow: 'hidden' },
+              }}
               title={box.name}
-              titleTypographyProps={{ noWrap: true }}
               subheader={`Last used ${UnixEpochToDaysAgo(
                 getBoxLastUseOrCreationTime(box)
               )}`}
+              titleTypographyProps={{
+                sx: {
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
+              subheaderTypographyProps={{
+                sx: {
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
               avatar={
                 <Avatar sx={{ bgcolor: box.color }} variant="rounded">
                   {box.icon}
                 </Avatar>
               }
             />
-            <IconButton
-              size="large"
+            <MUIBox
               sx={{
-                mr: 2,
-                display: { xs: 'flex', lg: showMenuButtons ? 'flex' : 'none' },
-              }}
-              onTouchStart={(event) => {
-                event.stopPropagation();
-              }}
-              onMouseDown={(event) => {
-                event.stopPropagation();
-              }}
-              onClick={(event) => {
-                event.stopPropagation();
-                event.preventDefault();
-                handleMenuOpen(event);
+                width: '72px',
+                height: '72px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              <MoreVertIcon />
-            </IconButton>
+              <IconButton
+                size="large"
+                sx={{
+                  display: { xs: 'flex', lg: showMenuButtons ? 'flex' : 'none' },
+                }}
+                onTouchStart={(event) => {
+                  event.stopPropagation();
+                }}
+                onMouseDown={(event) => {
+                  event.stopPropagation();
+                }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  handleMenuOpen(event);
+                }}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            </MUIBox>
           </MUIBox>
           <CardContent>
             <BoxCardSummaryTable box={box} />
@@ -123,36 +154,32 @@ const BoxCard = ({
         open={!!anchorEl}
         onClose={handleMenuClose}
       >
-        {showControls ? (
-          [
-            <MenuItem
-              key="edit"
-              onClick={() => {
-                handleMenuClose();
-                openEditBoxDialog();
-              }}
-            >
-              <ListItemIcon>
-                <EditIcon fontSize="small" />
-              </ListItemIcon>
-              <Typography variant="inherit">Edit</Typography>
-            </MenuItem>,
-            <MenuItem
-              key="delete"
-              onClick={() => {
-                handleMenuClose();
-                openDeleteBoxDialog();
-              }}
-            >
-              <ListItemIcon>
-                <DeleteIcon fontSize="small" />
-              </ListItemIcon>
-              <Typography variant="inherit">Delete</Typography>
-            </MenuItem>,
-          ]
-        ) : (
-          <></>
-        )}
+        {showControls && [
+          <MenuItem
+            key="edit"
+            onClick={() => {
+              handleMenuClose();
+              openEditBoxDialog();
+            }}
+          >
+            <ListItemIcon>
+              <EditIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Edit</Typography>
+          </MenuItem>,
+          <MenuItem
+            key="delete"
+            onClick={() => {
+              handleMenuClose();
+              openDeleteBoxDialog();
+            }}
+          >
+            <ListItemIcon>
+              <DeleteIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Delete</Typography>
+          </MenuItem>,
+        ]}
         <MenuItem
           key="share"
           onClick={() => {

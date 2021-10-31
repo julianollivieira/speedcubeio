@@ -2,21 +2,21 @@ import { Paper, Typography, Box, TextField, Button, LinearProgress } from '@mui/
 import Link from '@/components/misc/Link';
 import { useFormik } from 'formik';
 import { loginValidationSchema } from '@/validations';
-import { useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useState, ReactElement } from 'react';
 import Router from 'next/router';
 import Logo from '@/components/misc/Logo';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import authErrors from '@/utils/authErrors';
+import { useData } from '@/hooks/useData';
 
 interface Error {
   code: string;
 }
 
-const LoginForm = () => {
+const LoginForm = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { logIn } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const formik = useFormik({
@@ -25,7 +25,7 @@ const LoginForm = () => {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        const userCredential = await login(values.email, values.password);
+        const userCredential = await logIn(values.email, values.password);
         if (userCredential.user.emailVerified) {
           createSnackbar(
             enqueueSnackbar,
@@ -35,11 +35,16 @@ const LoginForm = () => {
           );
           Router.push('/home');
         } else {
-          throw { code: 'auth/email-not-verified' }
+          throw { code: 'auth/email-not-verified' };
         }
       } catch (error: unknown) {
         setLoading(false);
-        createSnackbar(enqueueSnackbar, closeSnackbar, authErrors[(error as Error).code], 'error');
+        createSnackbar(
+          enqueueSnackbar,
+          closeSnackbar,
+          authErrors[(error as Error).code],
+          'error'
+        );
       }
     },
   });
@@ -110,7 +115,7 @@ const LoginForm = () => {
           </Button>
         </Box>
       </Box>
-      {loading ?
+      {loading ? (
         <LinearProgress
           sx={{
             width: 1,
@@ -118,9 +123,9 @@ const LoginForm = () => {
             borderBottomRightRadius: '4px',
           }}
         />
-        :
+      ) : (
         <></>
-      }
+      )}
     </Paper>
   );
 };

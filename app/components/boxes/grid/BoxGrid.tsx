@@ -1,43 +1,50 @@
-import { useState } from 'react';
-import { Box, User } from '@/types';
+import { useState, ReactElement } from 'react';
+import { User } from 'firebase/auth';
+import { Box } from '@/types';
 import { Typography, Grid } from '@mui/material';
 import BoxCard from '@/components/boxes/card/BoxCard';
 import BoxGridToolbar from '@/components/boxes/grid/BoxGridToolbar';
 import CreateBoxDialog from '@/components/boxes/dialogs/CreateBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
-import { createBox, deleteBox, editBox } from '@/utils/data/boxes';
-import { useAuth } from '@/hooks/useAuth';
+import { useData } from '@/hooks/useData';
+import type { Profile } from '@/types';
 
 interface Props {
   user: User | null | undefined;
-  showControls: boolean;
+  profile: Profile | undefined;
+  boxes: Box[];
+  showControls?: boolean;
+  hideIfPrivate?: boolean;
 }
 
-const BoxGrid = ({ user, showControls }: Props) => {
+const BoxGrid = ({
+  user,
+  boxes,
+  profile,
+  showControls = false,
+  hideIfPrivate = false,
+}: Props): ReactElement => {
   const [searchString, setSearchString] = useState<string | null>();
   const [view, setView] = useState<string | null>('grid');
 
-  const handleChangeView = (event: any, newView: string | null) => {
+  const handleChangeView = (_: any, newView: string | null) => {
     if (newView !== null) {
       setView(newView);
     }
   };
 
-  const {
-    addBox: addBoxToState,
-    deleteBox: deleteBoxFromState,
-    editBox: editBoxInState,
-  } = useAuth();
+  const { createBox, deleteBox, editBox } = useData();
 
   const [creatingBox, setCreatingBox] = useState(false);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
   const [editingBox, setEditingBox] = useState<Box | null>(null);
 
+  const hide = (profile?.isPrivate ?? true) && hideIfPrivate;
+
   return (
     <>
       <BoxGridToolbar
-        user={user}
         showControls={showControls}
         view={view}
         handleChangeView={handleChangeView}
@@ -46,62 +53,60 @@ const BoxGrid = ({ user, showControls }: Props) => {
       />
       {view === 'grid' ? (
         <Grid container spacing={2}>
-          {user?.boxes.map((box) => (
-            <Grid item xs={12} sm={6} md={12} lg={6} xl={3} key={box.id}>
-              <BoxCard
-                box={box}
-                showControls={showControls}
-                openDeleteBoxDialog={() => setDeletingBox(box)}
-                openEditBoxDialog={() => setEditingBox(box)}
-                share={() =>
-                  console.log(`localhost:3000/users/${user.id}/boxes/${box.id}`)
-                }
-              />
-            </Grid>
-          ))}
+          {hide
+            ? ''
+            : boxes.map((box) => (
+                <Grid xs={12} lg={6} xl={4} item key={box.id}>
+                  <BoxCard
+                    user={user}
+                    box={box}
+                    showControls={showControls}
+                    openDeleteBoxDialog={() => setDeletingBox(box)}
+                    openEditBoxDialog={() => setEditingBox(box)}
+                    share={() =>
+                      console.log(`localhost:3000/users/${user?.uid}/boxes/${box.id}`)
+                    }
+                  />
+                </Grid>
+              ))}
         </Grid>
       ) : (
         <Typography>List view here / seachString: {searchString}</Typography>
       )}
-      {user?.id ? (
+      {showControls && (
         <CreateBoxDialog
           open={creatingBox}
           handleClose={() => setCreatingBox(false)}
           createBox={async (name: string, icon: string, color: string): Promise<void> => {
-            const boxDocument = await createBox(user.id, name, icon, color);
-            addBoxToState({
-              id: boxDocument.id,
-              times: [],
-              ...boxDocument.data(),
-            } as unknown as Box);
+            await createBox({
+              name: name,
+              icon: icon,
+              color: color,
+            });
           }}
         />
-      ) : (
-        <></>
       )}
-      {user?.id && deletingBox ? (
+      {showControls && deletingBox && (
         <DeleteBoxDialog
           box={deletingBox}
           handleClose={() => setDeletingBox(null)}
           deleteBox={async (): Promise<void> => {
-            await deleteBox(user.id, deletingBox);
-            deleteBoxFromState(deletingBox);
+            await deleteBox(deletingBox.id);
           }}
         />
-      ) : (
-        <></>
       )}
-      {user?.id && editingBox ? (
+      {showControls && editingBox && (
         <EditBoxDialog
           box={editingBox}
           handleClose={() => setEditingBox(null)}
           editBox={async (name: string, icon: string, color: string): Promise<void> => {
-            await editBox(user.id, editingBox, name, icon, color);
-            editBoxInState(editingBox, name, icon, color);
+            await editBox(editingBox.id, {
+              name: name,
+              icon: icon,
+              color: color,
+            });
           }}
         />
-      ) : (
-        <></>
       )}
     </>
   );

@@ -1,62 +1,62 @@
 import Head from 'next/head';
-import Router from 'next/router';
-import { ReactNode, useEffect } from 'react';
-import { Box, CircularProgress } from '@mui/material';
+import { ReactElement, ReactNode, useEffect } from 'react';
+import { Box, Container, useMediaQuery } from '@mui/material';
+import useLocalStorage from '@/hooks/useLocalStorage';
 import NavigationBar from '@/components/navigation/NavigationBar';
 import NavigationDrawer from '@/components/navigation/NavigationDrawer';
-import { useAuth } from '@/hooks/useAuth';
-import useLocalStorage from '@/hooks/useLocalStorage';
+import { useData } from '@/hooks/useData';
+import Router from 'next/router';
 
-interface Props {
+type Props = {
+  fluid?: boolean;
+  isNotApp?: boolean;
   title?: string;
   children: ReactNode;
-  allowUnauthenticated?: boolean;
-  isApp?: boolean;
-}
+  allowUnauthorized?: boolean;
+};
 
-const Layout = ({ title, children, allowUnauthenticated, isApp }: Props) => {
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (user === null && !allowUnauthenticated) {
-      Router.push('/login');
-    }
-  }, [user]);
-
+const Layout = ({
+  fluid,
+  isNotApp,
+  title,
+  children,
+  allowUnauthorized = false,
+}: Props): ReactElement => {
   const [open, setOpen] = useLocalStorage('drawerOpen', false);
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
   const toggleNavigationDrawer = () => setOpen(!open);
+  const { user } = useData();
 
-  return user || (allowUnauthenticated && user !== undefined) ? (
+  const matches = useMediaQuery((theme: any) => theme.breakpoints.up('md'));
+
+  useEffect(() => {
+    if (user === null && !allowUnauthorized) {
+      Router.push('/login');
+    }
+  }, [user]);
+
+  return (
     <>
       <Head>
         <title>{title ? `${title} | ` : ''}Speedcube.io</title>
       </Head>
-      <NavigationBar isApp={isApp} toggleNavigationDrawer={toggleNavigationDrawer} />
-      {user && isApp ? (
+      <NavigationBar
+        isNotApp={isNotApp}
+        toggleNavigationDrawer={toggleNavigationDrawer}
+      />
+      {user && (
         <NavigationDrawer
           open={open}
           handleDrawerOpen={handleDrawerOpen}
           handleDrawerClose={handleDrawerClose}
         />
-      ) : (
-        <></>
       )}
-      <Box>{children}</Box>
+      <Container fixed={!fluid && matches} sx={{ pt: '64px' }} maxWidth={false}>
+        <Box sx={{ px: { md: '73px' } }}>{children}</Box>
+      </Container>
+      {/* Add circular progress when loading user/boxes/profile? */}
     </>
-  ) : (
-    <Box
-      sx={{
-        height: '100vh',
-        width: '100vw',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <CircularProgress />
-    </Box>
   );
 };
 

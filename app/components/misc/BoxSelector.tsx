@@ -1,36 +1,24 @@
-import { useAuth } from '@/hooks/useAuth';
+import { useData } from '@/hooks/useData';
 import { Box } from '@/types';
 import { FormControl, OutlinedInput, InputLabel, Select, MenuItem } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { ReactElement } from 'react';
 
-interface Props {
-  onChange: (boxId: string) => void;
-}
-
-const BoxSelector = ({ onChange }: Props) => {
-  const { user } = useAuth();
-  const [boxId, setBoxId] = useState<string | undefined>(user?.boxes[0]?.id);
-
-  useEffect(() => {
-    if (boxId) {
-      onChange(boxId);
-    }
-  }, [boxId]);
-
+const BoxSelector = (): ReactElement => {
+  const { boxes, box, changeBox, timerActive } = useData();
   return (
     <FormControl fullWidth>
       <InputLabel shrink={true}>Current box</InputLabel>
       <Select
-        value={boxId}
-        disabled={user?.boxes.length == 0}
+        value={box?.id ?? ''}
+        disabled={timerActive ? true : boxes.length == 0}
         input={<OutlinedInput notched={true} label="Current box"></OutlinedInput>}
         onChange={(event) => {
-          setBoxId(event.target.value);
+          changeBox(event.target.value);
         }}
       >
-        {user?.boxes.map((box: Box) => (
-          <MenuItem value={box.id} key={box.id}>
-            {box.name}
+        {boxes.map((boxItem: Box) => (
+          <MenuItem value={boxItem.id} key={boxItem.id}>
+            {boxItem.name}
           </MenuItem>
         ))}
       </Select>

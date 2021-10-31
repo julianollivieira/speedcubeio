@@ -11,7 +11,7 @@ import {
 import ColorPicker from '@/components/misc/ColorPicker';
 import { boxValidationSchema } from '@/validations';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 
@@ -21,7 +21,7 @@ interface Props {
   createBox: (name: string, icon: string, color: string) => Promise<void>;
 }
 
-const CreateBoxDialog = ({ open, handleClose, createBox }: Props) => {
+const CreateBoxDialog = ({ open, handleClose, createBox }: Props): ReactElement => {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 

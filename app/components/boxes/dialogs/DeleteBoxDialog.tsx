@@ -8,7 +8,7 @@ import {
   LinearProgress,
 } from '@mui/material';
 import { Box } from '@/types';
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 
@@ -18,7 +18,7 @@ interface Props {
   deleteBox: () => Promise<void>;
 }
 
-const DeleteBoxDialog = ({ box, handleClose, deleteBox }: Props) => {
+const DeleteBoxDialog = ({ box, handleClose, deleteBox }: Props): ReactElement => {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 

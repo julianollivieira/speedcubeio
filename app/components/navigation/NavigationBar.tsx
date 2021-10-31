@@ -16,19 +16,22 @@ import {
   Settings as SettingsIcon,
   Menu as MenuIcon,
 } from '@mui/icons-material';
-import { useAuth } from '@/hooks/useAuth';
 import Link from '@/components/misc/Link';
 import Logo from '@/components/misc/Logo';
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
+import { useData } from '@/hooks/useData';
 import Router from 'next/router';
 
 interface Props {
-  isApp?: boolean;
+  isNotApp?: boolean;
   toggleNavigationDrawer?: () => void;
 }
 
-const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props) => {
-  const { user, logout } = useAuth();
+const NavigationBar = ({
+  isNotApp = false,
+  toggleNavigationDrawer,
+}: Props): ReactElement => {
+  const { user, logOut } = useData();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -36,11 +39,9 @@ const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props) => {
   const handleClick = (event: any) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  const handleLogout = () => {
-    logout().then(() => {
-      handleClose();
-      Router.push('/login');
-    });
+  const handleLogout = async () => {
+    await logOut();
+    Router.push('/login');
   };
 
   return (
@@ -49,12 +50,12 @@ const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props) => {
         position="fixed"
         sx={{ bgcolor: 'background.paper', zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Container maxWidth={isApp ? false : 'lg'}>
+        <Container maxWidth={!isNotApp ? false : 'lg'}>
           <Toolbar
             sx={{ justifyContent: 'space-between', height: '64px' }}
             disableGutters
           >
-            {user && isApp ? (
+            {user && !isNotApp ? (
               <IconButton
                 aria-label="delete"
                 size="large"
@@ -68,12 +69,12 @@ const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props) => {
             )}
             <Logo expanded sx={{ py: 1, height: 0.9 }} />
             {user ? (
-              isApp ? (
+              !isNotApp ? (
                 <>
                   <Box sx={{ height: 1, p: 0.5 }}>
                     <IconButton sx={{ height: 1 }} onClick={handleClick}>
                       <Avatar
-                        src={user?.profilePicture}
+                        src={user?.photoURL ?? ''}
                         sx={{ height: 1, borderRadius: '50%', border: 1 }}
                       />
                     </IconButton>
@@ -134,7 +135,7 @@ const NavigationBar = ({ isApp, toggleNavigationDrawer }: Props) => {
               )
             ) : (
               <Box>
-                <Link href="/home" passHref sx={{ textDecoration: 'none', mr: 1 }}>
+                <Link href="/login" passHref sx={{ textDecoration: 'none', mr: 1 }}>
                   <Button color="primary">Login</Button>
                 </Link>
                 <Link href="/signup" passHref sx={{ textDecoration: 'none' }}>

@@ -20,5 +20,4 @@ const createSnackbar = (
     ),
   });
 
-
 export default createSnackbar;

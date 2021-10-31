@@ -1,68 +1,86 @@
 import type { NextPage } from 'next';
+import { Box, Fab } from '@mui/material';
+import {
+  FormatListNumbered as FormatListNumberedIcon,
+  ChevronRight as ChevronRightIcon,
+} from '@mui/icons-material';
 import { useState } from 'react';
-import { Box as MUIBox } from '@mui/material';
+import TimeListDrawer from '@/components/timelist/TimeListDrawer';
 import Layout from '@/components/layout/Layout';
-import BoxSelector from '@/components/misc/BoxSelector';
-import TimeList from '@/components/timer/TimeList';
 import Timer from '@/components/timer/Timer';
-import { Box } from '@/types';
-import { useAuth } from '@/hooks/useAuth';
+import ScrambleComponent from '@/components/timer/ScrambleComponent';
 
 const TimerPage: NextPage = () => {
-  const [box, setBox] = useState<Box>();
-  const { user } = useAuth();
+  const [timeListDrawerOpen, setTimeListDrawerOpen] = useState(false);
 
   return (
-    <Layout title="Timer" isApp>
-      <MUIBox sx={{ display: 'flex', pt: '64px', width: '100vw', height: '100vh' }}>
-        <MUIBox
-          sx={{ flex: 1, pl: { md: '240px', lg: '360px' }, pr: { md: '240px', lg: 0 } }}
-        >
-          <MUIBox
-            sx={{
-              height: 1,
-              color: 'black',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Timer box={box} />
-          </MUIBox>
-        </MUIBox>
-        <MUIBox
+    <Layout fluid title="Timer">
+      <Box
+        sx={{
+          px: { lg: `${360 - 73}px` },
+          width: 1,
+          height: 'calc(100vh - 64px)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Box
           sx={{
-            width: 360,
-            display: { xs: 'none', lg: 'flex' },
-            flexDirection: 'column',
-            borderLeft: 1,
-            borderColor: (theme) =>
-              theme.palette.mode === 'dark'
-                ? 'rgba(255, 255, 255, 0.12)'
-                : 'rgba(0, 0, 0, 0.12)',
+            display: 'flex',
+            justifyContent: 'center',
+            pt: 2.5,
+            width: 1,
+            height: 100,
           }}
         >
-          <MUIBox sx={{ p: 2, height: 100 }}>
-            <BoxSelector
-              onChange={(boxId) => {
-                setBox(user?.boxes.find((box: Box) => box.id === boxId));
-              }}
-            />
-          </MUIBox>
-          <TimeList
-            boxId={box?.id}
-            sx={{
-              bgcolor: 'background.paper',
-            }}
-            tableProps={{
-              sx: {
-                height: 'calc(100vh - 164px)',
-                overflowY: 'auto',
-              },
-            }}
-          />
-        </MUIBox>
-      </MUIBox>
+          <ScrambleComponent />
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Timer />
+        </Box>
+        <Box sx={{ width: 1, height: 100 }}></Box>
+      </Box>
+      <Fab
+        color="primary"
+        sx={{
+          position: 'fixed',
+          right: 25,
+          bottom: 25,
+          display: { xs: 'flex', lg: 'none' },
+        }}
+        onClick={() => setTimeListDrawerOpen(true)}
+      >
+        <FormatListNumberedIcon />
+      </Fab>
+      {timeListDrawerOpen && (
+        <Fab
+          color="primary"
+          sx={{
+            position: 'fixed',
+            right: 25,
+            bottom: 25,
+            display: { xs: 'flex', lg: 'none' },
+            zIndex: 1300,
+          }}
+          onClick={() => setTimeListDrawerOpen(false)}
+        >
+          <ChevronRightIcon />
+        </Fab>
+      )}
+      <TimeListDrawer
+        open={timeListDrawerOpen}
+        showBoxSelector
+        showPuzzleSelector
+        showControls
+        closeDrawer={() => setTimeListDrawerOpen(false)}
+      />
     </Layout>
   );
 };
