@@ -10,11 +10,14 @@ import {
 } from '@mui/icons-material';
 import { useData } from '@/hooks/useData';
 import ScrambleHistoryDialog from './dialogs/ScrambleHistoryDialog';
+import createSnackbar from '@/utils/snackbar';
+import { useSnackbar } from 'notistack';
 
 const ScrambleComponent = (): ReactElement => {
   const { scramble, scrambleLocked, generateNewScramble, toggleScrambleLocked } =
     useData();
   const [scrambleHistoryOpen, setScrambleHistoryOpen] = useState(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   return (
     <>
@@ -53,8 +56,18 @@ const ScrambleComponent = (): ReactElement => {
               <EditIcon />
             </Button>
           </Tooltip>
-          <Tooltip title={scrambleLocked ? 'Unlock scramble' : 'Lock scramble'}>
-            <Button onClick={toggleScrambleLocked}>
+          <Tooltip title={`${scrambleLocked ? 'Unlock' : 'Lock'} scramble`}>
+            <Button
+              onClick={() => {
+                toggleScrambleLocked();
+                createSnackbar(
+                  enqueueSnackbar,
+                  closeSnackbar,
+                  `Scramble ${scrambleLocked ? 'Unlocked' : 'Locked'}`,
+                  'success'
+                );
+              }}
+            >
               {scrambleLocked ? <LockOpenIcon /> : <LockIcon />}
             </Button>
           </Tooltip>
