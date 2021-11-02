@@ -94,6 +94,9 @@ interface Context {
   scrambles: { scramble: Scramble; puzzle: Puzzle }[];
   generateNewScramble: () => void;
   setPreviousScramble: (scrambleId: number) => void;
+
+  scrambleLocked: boolean;
+  toggleScrambleLocked: () => void;
 }
 
 const DataContext = createContext<Context>({} as Context);
@@ -112,19 +115,11 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   const [scrambles, setScrambles] = useState<{ scramble: Scramble; puzzle: Puzzle }[]>(
     []
   );
+  const [scrambleLocked, setScrambleLocked] = useState(false);
 
-  useEffect(() => {
-    console.log(scrambles);
-    // if (scramble !== null) {
-    //   setScrambles((prevState) => [
-    //     ...prevState,
-    //     {
-    //       scramble: scramble,
-    //       puzzle: currentPuzzle,
-    //     },
-    //   ]);
-    // }
-  }, [scrambles]);
+  const toggleScrambleLocked = () => {
+    setScrambleLocked((prevState) => !prevState);
+  };
 
   useEffect(() => {
     const arr = ['2x2x2', '3x3x3', '4x4x4', '5x5x5', '6x6x6', '7x7x7'];
@@ -146,6 +141,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   }, [currentPuzzle]);
 
   const generateNewScramble = (): void => {
+    if (scrambleLocked) return;
     const arr = ['2x2x2', '3x3x3', '4x4x4', '5x5x5', '6x6x6', '7x7x7'];
     const removeLast2chars = arr.includes(currentPuzzle);
     const scrambowPuzzleType = removeLast2chars
@@ -166,7 +162,6 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 
   const setPreviousScramble = (scrambleId: number): void => {
     setScramble(scrambles[scrambleId].scramble);
-    // setScrambles((prevState) => [...prevState, scrambles[scrambleId]]);
   };
 
   // Set user on page load
@@ -617,6 +612,8 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     scrambles,
     generateNewScramble,
     setPreviousScramble,
+    scrambleLocked,
+    toggleScrambleLocked,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

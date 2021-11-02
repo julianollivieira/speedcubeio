@@ -1,17 +1,19 @@
 import { ReactElement, useState } from 'react';
-import { Box, Typography, ButtonGroup, Button } from '@mui/material';
+import { Box, Typography, ButtonGroup, Button, Tooltip } from '@mui/material';
 import {
   History as HistoryIcon,
   Edit as EditIcon,
   Lock as LockIcon,
   ContentCopy as ContentCopyIcon,
   Cached as CachedIcon,
+  LockOpen as LockOpenIcon,
 } from '@mui/icons-material';
 import { useData } from '@/hooks/useData';
 import ScrambleHistoryDialog from './dialogs/ScrambleHistoryDialog';
 
 const ScrambleComponent = (): ReactElement => {
-  const { scramble, generateNewScramble } = useData();
+  const { scramble, scrambleLocked, generateNewScramble, toggleScrambleLocked } =
+    useData();
   const [scrambleHistoryOpen, setScrambleHistoryOpen] = useState(false);
 
   return (
@@ -41,21 +43,31 @@ const ScrambleComponent = (): ReactElement => {
           variant="contained"
           aria-label="outlined primary button group"
         >
-          <Button onClick={() => setScrambleHistoryOpen(true)}>
-            <HistoryIcon />
-          </Button>
-          <Button>
-            <EditIcon />
-          </Button>
-          <Button>
-            <LockIcon />
-          </Button>
-          <Button>
-            <ContentCopyIcon />
-          </Button>
-          <Button onClick={generateNewScramble}>
-            <CachedIcon />
-          </Button>
+          <Tooltip title="View scramble history">
+            <Button onClick={() => setScrambleHistoryOpen(true)}>
+              <HistoryIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Edit scramble">
+            <Button>
+              <EditIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title={scrambleLocked ? 'Unlock scramble' : 'Lock scramble'}>
+            <Button onClick={toggleScrambleLocked}>
+              {scrambleLocked ? <LockOpenIcon /> : <LockIcon />}
+            </Button>
+          </Tooltip>
+          <Tooltip title="Copy scramble">
+            <Button>
+              <ContentCopyIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Generate new scramble">
+            <Button onClick={generateNewScramble}>
+              <CachedIcon />
+            </Button>
+          </Tooltip>
         </ButtonGroup>
       </Box>
       <ScrambleHistoryDialog
