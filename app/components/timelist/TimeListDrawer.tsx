@@ -18,6 +18,8 @@ import { useEffect, useState } from 'react';
 import TimeListRow from '@/components/timelist/TimeListRow';
 import { Time } from '@/types';
 import DeleteTimeDialog from '@/components/timer/dialogs/DeleteTimeDialog';
+import EditTimeDialog from '@/components/timer/dialogs/EditTimeDialog';
+
 import BoxSelector from '@/components/misc/BoxSelector';
 import PuzzleSelector from '@/components/misc/PuzzleSelector';
 
@@ -81,6 +83,7 @@ const TimeListDrawer = ({
   const [timeList, setTimeList] = useState<TimeList>();
   const [rowOpen, setRowOpen] = useState<number | null>(null);
   const [deletingTime, setDeletingTime] = useState<Time | null>(null);
+  const [editingTime, setEditingTime] = useState<Time | null>(null);
 
   useEffect(() => {
     if (box) {
@@ -148,6 +151,7 @@ const TimeListDrawer = ({
                           setOpen={handleSetRowOpen}
                           showControls={showControls}
                           setDeletingTime={(time: Time | null) => setDeletingTime(time)}
+                          setEditingTime={(time: Time | null) => setEditingTime(time)}
                         />
                       );
                     })
@@ -177,6 +181,18 @@ const TimeListDrawer = ({
               deleteTime={async (): Promise<void> => {
                 await deleteTime(deletingTime.id);
                 setRowOpen(null);
+              }}
+            />
+          ) : (
+            ''
+          )}
+          {showControls && editingTime ? (
+            <EditTimeDialog
+              time={editingTime}
+              handleClose={() => setEditingTime(null)}
+              editTime={async (): Promise<void> => {
+                // await editTime(editingTime.id);
+                // setRowOpen(null);
               }}
             />
           ) : (

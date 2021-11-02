@@ -31,6 +31,7 @@ interface Props {
   setOpen: (index: number | null) => void;
   showControls?: boolean;
   setDeletingTime: (timeData: Time | null) => void;
+  setEditingTime: (timeData: Time | null) => void;
 }
 
 const TimeListRow = ({
@@ -42,6 +43,7 @@ const TimeListRow = ({
   setOpen,
   showControls = false,
   setDeletingTime,
+  setEditingTime,
 }: Props): ReactElement => {
   return (
     <Fragment key={timeData?.id}>
@@ -130,7 +132,7 @@ const TimeListRow = ({
                       <DeleteIcon />
                     </IconButton>
                     <IconButton>
-                      <EditIcon />
+                      <EditIcon onClick={() => setEditingTime(timeData ?? null)} />
                     </IconButton>
                   </ListItem>
                 </>

@@ -91,8 +91,9 @@ interface Context {
   changePuzzle: (puzzle: Puzzle) => void;
 
   scramble: Scramble | null;
-  // scrambles: Scramble[];
+  scrambles: { scramble: Scramble; puzzle: Puzzle }[];
   generateNewScramble: () => void;
+  setPreviousScramble: (scrambleId: number) => void;
 }
 
 const DataContext = createContext<Context>({} as Context);
@@ -108,7 +109,22 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   const [currentPuzzle, setCurrentPuzzle] = useLocalStorage('currentPuzzle', null);
   const [timerActive, setTimerState] = useState<Context['timerActive']>(false);
   const [scramble, setScramble] = useState<Scramble | null>(null);
-  // const [scrambles, setScrambles] = useState<Scramble[]>([]);
+  const [scrambles, setScrambles] = useState<{ scramble: Scramble; puzzle: Puzzle }[]>(
+    []
+  );
+
+  useEffect(() => {
+    console.log(scrambles);
+    // if (scramble !== null) {
+    //   setScrambles((prevState) => [
+    //     ...prevState,
+    //     {
+    //       scramble: scramble,
+    //       puzzle: currentPuzzle,
+    //     },
+    //   ]);
+    // }
+  }, [scrambles]);
 
   useEffect(() => {
     const arr = ['2x2x2', '3x3x3', '4x4x4', '5x5x5', '6x6x6', '7x7x7'];
@@ -117,7 +133,16 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
       ? currentPuzzle.slice(0, -2)
       : currentPuzzle;
 
-    setScramble(new Scrambow().setType(scrambowPuzzleType).get()[0]);
+    const newScramble = new Scrambow().setType(scrambowPuzzleType).get()[0];
+
+    setScramble(newScramble);
+    setScrambles((prevState) => [
+      ...prevState,
+      {
+        scramble: newScramble,
+        puzzle: currentPuzzle,
+      },
+    ]);
   }, [currentPuzzle]);
 
   const generateNewScramble = (): void => {
@@ -127,7 +152,21 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
       ? currentPuzzle.slice(0, -2)
       : currentPuzzle;
 
-    setScramble(new Scrambow().setType(scrambowPuzzleType).get()[0]);
+    const newScramble = new Scrambow().setType(scrambowPuzzleType).get()[0];
+
+    setScramble(newScramble);
+    setScrambles((prevState) => [
+      ...prevState,
+      {
+        scramble: newScramble,
+        puzzle: currentPuzzle,
+      },
+    ]);
+  };
+
+  const setPreviousScramble = (scrambleId: number): void => {
+    setScramble(scrambles[scrambleId].scramble);
+    // setScrambles((prevState) => [...prevState, scrambles[scrambleId]]);
   };
 
   // Set user on page load
@@ -575,8 +614,9 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     setTimerActive,
     changePuzzle,
     scramble,
-    // scrambles,
+    scrambles,
     generateNewScramble,
+    setPreviousScramble,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
