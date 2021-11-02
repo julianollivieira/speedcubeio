@@ -9,6 +9,7 @@ import {
   TableCell,
   Backdrop,
   useMediaQuery,
+  Theme,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { ReactElement } from 'react';
@@ -25,7 +26,7 @@ import PuzzleSelector from '@/components/misc/PuzzleSelector';
 
 const drawerWidth = 360;
 
-const openedMixin = (theme: any) => ({
+const openedMixin = (theme: Theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
@@ -34,7 +35,7 @@ const openedMixin = (theme: any) => ({
   overflowX: 'hidden',
 });
 
-const closedMixin = (theme: any) => ({
+const closedMixin = (theme: Theme) => ({
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -48,7 +49,7 @@ const closedMixin = (theme: any) => ({
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }: { theme: any; open: any }) => ({
+})(({ theme, open }: { theme: Theme; open: any }) => ({
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: 'nowrap',
@@ -94,7 +95,7 @@ const TimeListDrawer = ({
 
   const handleSetRowOpen = (index: number | null) => setRowOpen(index);
 
-  const matches = useMediaQuery((theme: any) => theme.breakpoints.down('lg'));
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   return (
     <>
@@ -143,6 +144,7 @@ const TimeListDrawer = ({
                       const timeData = box?.times ? box?.times[index] : undefined;
                       return (
                         <TimeListRow
+                          key={index}
                           ao5={ao5}
                           ao12={ao12}
                           timeData={timeData}

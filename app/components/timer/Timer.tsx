@@ -18,7 +18,7 @@ const Timer = (): ReactElement => {
 
   useEffect(() => {
     const timer = new TimerClass({
-      onTick: (time: any) => {
+      onTick: (time: number) => {
         setTime(time);
       },
       onReadying: () => {

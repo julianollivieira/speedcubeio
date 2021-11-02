@@ -1,4 +1,5 @@
 import { Box, Time } from '@/types';
+import { msToTime } from '@/utils/helpers';
 
 class TimeList {
   public times: number[] = [];
@@ -20,14 +21,19 @@ class TimeList {
     });
   }
 
-  // public getGraphObject(): any[] {
-  //   return this.times.map((item, index) => ({
-  //     name: index + 1,
-  //     time: msToTimeNull(this.times[index]),
-  //     ao5: msToTimeNull(this.ao5s[index]),
-  //     ao12: msToTimeNull(this.ao12s[index]),
-  //   }));
-  // }
+  public getTimeGraphObject(): {
+    name: number;
+    time: number;
+    ao5: number | null;
+    ao12: number | null;
+  }[] {
+    return this.times.map((_, index) => ({
+      name: index + 1,
+      time: this.times[index],
+      ao5: this.ao5s[index],
+      ao12: this.ao12s[index],
+    }));
+  }
 
   // public getPuzzlesPieChartObject(): any[] {
   //   let data: any = [];

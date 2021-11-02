@@ -28,6 +28,7 @@ import { User } from 'firebase/auth';
 import Router from 'next/router';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import TimeGraphCard from '@/components/statistics/TimeGraphCard';
 
 interface Props {
   user: User | null | undefined;
@@ -191,12 +192,9 @@ const BoxComponent = ({
         <Grid item xs={12} xl={6}>
           <SummaryTableCard box={box} />
         </Grid>
-        {/* <Grid item xs={12}>
-          <TimesGraphCard timeList={timeList} />
+        <Grid item xs={12}>
+          <TimeGraphCard box={box} />
         </Grid>
-        <Grid item xs={12} xl={6}>
-          <PuzzlesPieChartCard timeList={timeList} />
-        </Grid> */}
       </Grid>
       {showControls && deletingBox && (
         <DeleteBoxDialog

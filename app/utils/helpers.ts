@@ -18,7 +18,7 @@ export const msToTime = (ms: number | null = null, dash = false): string => {
 
   let result = '';
 
-  let seconds = ms / 1000;
+  const seconds = ms / 1000;
   if (seconds > 3600) {
     result = dayjs.utc(ms).format('H:mm:ss.SSS');
   } else if (seconds > 60) {
@@ -27,7 +27,7 @@ export const msToTime = (ms: number | null = null, dash = false): string => {
     result = dayjs.utc(ms).format('ss.SSS');
   }
 
-  let rest = result.substring(0, result.length - 6);
+  const rest = result.substring(0, result.length - 6);
 
   return `${rest}${parseFloat(result.slice(-6)).toFixed(2).padStart(5, '0')}`;
 };
