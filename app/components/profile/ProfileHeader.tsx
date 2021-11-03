@@ -20,17 +20,11 @@ dayjs.extend(utc);
 
 interface Props {
   user: User | null | undefined;
-  profile: Profile | undefined;
+  profile: Profile | null;
   showControls?: boolean;
-  hide?: boolean;
 }
 
-const ProfileHeader = ({
-  user,
-  profile,
-  showControls = false,
-  hide = false,
-}: Props): ReactElement => {
+const ProfileHeader = ({ user, profile, showControls = false }: Props): ReactElement => {
   const { setProfilePrivate } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [visibilityLoading, setVisibilityLoading] = useState(false);
@@ -86,14 +80,20 @@ const ProfileHeader = ({
             alignItems: { xs: 'center', sm: 'flex-start' },
           }}
         >
-          <Box sx={{ width: 1, display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={{
+              width: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: { xs: 'center', sm: 'flex-start' },
+            }}
+          >
             <Typography
               sx={{
                 fontSize: '2.5em',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                textAlign: { xs: 'center', sm: 'start' },
               }}
               variant="h3"
             >
@@ -116,18 +116,20 @@ const ProfileHeader = ({
             {dayjs(user?.metadata.creationTime).utc().format('MMMM D YYYY')}
           </Typography>
           <Box sx={{ pt: { xs: 3, sm: 1 } }}>
-            <Chip
-              color="error"
-              label="PRO MEMBER"
-              size="small"
-              sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-            />
-            <Chip
-              color="warning"
-              label="BETA TESTER"
-              size="small"
-              sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-            />
+            <>
+              <Chip
+                color="error"
+                label="PRO MEMBER"
+                size="small"
+                sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+              />
+              <Chip
+                color="warning"
+                label="BETA TESTER"
+                size="small"
+                sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+              />
+            </>
           </Box>
         </Box>
         <Box
@@ -143,7 +145,7 @@ const ProfileHeader = ({
           <IconButton size="large" onClick={handleShare}>
             <ShareIcon />
           </IconButton>
-          {!hide && (
+          {profile !== null && (
             <Link href={`/users/${user?.uid}/boxes`} passHref>
               <IconButton size="large">
                 <AllInboxIcon />

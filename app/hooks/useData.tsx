@@ -26,6 +26,7 @@ import {
   doc,
   getDocs,
   addDoc,
+  setDoc,
   deleteDoc,
   updateDoc,
   getDoc,
@@ -254,6 +255,28 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   ): Promise<UserCredential> => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(userCredential.user, { displayName: displayName });
+
+    const profileReference = doc(db, 'users', userCredential.user.uid);
+
+    try {
+      await setDoc(profileReference, {
+        isPrivate: false,
+        isVerified: false,
+        socialLinks: [],
+      });
+      setProfile(
+        (prevState) =>
+          ({
+            ...prevState,
+            isPrivate: false,
+            isVerified: false,
+            socialLinks: [],
+          } as Profile)
+      );
+    } catch (e) {
+      console.error(e);
+    }
+
     await sendEmailVerification(userCredential.user);
     signOut(auth);
     return userCredential;

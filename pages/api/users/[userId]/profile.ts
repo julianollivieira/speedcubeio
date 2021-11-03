@@ -1,35 +1,42 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import admin from '@/utils/firebase/admin';
 import { Profile } from '@/types';
 
-type Data = {
-  user: admin.auth.UserRecord;
-  profile: Profile;
-};
+type ResponseData = {};
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<ResponseData>
 ): Promise<void> {
   const { userId } = req.query;
+
   try {
     const userRecord = await admin
       .app('admin')
       .auth()
       .getUser(Array.isArray(userId) ? userId[0] : userId);
 
+    if (!userRecord) {
+      res.status(422).json({ error: 'user-not-found' });
+    }
+
     const profileReference = admin.app('admin').firestore().doc(`users/${userId}`);
     const profileDocument = await profileReference.get();
     const profileData = profileDocument.data() as Profile;
 
-    console.log('👤🔢 Read 1 profile');
-
     res.status(200).json({
-      user: userRecord,
-      profile: profileData,
+      profile: profileData.isPrivate ? null : profileData,
+      user: {
+        uid: userRecord.uid,
+        displayName: userRecord.displayName,
+        photoURL: userRecord.photoURL ?? '/images/default_user_profile.jpg',
+        metadata: {
+          creationTime: userRecord.metadata.creationTime,
+        },
+      },
     });
   } catch (error) {
     console.log('🐛', error);
-    res.status(404).end();
+    res.status(500).end();
   }
 }

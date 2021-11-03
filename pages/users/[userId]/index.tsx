@@ -13,17 +13,20 @@ const ProfilePage: NextPage = () => {
   const router = useRouter();
   const { userId } = router.query;
 
-  const { data } = useSWR<{ user: User; profile: ProfileType }>(
-    userId ? `/api/users/${userId}/profile` : null,
-    fetcher
-  );
+  const { data } = useSWR<{
+    user: User;
+    profile: ProfileType;
+  }>(userId ? `/api/users/${userId}/profile` : null, fetcher);
 
-  const { user, profile } = data || { user: undefined, profile: undefined };
+  const { user, profile } = data || {
+    user: null,
+    profile: null,
+  };
 
   return (
     <Layout title={`${user?.displayName ?? 'Someone'}'s profile`} allowUnauthorized>
       {data ? (
-        <Profile profile={profile} hideIfPrivate user={user} />
+        <Profile profile={profile} user={user} />
       ) : (
         <Backdrop open sx={{ color: '#fff', zIndex: 9999 }}>
           <CircularProgress />
