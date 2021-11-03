@@ -34,7 +34,7 @@ import LastDifferenceTableCard from '@/components/statistics/LastDifferenceTable
 
 interface Props {
   user: User | null | undefined;
-  box: Box | undefined;
+  box: Box | null | undefined;
   profile: Profile | null;
   showControls?: boolean;
 }
@@ -128,7 +128,13 @@ const BoxComponent = ({
                 textAlign: { xs: 'center', sm: 'start' },
               }}
             >
-              {box ? box?.name : 'Box is private'}
+              {user
+                ? box === null
+                  ? 'Box is private'
+                  : box === undefined
+                  ? 'Box not found'
+                  : box?.name
+                : 'User not found'}
             </Typography>
             <Typography
               variant="subtitle1"
@@ -196,13 +202,13 @@ const BoxComponent = ({
       <Divider sx={{ mb: 3 }} />
       <Grid container spacing={2}>
         <Grid item xs={12} xl={6}>
-          <SummaryTableCard box={box} />
+          <SummaryTableCard box={box === null ? undefined : box} />
         </Grid>
         <Grid item xs={12} xl={6}>
-          <LastDifferenceTableCard box={box} />
+          <LastDifferenceTableCard box={box === null ? undefined : box} />
         </Grid>
         <Grid item xs={12}>
-          <TimeGraphCard box={box} />
+          <TimeGraphCard box={box === null ? undefined : box} />
         </Grid>
       </Grid>
       {showControls && deletingBox && (

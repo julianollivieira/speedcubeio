@@ -16,7 +16,8 @@ const Profile = ({ user, profile, showControls = false }: Props): ReactElement =
     <>
       <ProfileHeader user={user} profile={profile} showControls={showControls} />
       <Divider sx={{ mb: 3 }} />
-      {profile !== null ? (
+
+      {user && profile && (
         <Box
           sx={{
             display: 'flex',
@@ -28,9 +29,9 @@ const Profile = ({ user, profile, showControls = false }: Props): ReactElement =
         >
           <SocialChipList socialLinks={profile?.socialLinks} />
         </Box>
-      ) : (
-        'Profile is private'
       )}
+      {user === null && 'User not found'}
+      {user && profile === null && 'Profile is private'}
     </>
   );
 };

@@ -28,7 +28,7 @@ const BoxPage: NextPage = () => {
     <Layout title="Box" allowUnauthorized>
       {data ? (
         <MUIBox sx={{ mr: { lg: `${360 - 73}px` } }}>
-          <Box user={user} box={box === null ? undefined : box} profile={profile} />
+          <Box user={user} box={box} profile={profile} />
         </MUIBox>
       ) : (
         <Backdrop open sx={{ color: '#fff', zIndex: 9999 }}>

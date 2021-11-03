@@ -5,7 +5,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
 type ResponseData = {
-  box: Box | null;
+  box: Box | null | undefined;
   profile: Profile | null;
   user: {
     uid: string;
@@ -40,11 +40,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseData>) 
       profileData = profileDocument.data() as Profile;
     }
 
-    let boxData: Box | null = null;
+    let boxData: Box | null | undefined = undefined;
     if (userRecord && !profileData?.isPrivate) {
       const boxReference = db.doc(`users/${userId.toString()}/boxes/${boxId.toString()}`);
       const boxDocument = await boxReference.get();
-      boxData = { id: boxDocument.id, ...boxDocument.data() } as Box;
+      if (boxDocument.exists) {
+        boxData = { id: boxDocument.id, ...boxDocument.data() } as Box;
+      }
     }
 
     res.status(200).json({

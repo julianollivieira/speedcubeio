@@ -30,7 +30,10 @@ const BoxPage: NextPage = () => {
     <Layout title="Boxes" allowUnauthorized>
       {data ? (
         <>
-          <PageHeader title={`${user?.displayName}'s boxes`} icon={AllInboxIcon} />
+          <PageHeader
+            title={user ? `${user?.displayName}'s boxes` : 'User not found'}
+            icon={AllInboxIcon}
+          />
           <Divider sx={{ mb: 3 }} />
           <BoxGrid user={user} boxes={boxes} profile={profile} />
         </>

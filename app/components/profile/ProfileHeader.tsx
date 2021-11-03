@@ -105,32 +105,36 @@ const ProfileHeader = ({ user, profile, showControls = false }: Props): ReactEle
               ''
             )}
           </Box>
-          <Typography
-            sx={{
-              display: 'flex',
-              justifyContent: { xs: 'center', md: 'flex-start' },
-            }}
-            variant="subtitle1"
-          >
-            {'Joined on '}
-            {dayjs(user?.metadata.creationTime).utc().format('MMMM D YYYY')}
-          </Typography>
-          <Box sx={{ pt: { xs: 3, sm: 1 } }}>
+          {user && (
             <>
-              <Chip
-                color="error"
-                label="PRO MEMBER"
-                size="small"
-                sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-              />
-              <Chip
-                color="warning"
-                label="BETA TESTER"
-                size="small"
-                sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-              />
+              <Typography
+                sx={{
+                  display: 'flex',
+                  justifyContent: { xs: 'center', md: 'flex-start' },
+                }}
+                variant="subtitle1"
+              >
+                {'Joined on '}
+                {dayjs(user?.metadata.creationTime).utc().format('MMMM D YYYY')}
+              </Typography>
+              <Box sx={{ pt: { xs: 3, sm: 1 } }}>
+                <>
+                  <Chip
+                    color="error"
+                    label="PRO MEMBER"
+                    size="small"
+                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+                  />
+                  <Chip
+                    color="warning"
+                    label="BETA TESTER"
+                    size="small"
+                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
+                  />
+                </>
+              </Box>
             </>
-          </Box>
+          )}
         </Box>
         <Box
           sx={{
