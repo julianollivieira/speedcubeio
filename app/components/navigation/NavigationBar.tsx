@@ -50,7 +50,7 @@ const NavigationBar = ({
         position="fixed"
         sx={{ bgcolor: 'background.paper', zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Container maxWidth={!isNotApp ? false : 'lg'}>
+        <Container maxWidth={!isNotApp ? false : 'lg'} disableGutters>
           <Toolbar
             sx={{ justifyContent: 'space-between', height: '64px' }}
             disableGutters
@@ -67,7 +67,9 @@ const NavigationBar = ({
             ) : (
               <></>
             )}
-            <Logo expanded sx={{ py: 1, height: 0.9 }} />
+            <Box sx={{ pl: 2, display: 'flex', alignItems: 'center', height: '64px' }}>
+              <Logo sx={{ height: '65%' }} expanded />
+            </Box>
             {user ? (
               !isNotApp ? (
                 <>

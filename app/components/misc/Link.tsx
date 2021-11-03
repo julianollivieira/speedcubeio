@@ -1,14 +1,15 @@
 import { ReactNode, forwardRef } from 'react';
 import NextLink from 'next/link';
-import { Link as MUILink } from '@mui/material';
+import { Link as MUILink, Theme } from '@mui/material';
+import { SxProps } from '@mui/system';
 
 interface Props {
   href: string;
   hrefAs?: string;
   children: ReactNode;
   passHref?: boolean;
-  underline?: any;
-  sx?: any;
+  underline?: 'none' | 'hover' | 'always';
+  sx?: SxProps<Theme>;
 }
 
 const Link = forwardRef(

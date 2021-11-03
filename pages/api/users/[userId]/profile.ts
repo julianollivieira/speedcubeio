@@ -19,7 +19,10 @@ type ResponseData = {
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseData>) => {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>
+): Promise<void> => {
   const { userId } = req.query;
 
   let userRecord;

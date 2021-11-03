@@ -1,4 +1,4 @@
-import { useState, ReactElement } from 'react';
+import { useState, ReactElement, ChangeEvent } from 'react';
 import { Box, TextField } from '@mui/material';
 import { CirclePicker, ColorChangeHandler } from 'react-color';
 
@@ -7,7 +7,7 @@ interface Props {
   id: string;
   label: string;
   value: string;
-  onChange: (event: any) => void;
+  onChange: (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   error?: boolean;
   helperText?: string | false;
   handlePickerColorChange: ColorChangeHandler;

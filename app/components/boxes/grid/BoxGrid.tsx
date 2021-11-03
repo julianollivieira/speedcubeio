@@ -21,7 +21,7 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
   const [searchString, setSearchString] = useState<string | null>();
   const [view, setView] = useState<string | null>('grid');
 
-  const handleChangeView = (_: any, newView: string | null) => {
+  const handleChangeView = (_, newView: string | null) => {
     if (newView !== null) {
       setView(newView);
     }

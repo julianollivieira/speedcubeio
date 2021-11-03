@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { ReactElement, ReactNode, useEffect } from 'react';
-import { Box, Container, useMediaQuery } from '@mui/material';
+import { Box, Container, Theme, useMediaQuery } from '@mui/material';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import NavigationBar from '@/components/navigation/NavigationBar';
 import NavigationDrawer from '@/components/navigation/NavigationDrawer';
@@ -28,7 +28,7 @@ const Layout = ({
   const toggleNavigationDrawer = () => setOpen(!open);
   const { user } = useData();
 
-  const matches = useMediaQuery((theme: any) => theme.breakpoints.up('md'));
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   useEffect(() => {
     if (user === null && !allowUnauthorized) {
