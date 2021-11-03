@@ -31,6 +31,8 @@ import { useSnackbar } from 'notistack';
 import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import TimeGraphCard from '@/components/statistics/TimeGraphCard';
 import LastDifferenceTableCard from '@/components/statistics/LastDifferenceTableCard';
+import Link from '@/components/misc/Link';
+import { Person as PersonIcon } from '@mui/icons-material';
 
 interface Props {
   user: User | null | undefined;
@@ -163,6 +165,13 @@ const BoxComponent = ({
             <IconButton size="large" onClick={handleShare}>
               <ShareIcon />
             </IconButton>
+            {!showControls && (
+              <Link href={`/users/${user?.uid}`} passHref>
+                <IconButton size="large">
+                  <PersonIcon />
+                </IconButton>
+              </Link>
+            )}
             {showControls && (
               <>
                 <Tooltip

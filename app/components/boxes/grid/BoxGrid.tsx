@@ -45,24 +45,26 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
       {user && profile && (
         <>
           {profile !== null && boxes.length === 0 && 'No boxes'}
-          {view === 'grid' ? (
-            boxes.map((box) => (
-              <Grid xs={12} lg={6} xl={4} item key={box.id}>
-                <BoxCard
-                  user={user}
-                  box={box}
-                  showControls={showControls}
-                  openDeleteBoxDialog={() => setDeletingBox(box)}
-                  openEditBoxDialog={() => setEditingBox(box)}
-                  share={() =>
-                    console.log(`localhost:3000/users/${user?.uid}/boxes/${box.id}`)
-                  }
-                />
-              </Grid>
-            ))
-          ) : (
-            <Typography>List view here / seachString: {searchString}</Typography>
-          )}
+          <Grid container spacing={2}>
+            {view === 'grid' ? (
+              boxes.map((box) => (
+                <Grid xs={12} lg={6} xl={4} item key={box.id}>
+                  <BoxCard
+                    user={user}
+                    box={box}
+                    showControls={showControls}
+                    openDeleteBoxDialog={() => setDeletingBox(box)}
+                    openEditBoxDialog={() => setEditingBox(box)}
+                    share={() =>
+                      console.log(`localhost:3000/users/${user?.uid}/boxes/${box.id}`)
+                    }
+                  />
+                </Grid>
+              ))
+            ) : (
+              <Typography>List view here / seachString: {searchString}</Typography>
+            )}
+          </Grid>
         </>
       )}
       {user === null && 'User not found'}

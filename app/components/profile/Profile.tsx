@@ -16,7 +16,6 @@ const Profile = ({ user, profile, showControls = false }: Props): ReactElement =
     <>
       <ProfileHeader user={user} profile={profile} showControls={showControls} />
       <Divider sx={{ mb: 3 }} />
-
       {user && profile && (
         <Box
           sx={{
