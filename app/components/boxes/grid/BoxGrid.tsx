@@ -12,19 +12,12 @@ import type { Profile } from '@/types';
 
 interface Props {
   user: User | null | undefined;
-  profile: Profile | undefined;
+  profile: Profile | null;
   boxes: Box[];
   showControls?: boolean;
-  hideIfPrivate?: boolean;
 }
 
-const BoxGrid = ({
-  user,
-  boxes,
-  profile,
-  showControls = false,
-  hideIfPrivate = false,
-}: Props): ReactElement => {
+const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactElement => {
   const [searchString, setSearchString] = useState<string | null>();
   const [view, setView] = useState<string | null>('grid');
 
@@ -40,8 +33,6 @@ const BoxGrid = ({
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
   const [editingBox, setEditingBox] = useState<Box | null>(null);
 
-  const hide = (profile?.isPrivate ?? true) && hideIfPrivate;
-
   return (
     <>
       <BoxGridToolbar
@@ -53,9 +44,8 @@ const BoxGrid = ({
       />
       {view === 'grid' ? (
         <Grid container spacing={2}>
-          {hide
-            ? ''
-            : boxes.map((box) => (
+          {profile !== null
+            ? boxes.map((box) => (
                 <Grid xs={12} lg={6} xl={4} item key={box.id}>
                   <BoxCard
                     user={user}
@@ -68,7 +58,8 @@ const BoxGrid = ({
                     }
                   />
                 </Grid>
-              ))}
+              ))
+            : 'Profile is private'}
         </Grid>
       ) : (
         <Typography>List view here / seachString: {searchString}</Typography>

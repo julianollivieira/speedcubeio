@@ -2,7 +2,17 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import admin from '@/utils/firebase/admin';
 import { Profile } from '@/types';
 
-type ResponseData = {};
+type ResponseData = {
+  profile: null | Profile;
+  user: {
+    uid: string;
+    displayName: string;
+    photoURL: string;
+    metadata: {
+      creationTime: string;
+    };
+  };
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,9 +26,9 @@ export default async function handler(
       .auth()
       .getUser(Array.isArray(userId) ? userId[0] : userId);
 
-    if (!userRecord) {
-      res.status(422).json({ error: 'user-not-found' });
-    }
+    // if (!userRecord) {
+    //   res.status(422).json({ error: 'user-not-found' });
+    // }
 
     const profileReference = admin.app('admin').firestore().doc(`users/${userId}`);
     const profileDocument = await profileReference.get();
@@ -28,7 +38,7 @@ export default async function handler(
       profile: profileData.isPrivate ? null : profileData,
       user: {
         uid: userRecord.uid,
-        displayName: userRecord.displayName,
+        displayName: userRecord.displayName ?? '',
         photoURL: userRecord.photoURL ?? '/images/default_user_profile.jpg',
         metadata: {
           creationTime: userRecord.metadata.creationTime,

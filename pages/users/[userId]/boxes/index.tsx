@@ -21,9 +21,9 @@ const BoxPage: NextPage = () => {
   );
 
   const { user, boxes, profile } = data || {
-    user: undefined,
+    user: null,
     boxes: [],
-    profile: undefined,
+    profile: null,
   };
 
   return (
