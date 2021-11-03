@@ -15,6 +15,7 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
   FormatListNumbered as FormatListNumberedIcon,
+  AllInbox as AllInboxIcon,
 } from '@mui/icons-material';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { Box, Profile } from '@/types';
@@ -34,7 +35,7 @@ import LastDifferenceTableCard from '@/components/statistics/LastDifferenceTable
 interface Props {
   user: User | null | undefined;
   box: Box | undefined;
-  profile: Profile | undefined;
+  profile: Profile | null;
   showControls?: boolean;
 }
 
@@ -95,7 +96,7 @@ const BoxComponent = ({
               }}
               variant="rounded"
             >
-              {box?.icon}
+              {box ? box?.icon : <AllInboxIcon sx={{ fontSize: 40 }} />}
             </Avatar>
           </Typography>
         </MUIBox>
@@ -127,7 +128,7 @@ const BoxComponent = ({
                 textAlign: { xs: 'center', sm: 'start' },
               }}
             >
-              {box?.name}
+              {box ? box?.name : 'Box is private'}
             </Typography>
             <Typography
               variant="subtitle1"
@@ -135,8 +136,12 @@ const BoxComponent = ({
                 display: 'flex',
               }}
             >
-              Created {UnixEpochToDaysAgo(box?.createdAt)} / Last used{' '}
-              {UnixEpochToDaysAgo(getBoxLastUseOrCreationTime(box))}
+              {box && (
+                <>
+                  Created {UnixEpochToDaysAgo(box?.createdAt)} / Last used{' '}
+                  {UnixEpochToDaysAgo(getBoxLastUseOrCreationTime(box))}
+                </>
+              )}
             </Typography>
           </MUIBox>
           <MUIBox
@@ -146,7 +151,7 @@ const BoxComponent = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: { xs: 'center', md: 'flex-end' },
-              width: { xs: 1, md: showControls ? '220px' : '75px' },
+              width: { xs: 1, md: '220px' },
             }}
           >
             <IconButton size="large" onClick={handleShare}>

@@ -44,6 +44,7 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
       />
       {view === 'grid' ? (
         <Grid container spacing={2}>
+          {profile !== null && boxes.length === 0 && 'No boxes'}
           {profile !== null
             ? boxes.map((box) => (
                 <Grid xs={12} lg={6} xl={4} item key={box.id}>

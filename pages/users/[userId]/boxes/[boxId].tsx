@@ -14,21 +14,21 @@ const BoxPage: NextPage = () => {
   const { userId, boxId } = router.query;
 
   const { data } = useSWR<{ user: User; box: BoxType; profile: Profile }>(
-    userId ? `/api/users/${userId}/boxes/${boxId}` : null,
+    userId && boxId ? `/api/users/${userId.toString()}/boxes/${boxId.toString()}` : null,
     fetcher
   );
 
   const { user, box, profile } = data || {
-    user: undefined,
-    box: undefined,
-    profile: undefined,
+    user: null,
+    box: null,
+    profile: null,
   };
 
   return (
     <Layout title="Box" allowUnauthorized>
       {data ? (
         <MUIBox sx={{ mr: { lg: `${360 - 73}px` } }}>
-          <Box user={user} box={box} profile={profile} />
+          <Box user={user} box={box === null ? undefined : box} profile={profile} />
         </MUIBox>
       ) : (
         <Backdrop open sx={{ color: '#fff', zIndex: 9999 }}>

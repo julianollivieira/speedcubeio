@@ -32,7 +32,7 @@ const BoxPage: NextPage = () => {
         <>
           <PageHeader title={`${user?.displayName}'s boxes`} icon={AllInboxIcon} />
           <Divider sx={{ mb: 3 }} />
-          <BoxGrid user={user} boxes={boxes} profile={profile} hideIfPrivate />
+          <BoxGrid user={user} boxes={boxes} profile={profile} />
         </>
       ) : (
         <Backdrop open sx={{ color: '#fff', zIndex: 9999 }}>
