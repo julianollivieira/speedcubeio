@@ -12,7 +12,12 @@ const BoxesPage: NextPage = () => {
     <Layout title="Boxes">
       <BoxGridHeader title="Your boxes" user={user} />
       <Divider sx={{ mb: 3 }} />
-      <BoxGrid user={user} boxes={boxes} profile={profile} showControls={true} />
+      <BoxGrid
+        user={user}
+        boxes={boxes}
+        profile={profile === undefined ? null : profile}
+        showControls={true}
+      />
     </Layout>
   );
 };
