@@ -139,7 +139,7 @@ const ProfileHeader = ({ user, profile, showControls = false }: Props): ReactEle
             display: 'flex',
             alignItems: 'center',
             justifyContent: { xs: 'center', md: 'flex-end' },
-            width: { xs: 1, md: showControls ? '220px' : `${profilePictureHeight}px` },
+            width: { xs: 1, md: '220px' },
           }}
         >
           <IconButton size="large" onClick={handleShare}>
