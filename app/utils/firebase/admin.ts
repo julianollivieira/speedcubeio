@@ -1,20 +1,19 @@
-import admin from 'firebase-admin';
+import { App, getApps, initializeApp, cert, ServiceAccount } from 'firebase-admin/app';
 
-const serviceAccount: admin.ServiceAccount = {
+const serviceAccount: ServiceAccount = {
   projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
   privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n'),
   clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
 };
 
 const adminConfig = {
-  credential: admin.credential.cert(serviceAccount),
+  credential: cert(serviceAccount),
   databaseURL: 'https://speedcubeio-dev-default-rtdb.europe-west1.firebasedatabase.app',
 };
 
-const appNames = admin.apps.map((app: admin.app.App | null) => app?.name);
+const apps: App[] = getApps();
 
-if (!appNames.includes('admin')) {
-  admin.initializeApp(adminConfig, 'admin');
-}
+const app: App =
+  apps.find((app: App) => app.name === 'admin') ?? initializeApp(adminConfig, 'admin');
 
-export default admin;
+export default app;

@@ -45,7 +45,7 @@ const Layout = ({
         isNotApp={isNotApp}
         toggleNavigationDrawer={toggleNavigationDrawer}
       />
-      {user && (
+      {user && !isNotApp && (
         <NavigationDrawer
           open={open}
           handleDrawerOpen={handleDrawerOpen}

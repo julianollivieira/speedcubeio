@@ -20,14 +20,19 @@ class TimeList {
     });
   }
 
-  // public getGraphObject(): any[] {
-  //   return this.times.map((item, index) => ({
-  //     name: index + 1,
-  //     time: msToTimeNull(this.times[index]),
-  //     ao5: msToTimeNull(this.ao5s[index]),
-  //     ao12: msToTimeNull(this.ao12s[index]),
-  //   }));
-  // }
+  public getTimeGraphObject(): {
+    name: number;
+    time: number;
+    ao5: number | null;
+    ao12: number | null;
+  }[] {
+    return this.times.map((_, index) => ({
+      name: index + 1,
+      time: this.times[index],
+      ao5: this.ao5s[index],
+      ao12: this.ao12s[index],
+    }));
+  }
 
   // public getPuzzlesPieChartObject(): any[] {
   //   let data: any = [];
@@ -129,6 +134,92 @@ class TimeList {
     times.slice(firstWorstIndex, 1);
 
     return times;
+  }
+
+  // Get the difference between the best and last time
+  public getDifferenceBetweenBestAndLastTime(): number | null {
+    if (this.times.length < 2) return null;
+    const best = Math.min(...this.times.slice(0, -1));
+    const last = this.times[this.times.length - 1];
+    return last - best;
+  }
+
+  // Get the difference between the best and the last average of 5
+  public getDifferenceBetweenBestAndLastAverageOf5(): number | null {
+    if (this.ao5s.filter((time) => time !== null).length < 2) return null;
+    const best = Math.min(
+      ...(<number[]>this.ao5s.slice(0, -1).filter((time) => time !== null))
+    );
+    const last = this.ao5s[this.ao5s.length - 1];
+    if (last === null) return null;
+    return last - best;
+  }
+
+  // Get the difference between the best and the last average of 12
+  public getDifferenceBetweenBestAndLastAverageOf12(): number | null {
+    if (this.ao12s.filter((time) => time !== null).length < 2) return null;
+    const best = Math.min(
+      ...(<number[]>this.ao12s.slice(0, -1).filter((time) => time !== null))
+    );
+    const last = this.ao12s[this.ao12s.length - 1];
+    if (last === null) return null;
+    return last - best;
+  }
+
+  // Get the difference between the worst and last time
+  public getDifferenceBetweenWorstAndLastTime(): number | null {
+    if (this.times.length < 2) return null;
+    const worst = Math.max(...this.times.slice(0, -1));
+    const last = this.times[this.times.length - 1];
+    return last - worst;
+  }
+
+  // Get the difference between the worst and last average of 5
+  public getDifferenceBetweenWorstAndLastAverageOf5(): number | null {
+    if (this.ao5s.filter((time) => time !== null).length < 2) return null;
+    const worst = Math.max(
+      ...(<number[]>this.ao5s.slice(0, -1).filter((time) => time !== null))
+    );
+    const last = this.ao5s[this.ao5s.length - 1];
+    if (last === null) return null;
+    return last - worst;
+  }
+
+  // Get the difference between the worst and last average of 12
+  public getDifferenceBetweenWorstAndLastAverageOf12(): number | null {
+    if (this.ao12s.filter((time) => time !== null).length < 2) return null;
+    const worst = Math.max(
+      ...(<number[]>this.ao12s.slice(0, -1).filter((time) => time !== null))
+    );
+    const last = this.ao12s[this.ao12s.length - 1];
+    if (last === null) return null;
+    return last - worst;
+  }
+
+  // Get the difference between the last and the previous time
+  public getDifferenceBetweenLastAndPreviousTime(): number | null {
+    if (this.times.length < 2) return null;
+    const last = this.times[this.times.length - 1];
+    const previous = this.times[this.times.length - 2];
+    return last - previous;
+  }
+
+  // Get the difference between the last and the previous average of 5
+  public getDifferenceBetweenLastAndPreviousAverageOf5(): number | null {
+    if (this.ao5s.length < 2) return null;
+    const last = this.ao5s[this.ao5s.length - 1];
+    const previous = this.ao5s[this.ao5s.length - 2];
+    if (last === null || previous === null) return null;
+    return last - previous;
+  }
+
+  // Get the difference between the last and the previous average of 12
+  public getDifferenceBetweenLastAndPreviousAverageOf12(): number | null {
+    if (this.ao12s.length < 2) return null;
+    const last = this.ao12s[this.ao12s.length - 1];
+    const previous = this.ao12s[this.ao12s.length - 2];
+    if (last === null || previous === null) return null;
+    return last - previous;
   }
 }
 

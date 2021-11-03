@@ -7,31 +7,16 @@ import ProfileHeader from '@/components/profile/ProfileHeader';
 
 interface Props {
   user: User | null | undefined;
-  profile: ProfileType | undefined;
+  profile: ProfileType | null;
   showControls?: boolean;
-  hideIfPrivate?: boolean;
 }
 
-const Profile = ({
-  user,
-  profile,
-  showControls = false,
-  hideIfPrivate = false,
-}: Props): ReactElement => {
-  const hide = (profile?.isPrivate ?? true) && hideIfPrivate;
-
+const Profile = ({ user, profile, showControls = false }: Props): ReactElement => {
   return (
     <>
-      <ProfileHeader
-        hide={hide}
-        user={user}
-        profile={profile}
-        showControls={showControls}
-      />
+      <ProfileHeader user={user} profile={profile} showControls={showControls} />
       <Divider sx={{ mb: 3 }} />
-      {hide ? (
-        ''
-      ) : (
+      {user && profile && (
         <Box
           sx={{
             display: 'flex',
@@ -44,7 +29,8 @@ const Profile = ({
           <SocialChipList socialLinks={profile?.socialLinks} />
         </Box>
       )}
-      {/* TODO: Add fabs here */}
+      {user === null && 'User not found'}
+      {user && profile === null && 'Profile is private'}
     </>
   );
 };

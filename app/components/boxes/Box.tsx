@@ -15,11 +15,11 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
   FormatListNumbered as FormatListNumberedIcon,
+  AllInbox as AllInboxIcon,
 } from '@mui/icons-material';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { Box, Profile } from '@/types';
 import { useData } from '@/hooks/useData';
-import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import TimeListDrawer from '@/components/timelist/TimeListDrawer';
@@ -28,11 +28,16 @@ import { User } from 'firebase/auth';
 import Router from 'next/router';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import SummaryTableCard from '@/components/statistics/SummaryTableCard';
+import TimeGraphCard from '@/components/statistics/TimeGraphCard';
+import LastDifferenceTableCard from '@/components/statistics/LastDifferenceTableCard';
+import Link from '@/components/misc/Link';
+import { Person as PersonIcon } from '@mui/icons-material';
 
 interface Props {
   user: User | null | undefined;
-  box: Box | undefined;
-  profile: Profile | undefined;
+  box: Box | null | undefined;
+  profile: Profile | null;
   showControls?: boolean;
 }
 
@@ -93,7 +98,7 @@ const BoxComponent = ({
               }}
               variant="rounded"
             >
-              {box?.icon}
+              {box ? box?.icon : <AllInboxIcon sx={{ fontSize: 40 }} />}
             </Avatar>
           </Typography>
         </MUIBox>
@@ -125,7 +130,13 @@ const BoxComponent = ({
                 textAlign: { xs: 'center', sm: 'start' },
               }}
             >
-              {box?.name}
+              {user
+                ? box === null
+                  ? 'Box is private'
+                  : box === undefined
+                  ? 'Box not found'
+                  : box?.name
+                : 'User not found'}
             </Typography>
             <Typography
               variant="subtitle1"
@@ -133,8 +144,12 @@ const BoxComponent = ({
                 display: 'flex',
               }}
             >
-              Created {UnixEpochToDaysAgo(box?.createdAt)} / Last used{' '}
-              {UnixEpochToDaysAgo(getBoxLastUseOrCreationTime(box))}
+              {box && (
+                <>
+                  Created {UnixEpochToDaysAgo(box?.createdAt)} / Last used{' '}
+                  {UnixEpochToDaysAgo(getBoxLastUseOrCreationTime(box))}
+                </>
+              )}
             </Typography>
           </MUIBox>
           <MUIBox
@@ -144,12 +159,19 @@ const BoxComponent = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: { xs: 'center', md: 'flex-end' },
-              width: { xs: 1, md: showControls ? '220px' : '75px' },
+              width: { xs: 1, md: '220px' },
             }}
           >
             <IconButton size="large" onClick={handleShare}>
               <ShareIcon />
             </IconButton>
+            {!showControls && (
+              <Link href={`/users/${user?.uid}`} passHref>
+                <IconButton size="large">
+                  <PersonIcon />
+                </IconButton>
+              </Link>
+            )}
             {showControls && (
               <>
                 <Tooltip
@@ -189,14 +211,14 @@ const BoxComponent = ({
       <Divider sx={{ mb: 3 }} />
       <Grid container spacing={2}>
         <Grid item xs={12} xl={6}>
-          <SummaryTableCard box={box} />
-        </Grid>
-        {/* <Grid item xs={12}>
-          <TimesGraphCard timeList={timeList} />
+          <SummaryTableCard box={box === null ? undefined : box} />
         </Grid>
         <Grid item xs={12} xl={6}>
-          <PuzzlesPieChartCard timeList={timeList} />
-        </Grid> */}
+          <LastDifferenceTableCard box={box === null ? undefined : box} />
+        </Grid>
+        <Grid item xs={12}>
+          <TimeGraphCard box={box === null ? undefined : box} />
+        </Grid>
       </Grid>
       {showControls && deletingBox && (
         <DeleteBoxDialog

@@ -12,19 +12,12 @@ import type { Profile } from '@/types';
 
 interface Props {
   user: User | null | undefined;
-  profile: Profile | undefined;
+  profile: Profile | null;
   boxes: Box[];
   showControls?: boolean;
-  hideIfPrivate?: boolean;
 }
 
-const BoxGrid = ({
-  user,
-  boxes,
-  profile,
-  showControls = false,
-  hideIfPrivate = false,
-}: Props): ReactElement => {
+const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactElement => {
   const [searchString, setSearchString] = useState<string | null>();
   const [view, setView] = useState<string | null>('grid');
 
@@ -40,8 +33,6 @@ const BoxGrid = ({
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
   const [editingBox, setEditingBox] = useState<Box | null>(null);
 
-  const hide = (profile?.isPrivate ?? true) && hideIfPrivate;
-
   return (
     <>
       <BoxGridToolbar
@@ -51,11 +42,12 @@ const BoxGrid = ({
         handleSearchInput={(searchString) => setSearchString(searchString.target.value)}
         handleOpenCreateDialog={() => setCreatingBox(true)}
       />
-      {view === 'grid' ? (
-        <Grid container spacing={2}>
-          {hide
-            ? ''
-            : boxes.map((box) => (
+      {user && profile && (
+        <>
+          {profile !== null && boxes.length === 0 && 'No boxes'}
+          <Grid container spacing={2}>
+            {view === 'grid' ? (
+              boxes.map((box) => (
                 <Grid xs={12} lg={6} xl={4} item key={box.id}>
                   <BoxCard
                     user={user}
@@ -68,11 +60,15 @@ const BoxGrid = ({
                     }
                   />
                 </Grid>
-              ))}
-        </Grid>
-      ) : (
-        <Typography>List view here / seachString: {searchString}</Typography>
+              ))
+            ) : (
+              <Typography>List view here / seachString: {searchString}</Typography>
+            )}
+          </Grid>
+        </>
       )}
+      {user === null && 'User not found'}
+      {user && profile === null && 'Profile is private'}
       {showControls && (
         <CreateBoxDialog
           open={creatingBox}

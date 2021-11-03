@@ -1,5 +1,5 @@
 import { Box } from '@/types';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, MouseEvent } from 'react';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { User } from 'firebase/auth';
 import {
@@ -46,7 +46,7 @@ const BoxCard = ({
   const handleHideMenu = () => setShowMenuButtons(false);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) =>
+  const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
 

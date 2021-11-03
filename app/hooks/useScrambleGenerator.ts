@@ -3,7 +3,13 @@ import type { Scramble } from 'scrambow';
 import { useEffect, useState } from 'react';
 import { useData } from '@/hooks/useData';
 
-const useScrambleGenerator = () => {
+interface UseScrambleGeneratorReturnType {
+  scramble: Scramble | null;
+  scrambles: Scramble[];
+  generateNewScramble: () => void;
+}
+
+const useScrambleGenerator = (): UseScrambleGeneratorReturnType => {
   const { currentPuzzle } = useData();
   const [scrambow, setScrambow] = useState<Scrambow | null>(null);
   const [scramble, setScramble] = useState<Scramble | null>(null);

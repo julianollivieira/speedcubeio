@@ -3,8 +3,7 @@ import Layout from '@/components/layout/Layout';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { Divider, Backdrop, CircularProgress } from '@mui/material';
-import { AllInbox as AllInboxIcon } from '@mui/icons-material';
-import PageHeader from '@/components/misc/PageHeader';
+import BoxGridHeader from '@/components/boxes/grid/BoxGridHeader';
 import BoxGrid from '@/components/boxes/grid/BoxGrid';
 import { User } from 'firebase/auth';
 import { Box as BoxType, Profile } from '@/types';
@@ -21,18 +20,22 @@ const BoxPage: NextPage = () => {
   );
 
   const { user, boxes, profile } = data || {
-    user: undefined,
+    user: null,
     boxes: [],
-    profile: undefined,
+    profile: null,
   };
 
   return (
     <Layout title="Boxes" allowUnauthorized>
       {data ? (
         <>
-          <PageHeader title={`${user?.displayName}'s boxes`} icon={AllInboxIcon} />
+          <BoxGridHeader
+            title={user ? `${user?.displayName}'s boxes` : 'User not found'}
+            user={user}
+            showControls
+          />
           <Divider sx={{ mb: 3 }} />
-          <BoxGrid user={user} boxes={boxes} profile={profile} hideIfPrivate />
+          <BoxGrid user={user} boxes={boxes} profile={profile} />
         </>
       ) : (
         <Backdrop open sx={{ color: '#fff', zIndex: 9999 }}>
