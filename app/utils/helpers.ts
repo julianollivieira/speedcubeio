@@ -12,9 +12,19 @@ export const capitalizeFirstLetter = (string?: string): string | null => {
 };
 
 // Return a well formatted time string from input time (ms)
-export const msToTime = (ms: number | null = null, dash = false): string => {
+export const msToTime = (
+  ms: number | null = null,
+  dash = false,
+  showPrefix = false
+): string => {
   if (dash && ms === null) return '-';
   if (ms === null) return '';
+
+  let wasNegative = false;
+  if (ms < 0) {
+    wasNegative = true;
+    ms = Math.abs(ms);
+  }
 
   let result = '';
 
@@ -25,6 +35,10 @@ export const msToTime = (ms: number | null = null, dash = false): string => {
     result = dayjs.utc(ms).format('m:ss.SSS');
   } else {
     result = dayjs.utc(ms).format('ss.SSS');
+  }
+
+  if (showPrefix) {
+    result = wasNegative ? '-' + result : '+' + result;
   }
 
   const rest = result.substring(0, result.length - 6);

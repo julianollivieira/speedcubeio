@@ -19,7 +19,6 @@ import {
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { Box, Profile } from '@/types';
 import { useData } from '@/hooks/useData';
-import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import TimeListDrawer from '@/components/timelist/TimeListDrawer';
@@ -28,7 +27,9 @@ import { User } from 'firebase/auth';
 import Router from 'next/router';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import TimeGraphCard from '@/components/statistics/TimeGraphCard';
+import LastDifferenceTableCard from '@/components/statistics/LastDifferenceTableCard';
 
 interface Props {
   user: User | null | undefined;
@@ -191,6 +192,9 @@ const BoxComponent = ({
       <Grid container spacing={2}>
         <Grid item xs={12} xl={6}>
           <SummaryTableCard box={box} />
+        </Grid>
+        <Grid item xs={12} xl={6}>
+          <LastDifferenceTableCard box={box} />
         </Grid>
         <Grid item xs={12}>
           <TimeGraphCard box={box} />

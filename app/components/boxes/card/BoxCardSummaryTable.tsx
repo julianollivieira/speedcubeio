@@ -24,28 +24,28 @@ const BoxCardSummaryTable = ({ box }: Props): ReactElement => {
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>
-            <TableCell>Last</TableCell>
-            <TableCell>Best</TableCell>
-            <TableCell>Worst</TableCell>
+            <TableCell>Time</TableCell>
+            <TableCell>AO5</TableCell>
+            <TableCell>AO12</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>Time</TableCell>
+            <TableCell>Last</TableCell>
             <TableCell>{msToTime(timeList?.getLastTime(), true)}</TableCell>
-            <TableCell>{msToTime(timeList?.getBestTime(), true)}</TableCell>
-            <TableCell>{msToTime(timeList?.getWorstTime(), true)}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>AO5</TableCell>
             <TableCell>{msToTime(timeList?.getLastAverageOf5(), true)}</TableCell>
-            <TableCell>{msToTime(timeList?.getBestAverageOf5(), true)}</TableCell>
-            <TableCell>{msToTime(timeList?.getWorstAverageOf5(), true)}</TableCell>
+            <TableCell>{msToTime(timeList?.getLastAverageOf12(), true)}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>AO12</TableCell>
-            <TableCell>{msToTime(timeList?.getLastAverageOf12(), true)}</TableCell>
+            <TableCell>Best</TableCell>
+            <TableCell>{msToTime(timeList?.getBestTime(), true)}</TableCell>
+            <TableCell>{msToTime(timeList?.getBestAverageOf5(), true)}</TableCell>
             <TableCell>{msToTime(timeList?.getBestAverageOf12(), true)}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Worst</TableCell>
+            <TableCell>{msToTime(timeList?.getWorstTime(), true)}</TableCell>
+            <TableCell>{msToTime(timeList?.getWorstAverageOf5(), true)}</TableCell>
             <TableCell>{msToTime(timeList?.getWorstAverageOf12(), true)}</TableCell>
           </TableRow>
         </TableBody>
