@@ -11,6 +11,7 @@ const Timer = (): ReactElement => {
     setTimerActive,
     currentPuzzle,
     generateNewScramble,
+    scrambleLocked,
   } = useData();
   const [time, setTime] = useState(0);
   const [readying, setReadying] = useState(false);
@@ -83,7 +84,7 @@ const Timer = (): ReactElement => {
       document.removeEventListener('keydown', keyDown);
       document.removeEventListener('keyup', keyUp);
     };
-  }, [box, currentPuzzle, scramble]);
+  }, [box, currentPuzzle, scramble, scrambleLocked]);
 
   return (
     <MUIBox>
