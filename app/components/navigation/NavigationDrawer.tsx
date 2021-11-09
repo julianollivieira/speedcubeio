@@ -14,7 +14,6 @@ import {
   AllInbox as AllInboxIcon,
   ShowChart as ShowChartIcon,
   Settings as SettingsIcon,
-  AdminPanelSettings as AdminPanelSettingsIcon,
   ExpandLess as ExpandLessIcon,
   ExpandMore as ExpandMoreIcon,
   MultilineChart as MultilineChartIcon,
@@ -78,9 +77,6 @@ const NavigationDrawer = ({
 }: Props): ReactElement => {
   const theme = useTheme();
 
-  const [adminPanelOpen, setAdminPanelOpen] = useLocalStorage('subDrawerOpen', false);
-  const toggleAdminPanelOpen = () => setAdminPanelOpen(!adminPanelOpen);
-
   return (
     <>
       <Backdrop
@@ -136,59 +132,6 @@ const NavigationDrawer = ({
               <ListItemText primary="Preferences" />
             </ListItem>
           </Link>
-          {/* if admin */}
-          {true ? (
-            <>
-              <Divider />
-              <ListItem button component="a" key="Admin" onClick={toggleAdminPanelOpen}>
-                <ListItemIcon sx={{ paddingLeft: 1 }}>
-                  <AdminPanelSettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Admin" />
-                {adminPanelOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </ListItem>
-              <Collapse in={adminPanelOpen} timeout="auto" unmountOnExit>
-                <Link href="/admin" passHref>
-                  <ListItem
-                    button
-                    component="a"
-                    key="Dashboard"
-                    sx={{
-                      pl: open ? 4 : 2,
-                      transition: theme.transitions.create('padding-left', {
-                        easing: theme.transitions.easing.easeInOut,
-                      }),
-                    }}
-                  >
-                    <ListItemIcon sx={{ paddingLeft: 1 }}>
-                      <MultilineChartIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Dashboard" />
-                  </ListItem>
-                </Link>
-                <Link href="/admin/users" passHref>
-                  <ListItem
-                    button
-                    component="a"
-                    key="Users"
-                    sx={{
-                      pl: open ? 4 : 2,
-                      transition: theme.transitions.create('padding-left', {
-                        easing: theme.transitions.easing.easeInOut,
-                      }),
-                    }}
-                  >
-                    <ListItemIcon sx={{ paddingLeft: 1 }}>
-                      <PeopleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Users" />
-                  </ListItem>
-                </Link>
-              </Collapse>
-            </>
-          ) : (
-            <></>
-          )}
         </List>
       </Drawer>
     </>
