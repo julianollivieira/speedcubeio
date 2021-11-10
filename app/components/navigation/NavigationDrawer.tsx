@@ -1,11 +1,9 @@
 import {
   Drawer as MuiDrawer,
-  Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Collapse,
   Backdrop,
 } from '@mui/material';
 import {
@@ -14,14 +12,9 @@ import {
   AllInbox as AllInboxIcon,
   ShowChart as ShowChartIcon,
   Settings as SettingsIcon,
-  ExpandLess as ExpandLessIcon,
-  ExpandMore as ExpandMoreIcon,
-  MultilineChart as MultilineChartIcon,
-  People as PeopleIcon,
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
 import Link from 'next/link';
-import useLocalStorage from '@/hooks/useLocalStorage';
 import { ReactElement } from 'react';
 
 const drawerWidth = 240;
