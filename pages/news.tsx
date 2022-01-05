@@ -8,14 +8,20 @@ import {
   CardContent,
   Typography,
   CardActions,
+  Divider,
+  Avatar,
 } from '@mui/material';
+import PageHeader from '@/components/misc/PageHeader';
+import { Newspaper as NewspaperIcon } from '@mui/icons-material';
 
 const NewsPage: NextPage = () => {
   const { posts } = useData();
 
   return (
     <Layout title="News">
-      <Grid container spacing={2} sx={{ pt: 3 }}>
+      <PageHeader title="News and announcements" icon={NewspaperIcon} />
+      <Divider sx={{ mb: 3 }} />
+      <Grid container spacing={2}>
         {posts.map((post) => (
           <Grid item xs={12}>
             <Card>

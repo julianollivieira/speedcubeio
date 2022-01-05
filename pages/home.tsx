@@ -1,21 +1,29 @@
 import type { NextPage } from 'next';
 import Layout from '@/components/layout/Layout';
-import { Typography, Grid } from '@mui/material';
+import { Grid, Divider } from '@mui/material';
 import { getPartOfDay } from '@/utils/helpers';
 import NewsAndAnnouncementsCard from '@/components/home/NewsAndAnnouncementsCard';
 import PollCard from '@/components/home/PollCard';
 import StatsCard from '@/components/home/StatsCard';
 import { useData } from '@/hooks/useData';
+import PageHeader from '@/components/misc/PageHeader';
+import { Home as HomeIcon } from '@mui/icons-material';
 
 const HomePage: NextPage = () => {
   const { user } = useData();
 
   return (
     <Layout title="Home">
-      <Typography variant="h3" sx={{ my: 3 }}>
-        Good{getPartOfDay()}{' '}
-        <span style={{ fontWeight: 'bold' }}>{user?.displayName}</span>!
-      </Typography>
+      <PageHeader
+        title={
+          <>
+            Good{getPartOfDay()}{' '}
+            <span style={{ fontWeight: 'bold' }}>{user?.displayName}</span>!
+          </>
+        }
+        icon={HomeIcon}
+      />
+      <Divider sx={{ mb: 3 }} />
       <Grid container spacing={2}>
         <Grid item xs={12} lg={7}>
           <NewsAndAnnouncementsCard />

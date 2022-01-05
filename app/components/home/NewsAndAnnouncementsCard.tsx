@@ -6,16 +6,15 @@ import {
   ListItemButton,
   ListItemAvatar,
   Avatar,
-  ListItemText,
+  Box,
   CardHeader,
   CardActions,
   Button,
   Typography,
 } from '@mui/material';
-import { Newspaper as NewspaperIcon } from '@mui/icons-material';
+import { Circle as CircleIcon } from '@mui/icons-material';
 import { useData } from '@/hooks/useData';
 import Link from '@/components/misc/Link';
-import Router from 'next/router';
 
 const NewsAndAnnouncementsCard = () => {
   const { posts } = useData();
@@ -41,22 +40,30 @@ const NewsAndAnnouncementsCard = () => {
       <CardContent sx={{ py: 0 }}>
         <List>
           {posts.slice(0, 3).map((post) => (
-            <ListItem
-              disablePadding
-              key={post.id}
-              secondaryAction={
-                <Typography variant="body2">
-                  {new Date(post.publishedOn * 1000).toLocaleString()}
-                </Typography>
-              }
-            >
-              <ListItemButton>
+            <ListItem disablePadding key={post.id}>
+              <ListItemButton sx={{ px: 1 }}>
                 <ListItemAvatar>
-                  <Avatar>
-                    <NewspaperIcon />
+                  <Avatar sx={{ bgcolor: 'transparent' }}>
+                    <CircleIcon sx={{ fontSize: '0.5em', color: '#FFF' }} />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={post.title} secondary={post.subtitle} />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: { xs: 'flex-start', md: 'center' },
+                    justifyContent: 'space-between',
+                    flexDirection: { xs: 'column', md: 'row' },
+                    width: 1,
+                  }}
+                >
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="h6">{post.title}</Typography>
+                    <Typography variant="body1">{post.subtitle}</Typography>
+                  </Box>
+                  <Typography variant="body2">
+                    {new Date(post.publishedOn * 1000).toLocaleString()}
+                  </Typography>
+                </Box>
               </ListItemButton>
             </ListItem>
           ))}
