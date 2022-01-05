@@ -161,7 +161,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
           ...pollDoc.data(),
         } as Poll;
       });
-      setPolls(pollObjects);
+      setPolls(pollObjects.filter((poll) => poll.active));
       console.log(
         `❓🔢 Read ${pollObjects.length} poll${pollObjects.length === 1 ? '' : 's'}`
       );

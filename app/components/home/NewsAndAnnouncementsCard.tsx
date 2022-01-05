@@ -15,6 +15,7 @@ import {
 import { Circle as CircleIcon } from '@mui/icons-material';
 import { useData } from '@/hooks/useData';
 import Link from '@/components/misc/Link';
+import { UnixEpochToDaysAgo } from '@/utils/helpers';
 
 const NewsAndAnnouncementsCard = () => {
   const { posts } = useData();
@@ -25,7 +26,7 @@ const NewsAndAnnouncementsCard = () => {
     <Card
       sx={{
         minWidth: 275,
-        height: '100%',
+        height: 1,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -33,7 +34,7 @@ const NewsAndAnnouncementsCard = () => {
     >
       <CardHeader
         title="News and announcements"
-        subheader="September 14, 2016"
+        subheader="Stay up-to-date with the latest news"
         sx={{ pb: 0 }}
         titleTypographyProps={{ variant: 'h6' }}
       />
@@ -61,7 +62,7 @@ const NewsAndAnnouncementsCard = () => {
                     <Typography variant="body1">{post.subtitle}</Typography>
                   </Box>
                   <Typography variant="body2">
-                    {new Date(post.publishedOn * 1000).toLocaleString()}
+                    {UnixEpochToDaysAgo(post.publishedOn)}
                   </Typography>
                 </Box>
               </ListItemButton>

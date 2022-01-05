@@ -24,7 +24,7 @@ const HomePage: NextPage = () => {
         icon={HomeIcon}
       />
       <Divider sx={{ mb: 3 }} />
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ mb: 3 }}>
         <Grid item xs={12} lg={7}>
           <NewsAndAnnouncementsCard />
         </Grid>

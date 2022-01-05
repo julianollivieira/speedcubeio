@@ -22,25 +22,34 @@ const NewsAndAnnouncementsCard = () => {
   return (
     <Card
       sx={{
-        minWidth: 275,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        height: 1,
       }}
     >
       <CardHeader
-        title="Poll"
+        title="Current poll"
         subheader="We want to know what you think"
         sx={{ pb: 0 }}
         titleTypographyProps={{ variant: 'h6' }}
       />
-      <CardContent sx={{ pb: 0 }}>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {poll?.question || 'No polls available'}
+      <CardContent
+        sx={{
+          pb: 0,
+          height: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: poll !== undefined ? 'initial' : 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography sx={{ fontSize: 16, textAlign: 'center', mb: 0 }} gutterBottom>
+          {poll?.question || 'No poll available at this time, check back later'}
         </Typography>
         {poll && (
           <RadioGroup defaultValue={0}>
-            <List sx={{ pb: 0 }}>
+            <List sx={{ py: 0 }}>
               {poll?.options.map((option, index) => (
                 <ListItem
                   disablePadding
@@ -62,11 +71,13 @@ const NewsAndAnnouncementsCard = () => {
           </RadioGroup>
         )}
       </CardContent>
-      <CardActions>
-        <Button size="small" variant="contained" fullWidth>
-          Submit
-        </Button>
-      </CardActions>
+      {poll && (
+        <CardActions>
+          <Button size="small" variant="contained" fullWidth>
+            Submit
+          </Button>
+        </CardActions>
+      )}
     </Card>
   );
 };
