@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import {
-  createUserWithEmailAndPassword,
   EmailAuthProvider,
   getAuth,
   reauthenticateWithCredential,
@@ -26,19 +25,28 @@ import {
   doc,
   getDocs,
   addDoc,
-  setDoc,
   deleteDoc,
   updateDoc,
   getDoc,
 } from '@firebase/firestore';
 import app from '@/utils/firebase/client';
-import type { Box, Time, Profile, SocialLink, SocialLinkId, Puzzle } from '@/types';
+import type {
+  Box,
+  Time,
+  Profile,
+  SocialLink,
+  SocialLinkId,
+  Puzzle,
+  Post,
+  Poll,
+} from '@/types';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 import { Scrambow } from 'scrambow';
 import type { Scramble } from 'scrambow';
+import createAccount from '@/services/createAccount';
 
 const auth = getAuth(app);
 const storage = getStorage(app);
@@ -51,14 +59,18 @@ interface Context {
   profile: Profile | undefined;
   timerActive: boolean;
   currentPuzzle: Puzzle;
+  posts: Post[];
+  polls: Poll[];
+
+  currentPoll: () => Poll | undefined;
 
   logIn: (email: string, password: string) => Promise<UserCredential>;
   logOut: () => Promise<void>;
-  signUp: (
-    displayName: string,
-    email: string,
-    password: string
-  ) => Promise<UserCredential>;
+  signUp: (options: {
+    displayName: string;
+    email: string;
+    password: string;
+  }) => Promise<UserCredential>;
   resendEmailVerification: (email: string, password: string) => Promise<void>;
   requestPasswordResetLink: (email: string) => Promise<void>;
 
@@ -118,9 +130,45 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   );
   const [scrambleLocked, setScrambleLocked] = useState(false);
 
+  const [posts, setPosts] = useState<Context['posts']>([]);
+  const [polls, setPolls] = useState<Context['polls']>([]);
+
   const toggleScrambleLocked = () => {
     setScrambleLocked((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    getDocs(collection(db, 'posts')).then((postsSnapshot) => {
+      const postObjects: Post[] = postsSnapshot.docs.map((postDoc) => {
+        return {
+          id: postDoc.id,
+          ...postDoc.data(),
+        } as Post;
+      });
+      setPosts(postObjects.sort((a, b) => b.publishedOn - a.publishedOn));
+
+      console.log(
+        `📫🔢 Read ${postObjects.length} post${postObjects.length === 1 ? '' : 's'}`
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    getDocs(collection(db, 'polls')).then((pollsSnapshot) => {
+      const pollObjects: Poll[] = pollsSnapshot.docs.map((pollDoc) => {
+        return {
+          id: pollDoc.id,
+          ...pollDoc.data(),
+        } as Poll;
+      });
+      setPolls(pollObjects);
+      console.log(
+        `❓🔢 Read ${pollObjects.length} poll${pollObjects.length === 1 ? '' : 's'}`
+      );
+    });
+  }, []);
+
+  const currentPoll = () => polls[polls.length - 1];
 
   useEffect(() => {
     const arr = ['2x2x2', '3x3x3', '4x4x4', '5x5x5', '6x6x6', '7x7x7'];
@@ -248,36 +296,14 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Sign the user up for an account
-  const signUp = async (
-    displayName: string,
-    email: string,
-    password: string
-  ): Promise<UserCredential> => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(userCredential.user, { displayName: displayName });
-
-    const profileReference = doc(db, 'users', userCredential.user.uid);
-
-    try {
-      await setDoc(profileReference, {
-        isPrivate: false,
-        isVerified: false,
-        socialLinks: [],
-      });
-      setProfile(
-        (prevState) =>
-          ({
-            ...prevState,
-            isPrivate: false,
-            isVerified: false,
-            socialLinks: [],
-          } as Profile)
-      );
-    } catch (e) {
-      console.error(e);
-    }
-
-    await sendEmailVerification(userCredential.user);
+  const signUp = async (options: {
+    displayName: string;
+    email: string;
+    password: string;
+  }): Promise<UserCredential> => {
+    const { profile, userCredential } = await createAccount(auth, db, options);
+    setProfile(profile);
+    sendEmailVerification(userCredential.user);
     signOut(auth);
     return userCredential;
   };
@@ -609,6 +635,9 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     profile,
     timerActive,
     currentPuzzle,
+    posts,
+    polls,
+    currentPoll,
     logIn,
     logOut,
     signUp,

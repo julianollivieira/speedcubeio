@@ -68,6 +68,18 @@ export const getBoxLastUseOrCreationTime = (box: Box | undefined): number | unde
   }
 };
 
+export const getPartOfDay = (): string => {
+  const date = new Date();
+  const hours = date.getHours();
+  if (hours < 12) {
+    return 'morning';
+  } else if (hours < 18) {
+    return ' afternoon';
+  } else {
+    return ' evening';
+  }
+};
+
 export const UnixEpochToUTC = (unixEpoch: number | undefined): string | undefined => {
   return unixEpoch ? dayjs.unix(unixEpoch).utc().toString() : undefined;
 };
