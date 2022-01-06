@@ -4,23 +4,21 @@ import {
   List,
   ListItem,
   ListItemButton,
-  ListItemAvatar,
-  Avatar,
   Box,
   CardHeader,
   CardActions,
   Button,
   Typography,
+  Divider,
+  Avatar,
 } from '@mui/material';
-import { Circle as CircleIcon } from '@mui/icons-material';
+import { Newspaper as NewspaperIcon } from '@mui/icons-material';
 import { useData } from '@/hooks/useData';
 import Link from '@/components/misc/Link';
 import { UnixEpochToDaysAgo } from '@/utils/helpers';
 
 const NewsAndAnnouncementsCard = () => {
   const { posts } = useData();
-
-  console.log(posts);
 
   return (
     <Card
@@ -37,36 +35,43 @@ const NewsAndAnnouncementsCard = () => {
         subheader="Stay up-to-date with the latest news"
         sx={{ pb: 0 }}
         titleTypographyProps={{ variant: 'h6' }}
+        avatar={
+          <Avatar>
+            <NewspaperIcon />
+          </Avatar>
+        }
       />
       <CardContent sx={{ py: 0 }}>
         <List>
           {posts.slice(0, 3).map((post) => (
-            <ListItem disablePadding key={post.id}>
-              <ListItemButton sx={{ px: 1 }}>
-                <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: 'transparent' }}>
-                    <CircleIcon sx={{ fontSize: '0.5em', color: '#FFF' }} />
-                  </Avatar>
-                </ListItemAvatar>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: { xs: 'flex-start', md: 'center' },
-                    justifyContent: 'space-between',
-                    flexDirection: { xs: 'column', md: 'row' },
-                    width: 1,
-                  }}
-                >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="h6">{post.title}</Typography>
-                    <Typography variant="body1">{post.subtitle}</Typography>
+            <>
+              <ListItem disablePadding key={post.id}>
+                <ListItemButton sx={{ px: 1 }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: { xs: 'flex-start', md: 'center' },
+                      justifyContent: 'space-between',
+                      flexDirection: { xs: 'column', md: 'row' },
+                      width: 1,
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Typography variant="body1" fontWeight="bold">
+                        {post.title}
+                      </Typography>
+                      <Typography variant="body2">{post.subtitle}</Typography>
+                    </Box>
+                    <Typography variant="caption">
+                      {UnixEpochToDaysAgo(post.publishedOn)}
+                    </Typography>
                   </Box>
-                  <Typography variant="body2">
-                    {UnixEpochToDaysAgo(post.publishedOn)}
-                  </Typography>
-                </Box>
-              </ListItemButton>
-            </ListItem>
+                </ListItemButton>
+              </ListItem>
+              {post.id !== posts[posts.slice(0, 3).length - 1].id && (
+                <Divider component="li" />
+              )}
+            </>
           ))}
         </List>
       </CardContent>

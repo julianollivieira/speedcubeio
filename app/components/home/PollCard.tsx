@@ -12,7 +12,9 @@ import {
   FormControlLabel,
   CardActions,
   Button,
+  Avatar,
 } from '@mui/material';
+import { Poll as PollIcon } from '@mui/icons-material';
 
 const NewsAndAnnouncementsCard = () => {
   const { currentPoll } = useData();
@@ -33,6 +35,11 @@ const NewsAndAnnouncementsCard = () => {
         subheader="We want to know what you think"
         sx={{ pb: 0 }}
         titleTypographyProps={{ variant: 'h6' }}
+        avatar={
+          <Avatar>
+            <PollIcon />
+          </Avatar>
+        }
       />
       <CardContent
         sx={{

@@ -36,6 +36,12 @@ const Layout = ({
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!matches && open) {
+      handleDrawerClose();
+    }
+  }, []);
+
   return (
     <>
       <Head>
