@@ -15,7 +15,7 @@ const NewsPage: NextPage = () => {
       <Divider sx={{ mb: 3 }} />
       <Grid container spacing={2} sx={{ mb: 3 }}>
         {posts.map((post) => (
-          <PostCard post={post} />
+          <PostCard post={post} key={post.id} />
         ))}
       </Grid>
     </Layout>
