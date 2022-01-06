@@ -1,4 +1,4 @@
-import { useState, ReactElement } from 'react';
+import { useState, ReactElement, MouseEvent } from 'react';
 import { User } from 'firebase/auth';
 import { Box } from '@/types';
 import { Typography, Grid } from '@mui/material';
@@ -21,7 +21,7 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
   const [searchString, setSearchString] = useState<string | null>();
   const [view, setView] = useState<string | null>('grid');
 
-  const handleChangeView = (_: any, newView: string | null) => {
+  const handleChangeView = (_: MouseEvent<HTMLElement>, newView: string | null) => {
     if (newView !== null) {
       setView(newView);
     }

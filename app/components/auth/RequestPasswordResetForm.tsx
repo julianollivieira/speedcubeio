@@ -62,7 +62,7 @@ const RequestPasswordResetForm = (): ReactElement => {
           }}
         >
           <Link href="/" passHref sx={{ display: { xs: 'flex', sm: 'none' } }}>
-            <Logo sx={{ height: 75 }} />
+            <Logo sx={{ height: '75px' }} />
           </Link>
           <Typography
             sx={{

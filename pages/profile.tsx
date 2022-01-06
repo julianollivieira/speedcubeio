@@ -8,7 +8,11 @@ const ProfilePage: NextPage = () => {
 
   return (
     <Layout title="Your profile">
-      <Profile profile={profile} showControls user={user} />
+      <Profile
+        profile={profile === undefined ? null : profile}
+        showControls
+        user={user}
+      />
     </Layout>
   );
 };

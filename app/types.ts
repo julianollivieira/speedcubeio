@@ -76,3 +76,18 @@ export interface Box {
   createdAt: number;
   isPrivate: boolean;
 }
+
+export interface Post {
+  id: string;
+  title: string;
+  subtitle: string;
+  content: string;
+  publishedOn: number;
+}
+
+export interface Poll {
+  id: string;
+  question: string;
+  options: string[];
+  active: boolean;
+}

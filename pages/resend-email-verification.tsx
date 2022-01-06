@@ -36,7 +36,7 @@ const ResendEmailVerification: NextPage = () => {
           >
             <Box sx={{ py: 7, display: { xs: 'none', sm: 'flex' } }}>
               <Link href="/" passHref>
-                <Logo sx={{ height: { xs: 150, sm: 200 } }} />
+                <Logo sx={{ height: { sm: 150, md: 200 } }} />
               </Link>
             </Box>
             <ResendEmailVerificationForm />

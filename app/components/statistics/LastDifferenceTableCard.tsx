@@ -9,7 +9,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import ImportExportIcon from '@mui/icons-material/ImportExport';
 import { Box } from '@/types';
 import { ReactElement } from 'react';
 import { msToTime } from '@/utils/helpers';
@@ -38,8 +38,8 @@ const LastDifferenceTableCard = ({ box }: Props): ReactElement => {
   return (
     <Card>
       <CardHeader
-        avatar={<ListAltIcon />}
-        title="Difference between last and previous/best/worst"
+        avatar={<ImportExportIcon />}
+        title="Difference"
         subheader="some text here"
         titleTypographyProps={{ variant: 'subtitle1' }}
       />

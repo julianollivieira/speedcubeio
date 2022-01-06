@@ -39,7 +39,7 @@ const ScrambleHistoryDialog = ({ open, handleClose }: Props): ReactElement => {
         >
           {scrambles
             .map((scramble, index) => (
-              <ListItem>
+              <ListItem key={index}>
                 <ListItemButton
                   onClick={() => {
                     setPreviousScramble(index);
@@ -76,7 +76,6 @@ const ScrambleHistoryDialog = ({ open, handleClose }: Props): ReactElement => {
           Click on a scramble to set it as active
         </Typography>
         <Button onClick={handleClose}>Close</Button>
-        {/* <Button type="submit">Save</Button> */}
       </DialogActions>
     </Dialog>
   );

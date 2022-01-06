@@ -13,13 +13,13 @@ import {
   Apps as AppsIcon,
   FormatListBulleted as FormatListBulletedIcon,
 } from '@mui/icons-material';
-import { ChangeEventHandler, ReactElement } from 'react';
+import { MouseEvent, ChangeEventHandler, ReactElement } from 'react';
 
 interface Props {
   showControls: boolean;
   view: string | null;
   handleOpenCreateDialog?: () => void;
-  handleChangeView: (event: any, newView: string | null) => void;
+  handleChangeView: (event: MouseEvent<HTMLElement>, newView: string | null) => void;
   handleSearchInput: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 

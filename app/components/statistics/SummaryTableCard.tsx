@@ -13,7 +13,7 @@ const SummaryTableCard = ({ box }: Props): ReactElement => {
     <Card>
       <CardHeader
         avatar={<ListAltIcon />}
-        title="Box summary"
+        title="Quick summary"
         subheader="some text here"
         titleTypographyProps={{ variant: 'subtitle1' }}
       />

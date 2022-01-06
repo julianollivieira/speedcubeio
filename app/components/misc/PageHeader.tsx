@@ -1,9 +1,9 @@
 import { SvgIconComponent } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
-import { createElement, ReactElement } from 'react';
+import { createElement, ReactElement, ReactNode } from 'react';
 
 interface Props {
-  title: string;
+  title: ReactNode;
   icon: SvgIconComponent;
 }
 

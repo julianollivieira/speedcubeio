@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardContent } from '@mui/material';
-import ShowChartIcon from '@mui/icons-material/ListAlt';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
 import { ReactElement } from 'react';
 import {
   LineChart,

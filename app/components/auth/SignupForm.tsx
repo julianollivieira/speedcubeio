@@ -40,7 +40,11 @@ const SignupForm = (): ReactElement => {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        await signUp(values.displayName, values.email, values.password);
+        await signUp({
+          displayName: values.displayName,
+          email: values.email,
+          password: values.password,
+        });
         createSnackbar(enqueueSnackbar, closeSnackbar, 'Verification email sent', 'info');
         Router.push('/login');
       } catch (error: unknown) {
@@ -71,7 +75,7 @@ const SignupForm = (): ReactElement => {
           }}
         >
           <Link href="/" passHref sx={{ display: { xs: 'flex', sm: 'none' } }}>
-            <Logo sx={{ height: 75 }} />
+            <Logo sx={{ height: '75px' }} />
           </Link>
           <Typography
             sx={{
