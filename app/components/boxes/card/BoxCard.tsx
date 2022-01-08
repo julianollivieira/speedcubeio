@@ -14,15 +14,19 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
+  CardActions,
 } from '@mui/material';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
+  VisibilityOff as VisibilityOffIcon,
+  Visibility as VisibilityIcon,
 } from '@mui/icons-material';
 import BoxCardSummaryTable from '@/components/boxes/card/BoxCardSummaryTable';
 import Link from 'next/link';
+import { useData } from '@/hooks/useData';
 
 interface Props {
   user: User | null | undefined;
@@ -44,6 +48,7 @@ const BoxCard = ({
   const [showMenuButtons, setShowMenuButtons] = useState(false);
   const handleShowMenu = () => setShowMenuButtons(true);
   const handleHideMenu = () => setShowMenuButtons(false);
+  const { toggleBoxVisibility } = useData();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) =>
@@ -127,24 +132,28 @@ const BoxCard = ({
           <CardContent>
             <BoxCardSummaryTable box={box} />
           </CardContent>
-          {/* <CardActions
+          <CardActions
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
               height: 50,
               pt: 0,
-              pr: 2,
               pb: 2,
-              pl: 4,
+              px: 4,
             }}
           >
             <Typography variant="caption" color="text.secondary">
               <MUIBox component="span" sx={{ fontSize: '2em' }}>
                 {box.times?.length ?? 0}
               </MUIBox>
-              /500
+              /1000
             </Typography>
-          </CardActions> */}
+            {box.isPrivate && (
+              <Typography variant="body2" color="text.secondary">
+                Private
+              </Typography>
+            )}
+          </CardActions>
         </CardActionArea>
       </Link>
       <Menu
@@ -178,6 +187,26 @@ const BoxCard = ({
               <DeleteIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">Delete</Typography>
+          </MenuItem>,
+          <MenuItem
+            key="togglePrivate"
+            onClick={() => {
+              handleMenuClose();
+              toggleBoxVisibility(box);
+
+              // openDeleteBoxDialog();
+            }}
+          >
+            <ListItemIcon>
+              {box.isPrivate ? (
+                <VisibilityIcon fontSize="small" />
+              ) : (
+                <VisibilityOffIcon fontSize="small" />
+              )}
+            </ListItemIcon>
+            <Typography variant="inherit">
+              Make {box.isPrivate ? 'public' : 'private'}
+            </Typography>
           </MenuItem>,
         ]}
         <MenuItem

@@ -47,6 +47,7 @@ dayjs.extend(utc);
 import { Scrambow } from 'scrambow';
 import type { Scramble } from 'scrambow';
 import createAccount from '@/services/createAccount';
+import setBoxVisibility from '@/services/boxes/toggleVisibility';
 
 const auth = getAuth(app);
 const storage = getStorage(app);
@@ -99,6 +100,7 @@ interface Context {
   removeSocialLink: (id: SocialLinkId) => void;
   setProfilePrivate: (isPrivate: boolean) => Promise<boolean>;
   setBoxPrivate: (isPrivate: boolean) => Promise<boolean>;
+  toggleBoxVisibility: (box: Box) => Promise<void>;
 
   setTimerActive: (state: boolean) => void;
   changePuzzle: (puzzle: Puzzle) => void;
@@ -306,6 +308,13 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     sendEmailVerification(userCredential.user);
     signOut(auth);
     return userCredential;
+  };
+
+  // Toggle box visibility
+  const toggleBoxVisibility = async (box: Box): Promise<void> => {
+    if (!user) return;
+    const isPrivate = await setBoxVisibility(db, user, box, !box.isPrivate);
+    setBox((prevState) => ({ ...prevState, isPrivate } as Box));
   };
 
   // Resend email verification
@@ -660,6 +669,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     setBoxPrivate,
     setTimerActive,
     changePuzzle,
+    toggleBoxVisibility,
     scramble,
     scrambles,
     generateNewScramble,
