@@ -11,7 +11,7 @@ import { Profile } from '@/types';
 import app from '@/utils/firebase/client';
 import { getFirestore } from '@firebase/firestore';
 
-interface signupOptions {
+interface Options {
   displayName: string;
   email: string;
   password: string;
@@ -20,7 +20,7 @@ interface signupOptions {
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const signup = async (options: signupOptions): Promise<UserCredential> => {
+const signup = async (options: Options): Promise<UserCredential> => {
   const { displayName, email, password } = options;
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 

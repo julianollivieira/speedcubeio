@@ -7,8 +7,9 @@ import Logo from '@/components/misc/Logo';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import authErrors from '@/utils/authErrors';
-import { useData } from '@/hooks/useData';
 import Router from 'next/router';
+import resendEmailVerification from '@/services/auth/resendEmailVerification';
+import { VariantType } from 'notistack';
 
 interface Error {
   code: string;
@@ -16,28 +17,38 @@ interface Error {
 
 const ResendEmailVerificationForm = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { resendEmailVerification } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      try {
-        setLoading(true);
-        await resendEmailVerification(values.email, values.password);
-        createSnackbar(enqueueSnackbar, closeSnackbar, 'Verification email sent', 'info');
-        setLoading(false);
-        Router.push('/login');
-      } catch (error: unknown) {
-        setLoading(false);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          authErrors[(error as Error).code],
-          (error as Error).code === 'auth/email-already-verified' ? 'success' : 'error'
-        );
-      }
+      setLoading(true);
+      resendEmailVerification(values)
+        .then(() => {
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            'Verification email sent',
+            'info'
+          );
+          setLoading(false);
+          Router.push('/login');
+        })
+        .catch((error) => {
+          setLoading(false);
+          let status: VariantType =
+            (error as Error).code === 'auth/email-already-verified' ? 'info' : 'error';
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            authErrors[(error as Error).code],
+            status
+          );
+          if (status === 'info') {
+            Router.push('/home');
+          }
+        });
     },
   });
 
