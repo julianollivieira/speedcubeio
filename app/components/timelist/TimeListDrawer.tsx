@@ -111,7 +111,7 @@ const TimeListDrawer = ({
                   px: 2,
                   display: 'flex',
                   alignItems: 'center',
-                  height: 100,
+                  height: 120,
                   borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
                   backgroundColor: '#151C24',
                 }}
@@ -122,7 +122,7 @@ const TimeListDrawer = ({
             <TableContainer
               sx={{
                 height: `calc(100vh - ${
-                  showBoxSelector ? (showPuzzleSelector ? 264 : 164) : 64
+                  showBoxSelector ? (showPuzzleSelector ? 284 : 164) : 64
                 }px)`,
                 overflowY: 'auto',
               }}

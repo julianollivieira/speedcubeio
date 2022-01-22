@@ -13,9 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import { ReactElement } from 'react';
-import { useData } from '@/hooks/useData';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import { useAtom } from 'jotai';
+import { scrambleHistoryAtom, scrambleAtom } from '@/store';
 
 interface Props {
   open: boolean;
@@ -23,8 +24,13 @@ interface Props {
 }
 
 const ScrambleHistoryDialog = ({ open, handleClose }: Props): ReactElement => {
-  const { scrambles, setPreviousScramble } = useData();
+  const [scrambleHistory] = useAtom(scrambleHistoryAtom);
+  const [, setScramble] = useAtom(scrambleAtom);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const setPreviousScramble = (scrambleId: number) => {
+    setScramble(scrambleHistory[scrambleId].scramble);
+  };
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -37,7 +43,7 @@ const ScrambleHistoryDialog = ({ open, handleClose }: Props): ReactElement => {
             maxHeight: 360,
           }}
         >
-          {scrambles
+          {scrambleHistory
             .map((scramble, index) => (
               <ListItem key={index}>
                 <ListItemButton

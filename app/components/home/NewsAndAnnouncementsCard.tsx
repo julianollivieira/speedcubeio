@@ -16,12 +16,12 @@ import { Newspaper as NewspaperIcon } from '@mui/icons-material';
 import Link from '@/components/misc/Link';
 import { UnixEpochToDaysAgo } from '@/utils/helpers';
 import { useAtom } from 'jotai';
-import { postAtom } from '@/store';
+import { postsAtom } from '@/store';
 import getPosts from '@/services/posts/getPosts';
 import { useEffect, Fragment } from 'react';
 
 const NewsAndAnnouncementsCard = () => {
-  const [posts, setPosts] = useAtom(postAtom);
+  const [posts, setPosts] = useAtom(postsAtom);
 
   useEffect(() => {
     getPosts().then((newPosts) => {

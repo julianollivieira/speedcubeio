@@ -15,14 +15,14 @@ import {
   Divider,
 } from '@mui/material';
 import { Poll as PollIcon } from '@mui/icons-material';
-import { pollAtom } from '@/store';
+import { pollsAtom } from '@/store';
 import { useAtom } from 'jotai';
 import getPolls from '@/services/polls/getPolls';
 import { useEffect, useState } from 'react';
 import type { Poll } from '@/types';
 
 const NewsAndAnnouncementsCard = () => {
-  const [polls, setPolls] = useAtom(pollAtom);
+  const [polls, setPolls] = useAtom(pollsAtom);
   const [activePoll, setActivePoll] = useState<Poll | undefined>(undefined);
 
   useEffect(() => {
