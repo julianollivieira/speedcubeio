@@ -7,24 +7,6 @@ export interface Provider {
   photoURL: string;
 }
 
-// export interface User {
-//   uid: string;
-//   email: string;
-//   emailVerified: boolean;
-//   displayName: string;
-//   isAnonymous: boolean;
-//   providerData: Provider[];
-//   stsTokenManager: {
-//     refreshToken: string;
-//     accessToken: string;
-//     expirationTime: number;
-//   };
-//   createdAt: string;
-//   lastLoginAt: string;
-//   apiKey: string;
-//   appName: string;
-// }
-
 export interface SocialLink {
   id: SocialLinkId;
   href: string;
@@ -90,4 +72,5 @@ export interface Poll {
   question: string;
   options: string[];
   active: boolean;
+  publishedOn: number;
 }

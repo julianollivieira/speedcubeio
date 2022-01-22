@@ -1,15 +1,15 @@
 import type { NextPage } from 'next';
 import SignupForm from '@/components/auth/SignupForm';
-import RequireUnauthenticated from '@/components/misc/RequireUnauthenticated';
+import RequireAuthenticated from '@/components/misc/RequireAuthenticated';
 import AlternateLayout from '@/components/layout/AlternateLayout';
 
 const SignupPage: NextPage = () => {
   return (
-    <RequireUnauthenticated>
+    <RequireAuthenticated inverse>
       <AlternateLayout title="Sign up">
         <SignupForm />
       </AlternateLayout>
-    </RequireUnauthenticated>
+    </RequireAuthenticated>
   );
 };
 

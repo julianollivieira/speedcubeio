@@ -1,4 +1,3 @@
-import { useData } from '@/hooks/useData';
 import {
   Card,
   CardContent,
@@ -13,13 +12,28 @@ import {
   CardActions,
   Button,
   Avatar,
+  Divider,
 } from '@mui/material';
 import { Poll as PollIcon } from '@mui/icons-material';
+import { pollAtom } from '@/store';
+import { useAtom } from 'jotai';
+import getPolls from '@/services/polls/getPolls';
+import { useEffect, useState } from 'react';
+import type { Poll } from '@/types';
 
 const NewsAndAnnouncementsCard = () => {
-  const { currentPoll } = useData();
+  const [polls, setPolls] = useAtom(pollAtom);
+  const [activePoll, setActivePoll] = useState<Poll | undefined>(undefined);
 
-  const poll = currentPoll();
+  useEffect(() => {
+    getPolls().then((newPolls) => {
+      setPolls(newPolls);
+    });
+  }, []);
+
+  useEffect(() => {
+    setActivePoll(polls?.find((poll) => poll.active));
+  }, [polls]);
 
   return (
     <Card
@@ -33,7 +47,6 @@ const NewsAndAnnouncementsCard = () => {
       <CardHeader
         title="Current poll"
         subheader="We want to know what you think"
-        sx={{ pb: 0 }}
         titleTypographyProps={{ variant: 'h6' }}
         avatar={
           <Avatar>
@@ -41,23 +54,24 @@ const NewsAndAnnouncementsCard = () => {
           </Avatar>
         }
       />
+      <Divider variant="middle" />
       <CardContent
         sx={{
           pb: 0,
           height: 1,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: poll !== undefined ? 'initial' : 'center',
+          alignItems: activePoll !== undefined ? 'initial' : 'center',
           justifyContent: 'center',
         }}
       >
-        <Typography sx={{ fontSize: 16, textAlign: 'center', mb: 0 }} gutterBottom>
-          {poll?.question || 'No poll available at this time, check back later'}
+        <Typography sx={{ fontSize: 14, textAlign: 'center', color: '#AAA' }}>
+          {activePoll?.question || 'No poll available at this time, check back later'}
         </Typography>
-        {poll && (
+        {activePoll && (
           <RadioGroup defaultValue={0}>
             <List sx={{ py: 0 }}>
-              {poll?.options.map((option, index) => (
+              {activePoll?.options.map((option, index) => (
                 <ListItem
                   disablePadding
                   key={option}
@@ -78,7 +92,7 @@ const NewsAndAnnouncementsCard = () => {
           </RadioGroup>
         )}
       </CardContent>
-      {poll && (
+      {activePoll && (
         <CardActions>
           <Button size="small" variant="contained" fullWidth>
             Submit
