@@ -1,13 +1,22 @@
 import type { NextPage } from 'next';
 import Layout from '@/components/layout/Layout';
-import { useData } from '@/hooks/useData';
 import { Grid, Divider } from '@mui/material';
 import PageHeader from '@/components/misc/PageHeader';
 import { Newspaper as NewspaperIcon } from '@mui/icons-material';
 import PostCard from '@/components/news/PostCard';
+import { useAtom } from 'jotai';
+import { postAtom } from '@/store';
+import getPosts from '@/services/posts/getPosts';
+import { useEffect } from 'react';
 
 const NewsPage: NextPage = () => {
-  const { posts } = useData();
+  const [posts, setPosts] = useAtom(postAtom);
+
+  useEffect(() => {
+    getPosts().then((newPosts) => {
+      setPosts(newPosts);
+    });
+  }, []);
 
   return (
     <Layout title="News">

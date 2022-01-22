@@ -51,7 +51,7 @@ const NewsAndAnnouncementsCard = () => {
       />
       <Divider variant="middle" />
       <CardContent sx={{ py: 0 }}>
-        {posts !== undefined ? (
+        {posts.length > 0 ? (
           <List>
             {posts.slice(0, 3).map((post) => (
               <>
