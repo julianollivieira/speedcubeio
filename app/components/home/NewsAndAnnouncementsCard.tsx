@@ -18,7 +18,7 @@ import { UnixEpochToDaysAgo } from '@/utils/helpers';
 import { useAtom } from 'jotai';
 import { postAtom } from '@/store';
 import getPosts from '@/services/posts/getPosts';
-import { useEffect } from 'react';
+import { useEffect, Fragment } from 'react';
 
 const NewsAndAnnouncementsCard = () => {
   const [posts, setPosts] = useAtom(postAtom);
@@ -54,8 +54,8 @@ const NewsAndAnnouncementsCard = () => {
         {posts.length > 0 ? (
           <List>
             {posts.slice(0, 3).map((post) => (
-              <>
-                <ListItem disablePadding key={post.id}>
+              <Fragment key={post.id}>
+                <ListItem disablePadding>
                   <ListItemButton sx={{ px: 1 }}>
                     <Box
                       sx={{
@@ -81,7 +81,7 @@ const NewsAndAnnouncementsCard = () => {
                 {post.id !== posts[posts.slice(0, 3).length - 1].id && (
                   <Divider component="li" />
                 )}
-              </>
+              </Fragment>
             ))}
           </List>
         ) : (
