@@ -4,7 +4,7 @@ import { Poll } from '@/types';
 
 const db = getFirestore(app);
 
-const getPolls = async () => {
+const getPolls = async (): Promise<Poll[]> => {
   const pollsCollection = collection(db, 'polls');
   const pollsSnapshot = await getDocs(pollsCollection);
   const pollObjects = pollsSnapshot.docs.map(

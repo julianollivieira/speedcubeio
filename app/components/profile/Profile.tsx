@@ -6,8 +6,8 @@ import type { Profile as ProfileType } from '@/types';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 
 interface Props {
-  user: User | undefined;
-  profile: ProfileType | undefined;
+  user: User;
+  profile: ProfileType;
   showControls?: boolean;
 }
 

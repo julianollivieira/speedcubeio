@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import Profile from '@/components/profile/Profile';
 import { userAtom, profileAtom } from '@/store';
 import { useAtom } from 'jotai';
+import RequireAuthenticated from '@/components/misc/RequireAuthenticated';
 
 const ProfilePage: NextPage = () => {
   const [user] = useAtom(userAtom);
@@ -10,7 +11,9 @@ const ProfilePage: NextPage = () => {
 
   return (
     <Layout title="Your profile">
-      <Profile profile={profile} showControls user={user} />
+      <RequireAuthenticated>
+        <Profile profile={profile!} showControls user={user!} />
+      </RequireAuthenticated>
     </Layout>
   );
 };

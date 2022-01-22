@@ -46,7 +46,7 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 import { Scrambow } from 'scrambow';
 import type { Scramble } from 'scrambow';
-import createAccount from '@/services/createAccount';
+// import createAccount from '@/services/createAccount';
 import setBoxVisibility from '@/services/boxes/toggleVisibility';
 
 const auth = getAuth(app);
@@ -67,11 +67,11 @@ interface Context {
 
   logIn: (email: string, password: string) => Promise<UserCredential>;
   logOut: () => Promise<void>;
-  signUp: (options: {
-    displayName: string;
-    email: string;
-    password: string;
-  }) => Promise<UserCredential>;
+  // signUp: (options: {
+  //   displayName: string;
+  //   email: string;
+  //   password: string;
+  // }) => Promise<UserCredential>;
   resendEmailVerification: (email: string, password: string) => Promise<void>;
   requestPasswordResetLink: (email: string) => Promise<void>;
 
@@ -298,17 +298,17 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Sign the user up for an account
-  const signUp = async (options: {
-    displayName: string;
-    email: string;
-    password: string;
-  }): Promise<UserCredential> => {
-    const { profile, userCredential } = await createAccount(auth, db, options);
-    setProfile(profile);
-    sendEmailVerification(userCredential.user);
-    signOut(auth);
-    return userCredential;
-  };
+  // const signUp = async (options: {
+  //   displayName: string;
+  //   email: string;
+  //   password: string;
+  // }): Promise<UserCredential> => {
+  //   const { profile, userCredential } = await createAccount(auth, db, options);
+  //   setProfile(profile);
+  //   sendEmailVerification(userCredential.user);
+  //   signOut(auth);
+  //   return userCredential;
+  // };
 
   // Toggle box visibility
   const toggleBoxVisibility = async (box: Box): Promise<void> => {
@@ -649,7 +649,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
     currentPoll,
     logIn,
     logOut,
-    signUp,
+    // signUp,
     resendEmailVerification,
     requestPasswordResetLink,
     changePassword,
