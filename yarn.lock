@@ -6391,6 +6391,43 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"jotai@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "jotai@npm:1.5.0"
+  peerDependencies:
+    "@babel/core": "*"
+    "@babel/template": "*"
+    "@urql/core": "*"
+    immer: "*"
+    optics-ts: "*"
+    react: ">=16.8"
+    react-query: "*"
+    valtio: "*"
+    wonka: "*"
+    xstate: "*"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@babel/template":
+      optional: true
+    "@urql/core":
+      optional: true
+    immer:
+      optional: true
+    optics-ts:
+      optional: true
+    react-query:
+      optional: true
+    valtio:
+      optional: true
+    wonka:
+      optional: true
+    xstate:
+      optional: true
+  checksum: 0a83b889510889cf1a6f19651d833d74bee2a36836987d7c23f8b2c2644cc033056d15e018adad78416dd92ca1ee892e1cec243ba687ea16dc928f051ab0003f
+  languageName: node
+  linkType: hard
+
 "js-cookie@npm:^2.2.1":
   version: 2.2.1
   resolution: "js-cookie@npm:2.2.1"
@@ -8993,6 +9030,7 @@ resolve@^2.0.0-next.3:
     firebase: 9.2.0
     firebase-admin: 10.0.0
     formik: ^2.2.9
+    jotai: ^1.5.0
     next: 11.1.2
     notistack: next
     prettier: ^2.4.1

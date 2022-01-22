@@ -19,8 +19,8 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
 interface Props {
-  user: User | null | undefined;
-  profile: Profile | null;
+  user: User | undefined;
+  profile: Profile | undefined;
   showControls?: boolean;
 }
 

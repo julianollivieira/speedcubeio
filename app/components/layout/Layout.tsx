@@ -4,8 +4,9 @@ import { Box, Container, Theme, useMediaQuery } from '@mui/material';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import NavigationBar from '@/components/navigation/NavigationBar';
 import NavigationDrawer from '@/components/navigation/NavigationDrawer';
-import { useData } from '@/hooks/useData';
 import Router from 'next/router';
+import { userAtom } from '@/store';
+import { useAtom } from 'jotai';
 
 type Props = {
   fluid?: boolean;
@@ -26,7 +27,7 @@ const Layout = ({
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
   const toggleNavigationDrawer = () => setOpen(!open);
-  const { user } = useData();
+  const [user] = useAtom(userAtom);
 
   const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
@@ -61,7 +62,7 @@ const Layout = ({
       <Container fixed={!fluid && matches} sx={{ pt: '64px' }} maxWidth={false}>
         <Box sx={{ px: { md: '73px' } }}>{children}</Box>
       </Container>
-      {/* Add circular progress when loading user/boxes/profile? */}
+      {/* TODO: Add circular progress when loading user/boxes/profile? */}
     </>
   );
 };

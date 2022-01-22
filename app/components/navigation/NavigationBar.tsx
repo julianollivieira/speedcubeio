@@ -19,8 +19,10 @@ import {
 import Link from '@/components/misc/Link';
 import Logo from '@/components/misc/Logo';
 import { useState, ReactElement } from 'react';
-import { useData } from '@/hooks/useData';
 import Router from 'next/router';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
+import logout from '@/services/auth/logout';
 
 interface Props {
   isNotApp?: boolean;
@@ -31,7 +33,7 @@ const NavigationBar = ({
   isNotApp = false,
   toggleNavigationDrawer,
 }: Props): ReactElement => {
-  const { user, logOut } = useData();
+  const [user] = useAtom(userAtom);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -40,7 +42,7 @@ const NavigationBar = ({
   const handleClose = () => setAnchorEl(null);
 
   const handleLogout = async () => {
-    await logOut();
+    await logout();
     Router.push('/login');
   };
 

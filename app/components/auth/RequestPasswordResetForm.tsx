@@ -7,8 +7,8 @@ import Logo from '@/components/misc/Logo';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import authErrors from '@/utils/authErrors';
-import { useData } from '@/hooks/useData';
 import Router from 'next/router';
+import requestPasswordReset from '@/services/auth/requestPasswordReset';
 
 interface Error {
   code: string;
@@ -16,33 +16,33 @@ interface Error {
 
 const RequestPasswordResetForm = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { requestPasswordResetLink } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: requestPasswordResetValidationSchema,
     onSubmit: async (values) => {
-      try {
-        setLoading(true);
-        await requestPasswordResetLink(values.email);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          'Password reset link sent',
-          'info'
-        );
-        Router.push('/login');
-        setLoading(false);
-      } catch (error: unknown) {
-        setLoading(false);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          authErrors[(error as Error).code],
-          'error'
-        );
-      }
+      setLoading(true);
+      requestPasswordReset(values)
+        .then(() => {
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            'Password reset link sent',
+            'info'
+          );
+          Router.push('/login');
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            authErrors[(error as Error).code],
+            'error'
+          );
+        });
     },
   });
 

@@ -1,18 +1,16 @@
 import Layout from '@/components/layout/Layout';
 import type { NextPage } from 'next';
 import Profile from '@/components/profile/Profile';
-import { useData } from '@/hooks/useData';
+import { userAtom, profileAtom } from '@/store';
+import { useAtom } from 'jotai';
 
 const ProfilePage: NextPage = () => {
-  const { user, profile } = useData();
+  const [user] = useAtom(userAtom);
+  const [profile] = useAtom(profileAtom);
 
   return (
     <Layout title="Your profile">
-      <Profile
-        profile={profile === undefined ? null : profile}
-        showControls
-        user={user}
-      />
+      <Profile profile={profile} showControls user={user} />
     </Layout>
   );
 };

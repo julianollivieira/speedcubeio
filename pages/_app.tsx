@@ -15,7 +15,8 @@ import {
 } from '@mui/material';
 import { useMemo } from 'react';
 import { SnackbarProvider } from 'notistack';
-import { DataProvider } from '@/hooks/useData';
+import Wrapper from '@/components/misc/Wrapper';
+import { Provider as JotaiProvider } from 'jotai';
 
 const darkModePalette: PaletteOptions = {
   background: {
@@ -81,11 +82,13 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <DataProvider>
-          <SnackbarProvider maxSnack={3}>
-            <Component {...pageProps} />
-          </SnackbarProvider>
-        </DataProvider>
+        <JotaiProvider>
+          <Wrapper>
+            <SnackbarProvider maxSnack={3}>
+              <Component {...pageProps} />
+            </SnackbarProvider>
+          </Wrapper>
+        </JotaiProvider>
       </ThemeProvider>
     </>
   );
