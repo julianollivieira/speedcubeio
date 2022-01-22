@@ -47,7 +47,7 @@ dayjs.extend(utc);
 import { Scrambow } from 'scrambow';
 import type { Scramble } from 'scrambow';
 // import createAccount from '@/services/createAccount';
-import setBoxVisibility from '@/services/boxes/toggleVisibility';
+// import setBoxVisibility from '@/services/boxes/toggleVisibility';
 
 const auth = getAuth(app);
 const storage = getStorage(app);

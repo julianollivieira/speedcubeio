@@ -70,6 +70,9 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
       {user === null && 'User not found'}
       {user && profile === null && 'Profile is private'}
       {showControls && (
+        <CreateBoxDialog open={creatingBox} handleClose={() => setCreatingBox(false)} />
+      )}
+      {/* {showControls && (
         <CreateBoxDialog
           open={creatingBox}
           handleClose={() => setCreatingBox(false)}
@@ -81,7 +84,7 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
             });
           }}
         />
-      )}
+      )} */}
       {showControls && deletingBox && (
         <DeleteBoxDialog
           box={deletingBox}

@@ -14,14 +14,17 @@ import { useFormik } from 'formik';
 import { useState, ReactElement } from 'react';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import createBox from '@/services/boxes/createBox';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
 
 interface Props {
   open: boolean;
   handleClose: () => void;
-  createBox: (name: string, icon: string, color: string) => Promise<void>;
 }
 
-const CreateBoxDialog = ({ open, handleClose, createBox }: Props): ReactElement => {
+const CreateBoxDialog = ({ open, handleClose }: Props): ReactElement => {
+  const [user] = useAtom(userAtom);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -29,35 +32,57 @@ const CreateBoxDialog = ({ open, handleClose, createBox }: Props): ReactElement 
     initialValues: { name: '', icon: '', color: '#FFF' },
     validationSchema: boxValidationSchema,
     onSubmit: async (values) => {
-      try {
-        setLoading(true);
-        await createBox(values.name, values.icon, values.color);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          'Box created succesfully',
-          'success'
-        );
-        handleClose();
-        formik.resetForm();
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          "Something wen't wrong, please try again",
-          'error'
-        );
-      }
+      setLoading(true);
+      createBox(user!, values)
+        .then(() => {
+          // add to local state
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            'Box created succesfully',
+            'success'
+          );
+          setLoading(false);
+        })
+        .catch(() => {
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            "Something wen't wrong, please try again",
+            'error'
+          );
+          setLoading(false);
+        });
+
+      // try {
+      //   setLoading(true);
+      //   // await createBox(values.name, values.icon, values.color);
+      //   createSnackbar(
+      //     enqueueSnackbar,
+      //     closeSnackbar,
+      //     'Box created succesfully',
+      //     'success'
+      //   );
+      //   handleClose();
+      //   formik.resetForm();
+      //   setLoading(false);
+      // } catch (error) {
+      //   setLoading(false);
+      //   createSnackbar(
+      //     enqueueSnackbar,
+      //     closeSnackbar,
+      //     "Something wen't wrong, please try again",
+      //     'error'
+      //   );
+      // }
     },
   });
 
   return (
     <Dialog open={open} onClose={handleClose}>
       <Box component="form" onSubmit={formik.handleSubmit}>
-        <DialogTitle>Create a new box</DialogTitle>
-        <DialogContent>
+        <DialogTitle sx={{ bgcolor: 'background.paper' }}>Create a new box</DialogTitle>
+        <DialogContent dividers sx={{ bgcolor: '#151C24' }}>
           <TextField
             autoFocus
             name="name"
@@ -94,9 +119,9 @@ const CreateBoxDialog = ({ open, handleClose, createBox }: Props): ReactElement 
             }}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ p: 2, bgcolor: 'background.paper' }}>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" variant="contained" disabled={loading}>
             Create
           </Button>
         </DialogActions>
