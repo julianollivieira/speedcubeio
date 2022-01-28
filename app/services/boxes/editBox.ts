@@ -2,7 +2,6 @@ import { Box } from '@/types';
 import { getFirestore, updateDoc, doc } from '@firebase/firestore';
 import app from '@/utils/firebase/client';
 import { User } from '@firebase/auth';
-import dayjs from 'dayjs';
 
 type Options = Pick<Box, 'name' | 'icon' | 'color'>;
 
@@ -13,7 +12,6 @@ const editBox = async (user: User, boxId: Box['id'], options: Options): Promise<
 
   await updateDoc(boxDocumentRef, {
     ...options,
-    createdAt: dayjs().unix(),
   });
 
   return {

@@ -10,13 +10,16 @@ const db = getFirestore(app);
 
 const createBox = async (user: User, options: Options): Promise<Box> => {
   const boxesCollectionRef = collection(db, 'users', user.uid, 'boxes');
+  const createdAt = dayjs().unix();
+
   const newBoxDocumentRef = await addDoc(boxesCollectionRef, {
     ...options,
-    createdAt: dayjs().unix(),
+    createdAt,
   });
 
   return {
     id: newBoxDocumentRef.id,
+    createdAt,
     ...options,
   } as Box;
 };
