@@ -18,9 +18,10 @@ import { userAtom, boxesAtom } from '@/store';
 interface Props {
   box: Box;
   handleClose: () => void;
+  onDelete?: () => void;
 }
 
-const DeleteBoxDialog = ({ box, handleClose }: Props): ReactElement => {
+const DeleteBoxDialog = ({ box, handleClose, onDelete }: Props): ReactElement => {
   const [user] = useAtom(userAtom);
   const [boxes, setBoxes] = useAtom(boxesAtom);
   const [loading, setLoading] = useState(false);
@@ -53,6 +54,7 @@ const DeleteBoxDialog = ({ box, handleClose }: Props): ReactElement => {
                 );
                 handleClose();
                 setLoading(false);
+                if (onDelete) onDelete();
               })
               .catch(() => {
                 createSnackbar(
