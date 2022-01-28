@@ -110,14 +110,6 @@ const NavigationDrawer = ({
               <ListItemText primary="Boxes" />
             </ListItem>
           </Link>
-          <Link href="/statistics" passHref>
-            <ListItem button component="a" key="Statistics">
-              <ListItemIcon sx={{ paddingLeft: 1 }}>
-                <ShowChartIcon />
-              </ListItemIcon>
-              <ListItemText primary="Statistics" />
-            </ListItem>
-          </Link>
           <Link href="/news" passHref>
             <ListItem button component="a" key="News">
               <ListItemIcon sx={{ paddingLeft: 1 }}>
