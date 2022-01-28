@@ -1,43 +1,30 @@
-import {
-  Fab,
-  Box,
-  Grid,
-  Button,
-  ToggleButtonGroup,
-  ToggleButton,
-  TextField,
-} from '@mui/material';
-import {
-  Add as AddIcon,
-  Search as SearchIcon,
-  Apps as AppsIcon,
-  FormatListBulleted as FormatListBulletedIcon,
-} from '@mui/icons-material';
-import { MouseEvent, ChangeEventHandler, ReactElement } from 'react';
+import { Fab, Box, Grid, Button, TextField, Typography, Card } from '@mui/material';
+import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
+import { ChangeEventHandler, ReactElement } from 'react';
+import { boxesAtom } from '@/store';
+import { useAtom } from 'jotai';
 
 interface Props {
   showControls: boolean;
-  view: string | null;
   handleOpenCreateDialog?: () => void;
-  handleChangeView: (event: MouseEvent<HTMLElement>, newView: string | null) => void;
   handleSearchInput: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 const BoxGridToolbar = ({
   showControls,
-  view,
   handleOpenCreateDialog,
-  handleChangeView,
   handleSearchInput,
 }: Props): ReactElement => {
+  const [boxes] = useAtom(boxesAtom);
+
   return (
     <>
-      <Grid container sx={{ my: 3 }}>
+      <Grid container sx={{ mb: 4 }}>
         {showControls ? (
           <Grid
             item
-            xs={4}
-            sx={{ display: { xs: 'none', lg: 'flex' }, alignItems: 'center' }}
+            xs={3}
+            sx={{ display: { xs: 'none', lg: 'flex' }, alignItems: 'flex-end' }}
           >
             <Button
               variant="contained"
@@ -51,8 +38,14 @@ const BoxGridToolbar = ({
         ) : (
           <></>
         )}
-        <Grid item xs={8} lg={showControls ? 4 : 8}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-end', width: 1 }}>
+        <Grid item xs={12} sm={8} lg={showControls ? 6 : 8}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              width: 1,
+            }}
+          >
             <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
             <TextField
               label="Search for boxes"
@@ -62,20 +55,27 @@ const BoxGridToolbar = ({
             />
           </Box>
         </Grid>
-        <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <ToggleButtonGroup
-            color="primary"
-            value={view}
-            exclusive
-            onChange={handleChangeView}
+        <Grid
+          item
+          xs={4}
+          lg={3}
+          sx={{
+            display: { xs: 'none', sm: 'flex' },
+            alignItems: 'flex-end',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Card
+            sx={{
+              height: '36.5px',
+              px: 3,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            <ToggleButton value="grid">
-              <AppsIcon />
-            </ToggleButton>
-            <ToggleButton value="list">
-              <FormatListBulletedIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
+            <Typography>Box count: {boxes.length}</Typography>
+          </Card>
         </Grid>
       </Grid>
       {showControls ? (
