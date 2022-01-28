@@ -2,36 +2,41 @@ import { Box, Typography, Button, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { changePasswordValidationSchema } from '@/validations';
 import { useState, ReactElement } from 'react';
-import { useData } from '@/hooks/useData';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import changePassword from '@/services/auth/changePassword';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
 
 const SecuritySettings = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { changePassword } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [user] = useAtom(userAtom);
 
   const formik = useFormik({
     initialValues: { currentPassword: '', newPassword: '' },
     validationSchema: changePasswordValidationSchema,
     onSubmit: async (values) => {
-      try {
-        await changePassword(values.currentPassword, values.newPassword);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          'Succesfully changed password',
-          'success'
-        );
-      } catch (error: unknown) {
-        setLoading(false);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          "Something wen't wrong, please try again",
-          'error'
-        );
-      }
+      if (!user) return;
+      changePassword(user, values)
+        .then(() => {
+          setLoading(false);
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            'Succesfully changed password',
+            'success'
+          );
+        })
+        .catch(() => {
+          setLoading(false);
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            "Something wen't wrong, please try again",
+            'error'
+          );
+        });
     },
   });
 
