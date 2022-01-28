@@ -15,14 +15,18 @@ import { Box } from '@/types';
 import { ReactElement, useState } from 'react';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import editBox from '@/services/boxes/editBox';
+import { useAtom } from 'jotai';
+import { userAtom, boxesAtom } from '@/store';
 
 interface Props {
   box: Box;
   handleClose: () => void;
-  editBox: (name: string, icon: string, color: string) => Promise<void>;
 }
 
-const EditBoxDialog = ({ box, handleClose, editBox }: Props): ReactElement => {
+const EditBoxDialog = ({ box, handleClose }: Props): ReactElement => {
+  const [user] = useAtom(userAtom);
+  const [boxes, setBoxes] = useAtom(boxesAtom);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -34,27 +38,28 @@ const EditBoxDialog = ({ box, handleClose, editBox }: Props): ReactElement => {
     },
     validationSchema: boxValidationSchema,
     onSubmit: async (values) => {
-      try {
-        setLoading(true);
-        await editBox(values.name, values.icon, values.color);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          'Box saved succesfully',
-          'success'
-        );
-        handleClose();
-        formik.resetForm();
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          "Something wen't wrong, please try again",
-          'error'
-        );
-      }
+      setLoading(true);
+      editBox(user!, box.id, values)
+        .then((box) => {
+          setBoxes(boxes.map((b) => (b.id === box.id ? box : b)));
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            'Box created succesfully',
+            'success'
+          );
+          handleClose();
+          setLoading(false);
+        })
+        .catch(() => {
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            "Something wen't wrong, please try again",
+            'error'
+          );
+          setLoading(false);
+        });
     },
   });
 
@@ -106,7 +111,7 @@ const EditBoxDialog = ({ box, handleClose, editBox }: Props): ReactElement => {
           </Button>
         </DialogActions>
       </MUIBox>
-      {loading ? (
+      {loading && (
         <LinearProgress
           sx={{
             width: 1,
@@ -114,8 +119,6 @@ const EditBoxDialog = ({ box, handleClose, editBox }: Props): ReactElement => {
             borderBottomRightRadius: '4px',
           }}
         />
-      ) : (
-        <></>
       )}
     </Dialog>
   );

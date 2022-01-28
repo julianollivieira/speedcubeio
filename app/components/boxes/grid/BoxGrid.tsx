@@ -7,7 +7,6 @@ import BoxGridToolbar from '@/components/boxes/grid/BoxGridToolbar';
 import CreateBoxDialog from '@/components/boxes/dialogs/CreateBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
-import { useData } from '@/hooks/useData';
 import type { Profile } from '@/types';
 
 interface Props {
@@ -26,8 +25,6 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
       setView(newView);
     }
   };
-
-  const { createBox, deleteBox, editBox } = useData();
 
   const [creatingBox, setCreatingBox] = useState(false);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
@@ -70,42 +67,15 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
       {user === null && 'User not found'}
       {user && profile === null && 'Profile is private'}
       {showControls && (
-        <CreateBoxDialog open={creatingBox} handleClose={() => setCreatingBox(false)} />
-      )}
-      {/* {showControls && (
-        <CreateBoxDialog
-          open={creatingBox}
-          handleClose={() => setCreatingBox(false)}
-          createBox={async (name: string, icon: string, color: string): Promise<void> => {
-            await createBox({
-              name: name,
-              icon: icon,
-              color: color,
-            });
-          }}
-        />
-      )} */}
-      {showControls && deletingBox && (
-        <DeleteBoxDialog
-          box={deletingBox}
-          handleClose={() => setDeletingBox(null)}
-          deleteBox={async (): Promise<void> => {
-            await deleteBox(deletingBox.id);
-          }}
-        />
-      )}
-      {showControls && editingBox && (
-        <EditBoxDialog
-          box={editingBox}
-          handleClose={() => setEditingBox(null)}
-          editBox={async (name: string, icon: string, color: string): Promise<void> => {
-            await editBox(editingBox.id, {
-              name: name,
-              icon: icon,
-              color: color,
-            });
-          }}
-        />
+        <>
+          <CreateBoxDialog open={creatingBox} handleClose={() => setCreatingBox(false)} />
+          {deletingBox && (
+            <DeleteBoxDialog box={deletingBox} handleClose={() => setDeletingBox(null)} />
+          )}
+          {editingBox && (
+            <EditBoxDialog box={editingBox} handleClose={() => setEditingBox(null)} />
+          )}
+        </>
       )}
     </>
   );

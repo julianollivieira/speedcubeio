@@ -16,7 +16,7 @@ import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import createBox from '@/services/boxes/createBox';
 import { useAtom } from 'jotai';
-import { userAtom } from '@/store';
+import { userAtom, boxesAtom } from '@/store';
 
 interface Props {
   open: boolean;
@@ -25,6 +25,7 @@ interface Props {
 
 const CreateBoxDialog = ({ open, handleClose }: Props): ReactElement => {
   const [user] = useAtom(userAtom);
+  const [boxes, setBoxes] = useAtom(boxesAtom);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -34,14 +35,16 @@ const CreateBoxDialog = ({ open, handleClose }: Props): ReactElement => {
     onSubmit: async (values) => {
       setLoading(true);
       createBox(user!, values)
-        .then(() => {
-          // add to local state
+        .then((box) => {
+          setBoxes([...boxes, box]);
           createSnackbar(
             enqueueSnackbar,
             closeSnackbar,
             'Box created succesfully',
             'success'
           );
+          handleClose();
+          formik.resetForm();
           setLoading(false);
         })
         .catch(() => {
@@ -53,28 +56,6 @@ const CreateBoxDialog = ({ open, handleClose }: Props): ReactElement => {
           );
           setLoading(false);
         });
-
-      // try {
-      //   setLoading(true);
-      //   // await createBox(values.name, values.icon, values.color);
-      //   createSnackbar(
-      //     enqueueSnackbar,
-      //     closeSnackbar,
-      //     'Box created succesfully',
-      //     'success'
-      //   );
-      //   handleClose();
-      //   formik.resetForm();
-      //   setLoading(false);
-      // } catch (error) {
-      //   setLoading(false);
-      //   createSnackbar(
-      //     enqueueSnackbar,
-      //     closeSnackbar,
-      //     "Something wen't wrong, please try again",
-      //     'error'
-      //   );
-      // }
     },
   });
 
@@ -126,7 +107,7 @@ const CreateBoxDialog = ({ open, handleClose }: Props): ReactElement => {
           </Button>
         </DialogActions>
       </Box>
-      {loading ? (
+      {loading ?? (
         <LinearProgress
           sx={{
             width: 1,
@@ -134,8 +115,6 @@ const CreateBoxDialog = ({ open, handleClose }: Props): ReactElement => {
             borderBottomRightRadius: '4px',
           }}
         />
-      ) : (
-        <></>
       )}
     </Dialog>
   );

@@ -5,8 +5,8 @@ import { User } from '@firebase/auth';
 const db = getFirestore(app);
 
 const setProfileVisibility = async (user: User, isPrivate: boolean): Promise<boolean> => {
-  const profileReference = doc(db, 'users', user.uid);
-  await updateDoc(profileReference, { isPrivate });
+  const profileDocumentRef = doc(db, 'users', user.uid);
+  await updateDoc(profileDocumentRef, { isPrivate });
   return isPrivate;
 };
 

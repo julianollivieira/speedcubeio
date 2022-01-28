@@ -6,8 +6,8 @@ import { User } from '@firebase/auth';
 const db = getFirestore(app);
 
 const getBoxes = async (user: User): Promise<Box[]> => {
-  const boxesCollection = collection(db, 'users', user?.uid, 'boxes');
-  const boxesSnapshot = await getDocs(boxesCollection);
+  const boxesCollectionRef = collection(db, 'users', user?.uid, 'boxes');
+  const boxesSnapshot = await getDocs(boxesCollectionRef);
   const boxObjects = boxesSnapshot.docs.map(
     (box) =>
       ({

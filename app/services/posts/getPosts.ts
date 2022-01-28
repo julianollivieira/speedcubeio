@@ -5,8 +5,8 @@ import { Post } from '@/types';
 const db = getFirestore(app);
 
 const getPosts = async (): Promise<Post[]> => {
-  const postsCollection = collection(db, 'posts');
-  const postsSnapshot = await getDocs(postsCollection);
+  const postsCollectionRef = collection(db, 'posts');
+  const postsSnapshot = await getDocs(postsCollectionRef);
   const postObjects = postsSnapshot.docs.map(
     (postDoc) =>
       ({
