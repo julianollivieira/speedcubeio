@@ -7,7 +7,7 @@ import ProfileHeader from '@/components/profile/ProfileHeader';
 
 interface Props {
   user: User | null | undefined;
-  profile: ProfileType | null;
+  profile: ProfileType | null | undefined;
   showControls?: boolean;
 }
 

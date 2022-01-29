@@ -37,7 +37,7 @@ import { Person as PersonIcon } from '@mui/icons-material';
 interface Props {
   user: User | null | undefined;
   box: Box | null | undefined;
-  profile: Profile | null;
+  profile: Profile | null | undefined;
   showControls?: boolean;
 }
 

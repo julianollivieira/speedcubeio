@@ -20,7 +20,7 @@ dayjs.extend(utc);
 
 interface Props {
   user: User | null | undefined;
-  profile: Profile | null;
+  profile: Profile | null | undefined;
   showControls?: boolean;
 }
 

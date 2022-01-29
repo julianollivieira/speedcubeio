@@ -12,7 +12,7 @@ import type { Profile } from '@/types';
 
 interface Props {
   user: User | null | undefined;
-  profile: Profile | null;
+  profile: Profile | null | undefined;
   boxes: Box[];
   showControls?: boolean;
 }

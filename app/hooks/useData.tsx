@@ -48,7 +48,7 @@ interface Context {
   user: User | null | undefined;
   boxes: Box[];
   box: Box | undefined;
-  profile: Profile | undefined;
+  profile: Profile | null | undefined;
   timerActive: boolean;
   currentPuzzle: Puzzle;
 
