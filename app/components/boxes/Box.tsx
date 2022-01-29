@@ -19,7 +19,6 @@ import {
 } from '@mui/icons-material';
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { Box, Profile } from '@/types';
-import { useData } from '@/hooks/useData';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
 import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import TimeListDrawer from '@/components/timelist/TimeListDrawer';
@@ -33,6 +32,9 @@ import TimeGraphCard from '@/components/statistics/TimeGraphCard';
 import LastDifferenceTableCard from '@/components/statistics/LastDifferenceTableCard';
 import Link from '@/components/misc/Link';
 import { Person as PersonIcon } from '@mui/icons-material';
+import setBoxVisibility from '@/services/boxes/setBoxVisibility';
+import { useAtom } from 'jotai';
+import { boxesAtom } from '@/store';
 
 interface Props {
   user: User | null | undefined;
@@ -47,12 +49,12 @@ const BoxComponent = ({
   profile,
   showControls = false,
 }: Props): ReactElement => {
-  const { editBox, deleteBox, setBoxPrivate } = useData();
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
   const [visibilityLoading, setVisibilityLoading] = useState(false);
   const [TimeListDrawerOpen, setTimeListDrawerOpen] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [boxes, setBoxes] = useAtom(boxesAtom);
 
   useEffect(() => {
     if (profile?.isPrivate) {
@@ -61,16 +63,28 @@ const BoxComponent = ({
   }, [profile]);
 
   const toggleVisibility = () => {
+    if (!user || !box) return;
     setVisibilityLoading(true);
-    setBoxPrivate(!box?.isPrivate).then((isPrivate) => {
-      setVisibilityLoading(false);
-      createSnackbar(
-        enqueueSnackbar,
-        closeSnackbar,
-        `Box set to ${isPrivate ? 'private' : 'public'}`,
-        'success'
-      );
-    });
+    setBoxVisibility(user, box.id, !box.isPrivate)
+      .then((isPrivate) => {
+        setBoxes(boxes.map((b) => (b.id === box.id ? { ...b, isPrivate } : b)));
+        createSnackbar(
+          enqueueSnackbar,
+          closeSnackbar,
+          `Box set to ${isPrivate ? 'private' : 'public'}`,
+          'success'
+        );
+        setVisibilityLoading(false);
+      })
+      .catch(() => {
+        createSnackbar(
+          enqueueSnackbar,
+          closeSnackbar,
+          "Something wen't wrong, please try again",
+          'error'
+        );
+        setVisibilityLoading(false);
+      });
   };
 
   const handleShare = () => {
@@ -220,28 +234,21 @@ const BoxComponent = ({
           <TimeGraphCard box={box === null ? undefined : box} />
         </Grid>
       </Grid>
-      {showControls && deletingBox && (
-        <DeleteBoxDialog
-          box={deletingBox}
-          handleClose={() => setDeletingBox(null)}
-          deleteBox={async (): Promise<void> => {
-            await deleteBox(deletingBox.id);
-            Router.push('/boxes');
-          }}
-        />
-      )}
-      {showControls && editingBox && (
-        <EditBoxDialog
-          box={editingBox}
-          handleClose={() => setEditingBox(null)}
-          editBox={async (name: string, icon: string, color: string): Promise<void> => {
-            await editBox(editingBox.id, {
-              name: name,
-              icon: icon,
-              color: color,
-            });
-          }}
-        />
+      {showControls && (
+        <>
+          {deletingBox && (
+            <DeleteBoxDialog
+              box={deletingBox}
+              handleClose={() => setDeletingBox(null)}
+              onDelete={() => {
+                Router.push('/boxes');
+              }}
+            />
+          )}
+          {editingBox && (
+            <EditBoxDialog box={editingBox} handleClose={() => setEditingBox(null)} />
+          )}
+        </>
       )}
       {showControls && (
         <Fab

@@ -1,4 +1,3 @@
-import { useData } from '@/hooks/useData';
 import { Puzzle } from '@/types';
 import {
   FormControl,
@@ -8,12 +7,21 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from '@mui/material';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import puzzles from '@/utils/puzzles';
 import { capitalizeFirstLetter } from '@/utils/helpers';
+import { useAtom } from 'jotai';
+import { currentPuzzleAtom, timerActiveAtom } from '@/store';
 
 const PuzzleSelector = (): ReactElement => {
-  const { currentPuzzle, changePuzzle, timerActive } = useData();
+  const [currentPuzzle, setCurrentPuzzle] = useAtom(currentPuzzleAtom);
+  const [timerActive] = useAtom(timerActiveAtom);
+
+  useEffect(() => {
+    if (currentPuzzle === undefined) {
+      setCurrentPuzzle(puzzles[1]);
+    }
+  }, []);
 
   return (
     <FormControl fullWidth>
@@ -23,7 +31,7 @@ const PuzzleSelector = (): ReactElement => {
         disabled={timerActive ? true : puzzles.length == 0}
         input={<OutlinedInput notched={true} label="Current puzzle"></OutlinedInput>}
         onChange={(event: SelectChangeEvent) => {
-          changePuzzle(event.target.value as Puzzle);
+          setCurrentPuzzle(event.target.value as Puzzle);
         }}
       >
         {puzzles.map((puzzleItem: Puzzle) => (

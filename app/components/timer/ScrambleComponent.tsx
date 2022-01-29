@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Box, Typography, ButtonGroup, Button, Tooltip } from '@mui/material';
 import {
   History as HistoryIcon,
@@ -8,16 +8,42 @@ import {
   Cached as CachedIcon,
   LockOpen as LockOpenIcon,
 } from '@mui/icons-material';
-import { useData } from '@/hooks/useData';
 import ScrambleHistoryDialog from './dialogs/ScrambleHistoryDialog';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import { useAtom } from 'jotai';
+import { scrambleAtom, scrambleLockedAtom, currentPuzzleAtom } from '@/store';
+import generateNewScramble from '@/utils/generateNewScramble';
 
 const ScrambleComponent = (): ReactElement => {
-  const { scramble, scrambleLocked, generateNewScramble, toggleScrambleLocked } =
-    useData();
+  const [scramble, setScramble] = useAtom(scrambleAtom);
+  const [scrambleLocked, setScrambleLocked] = useAtom(scrambleLockedAtom);
+  const [currentPuzzle] = useAtom(currentPuzzleAtom);
+
   const [scrambleHistoryOpen, setScrambleHistoryOpen] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    const newScramble = generateNewScramble(scrambleLocked, currentPuzzle);
+    if (!newScramble) return;
+    setScramble(newScramble);
+  }, [currentPuzzle]);
+
+  const handleToggleScrambleLockClick = (): void => {
+    setScrambleLocked(!scrambleLocked);
+    createSnackbar(
+      enqueueSnackbar,
+      closeSnackbar,
+      `Scramble ${scrambleLocked ? 'unlocked' : 'locked'}`,
+      'success'
+    );
+  };
+
+  const handleGenerateNewScrambleClick = (): void => {
+    const newScramble = generateNewScramble(scrambleLocked, currentPuzzle);
+    if (!newScramble) return;
+    setScramble(newScramble);
+  };
 
   return (
     <>
@@ -57,17 +83,7 @@ const ScrambleComponent = (): ReactElement => {
             </Button>
           </Tooltip>
           <Tooltip title={`${scrambleLocked ? 'Unlock' : 'Lock'} scramble`}>
-            <Button
-              onClick={() => {
-                toggleScrambleLocked();
-                createSnackbar(
-                  enqueueSnackbar,
-                  closeSnackbar,
-                  `Scramble ${scrambleLocked ? 'Unlocked' : 'Locked'}`,
-                  'success'
-                );
-              }}
-            >
+            <Button onClick={handleToggleScrambleLockClick}>
               {scrambleLocked ? <LockOpenIcon /> : <LockIcon />}
             </Button>
           </Tooltip>
@@ -77,7 +93,7 @@ const ScrambleComponent = (): ReactElement => {
             </Button>
           </Tooltip>
           <Tooltip title="Generate new scramble">
-            <Button onClick={generateNewScramble}>
+            <Button onClick={handleGenerateNewScrambleClick}>
               <CachedIcon />
             </Button>
           </Tooltip>

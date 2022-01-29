@@ -17,7 +17,7 @@ import Logo from '@/components/misc/Logo';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import authErrors from '@/utils/authErrors';
-import { useData } from '@/hooks/useData';
+import signup from '@/services/auth/signup';
 
 interface Error {
   code: string;
@@ -25,7 +25,6 @@ interface Error {
 
 const SignupForm = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { signUp } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const formik = useFormik({
@@ -38,24 +37,26 @@ const SignupForm = (): ReactElement => {
     },
     validationSchema: signupValidationSchema,
     onSubmit: async (values) => {
-      try {
-        setLoading(true);
-        await signUp({
-          displayName: values.displayName,
-          email: values.email,
-          password: values.password,
+      setLoading(true);
+      signup(values)
+        .then(() => {
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            'Succesfully logged in',
+            'success'
+          );
+          Router.push('/login');
+        })
+        .catch((error) => {
+          setLoading(false);
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            authErrors[(error as Error).code],
+            'error'
+          );
         });
-        createSnackbar(enqueueSnackbar, closeSnackbar, 'Verification email sent', 'info');
-        Router.push('/login');
-      } catch (error: unknown) {
-        setLoading(false);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          authErrors[(error as Error).code],
-          'error'
-        );
-      }
     },
   });
 

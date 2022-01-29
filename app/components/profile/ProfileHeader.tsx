@@ -6,32 +6,36 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
-import { Avatar, Box, Chip, IconButton, Typography, useMediaQuery } from '@mui/material';
+import { Avatar, Box, IconButton, Typography, useMediaQuery } from '@mui/material';
 import Link from '@/components/misc/Link';
 import { ReactElement, useState } from 'react';
 import type { Profile } from '@/types';
 import type { User } from 'firebase/auth';
-import { useData } from '@/hooks/useData';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import setProfileVisibility from '@/services/profile/setProfileVisibility';
+import { profileAtom } from '@/store';
+import { useAtom } from 'jotai';
 dayjs.extend(utc);
 
 interface Props {
-  user: User | null | undefined;
+  user: User | null;
   profile: Profile | null;
   showControls?: boolean;
 }
 
 const ProfileHeader = ({ user, profile, showControls = false }: Props): ReactElement => {
-  const { setProfilePrivate } = useData();
+  const [, setProfile] = useAtom(profileAtom);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [visibilityLoading, setVisibilityLoading] = useState(false);
 
   const toggleVisibility = () => {
+    if (!user || !profile) return;
     setVisibilityLoading(true);
-    setProfilePrivate(!profile?.isPrivate).then((isPrivate) => {
+    setProfileVisibility(user, !profile?.isPrivate).then((isPrivate) => {
+      setProfile({ ...profile, isPrivate });
       setVisibilityLoading(false);
       createSnackbar(
         enqueueSnackbar,
@@ -117,22 +121,6 @@ const ProfileHeader = ({ user, profile, showControls = false }: Props): ReactEle
                 {'Joined on '}
                 {dayjs(user?.metadata.creationTime).utc().format('MMMM D YYYY')}
               </Typography>
-              <Box sx={{ pt: { xs: 3, sm: 1 } }}>
-                <>
-                  <Chip
-                    color="error"
-                    label="PRO MEMBER"
-                    size="small"
-                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                  />
-                  <Chip
-                    color="warning"
-                    label="BETA TESTER"
-                    size="small"
-                    sx={{ px: 1, mr: 1, fontWeight: 'bold' }}
-                  />
-                </>
-              </Box>
             </>
           )}
         </Box>

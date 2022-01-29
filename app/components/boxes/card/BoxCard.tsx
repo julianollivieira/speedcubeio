@@ -26,7 +26,11 @@ import {
 } from '@mui/icons-material';
 import BoxCardSummaryTable from '@/components/boxes/card/BoxCardSummaryTable';
 import Link from 'next/link';
-import { useData } from '@/hooks/useData';
+import setBoxVisibility from '@/services/boxes/setBoxVisibility';
+import createSnackbar from '@/utils/snackbar';
+import { useSnackbar } from 'notistack';
+import { useAtom } from 'jotai';
+import { boxesAtom } from '@/store';
 
 interface Props {
   user: User | null | undefined;
@@ -45,15 +49,38 @@ const BoxCard = ({
   openEditBoxDialog,
   share,
 }: Props): ReactElement => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showMenuButtons, setShowMenuButtons] = useState(false);
   const handleShowMenu = () => setShowMenuButtons(true);
   const handleHideMenu = () => setShowMenuButtons(false);
-  const { toggleBoxVisibility } = useData();
+  const [boxes, setBoxes] = useAtom(boxesAtom);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
+
+  const toggleBoxVisibility = () => {
+    if (!user) return;
+    setBoxVisibility(user, box.id, !box.isPrivate)
+      .then((isPrivate) => {
+        setBoxes(boxes.map((b) => (b.id === box.id ? { ...b, isPrivate } : b)));
+        createSnackbar(
+          enqueueSnackbar,
+          closeSnackbar,
+          `Box set to ${isPrivate ? 'private' : 'public'}`,
+          'success'
+        );
+      })
+      .catch(() => {
+        createSnackbar(
+          enqueueSnackbar,
+          closeSnackbar,
+          "Something wen't wrong, please try again",
+          'error'
+        );
+      });
+  };
 
   return (
     <Card onMouseEnter={handleShowMenu} onMouseLeave={handleHideMenu}>
@@ -192,9 +219,7 @@ const BoxCard = ({
             key="togglePrivate"
             onClick={() => {
               handleMenuClose();
-              toggleBoxVisibility(box);
-
-              // openDeleteBoxDialog();
+              toggleBoxVisibility();
             }}
           >
             <ListItemIcon>

@@ -1,12 +1,15 @@
 import type { NextPage } from 'next';
 import { Divider } from '@mui/material';
-import { useData } from '@/hooks/useData';
 import Layout from '@/components/layout/Layout';
 import BoxGridHeader from '@/components/boxes/grid/BoxGridHeader';
 import BoxGrid from '@/components/boxes/grid/BoxGrid';
+import { useAtom } from 'jotai';
+import { userAtom, profileAtom, boxesAtom } from '@/store';
 
 const BoxesPage: NextPage = () => {
-  const { user, boxes, profile } = useData();
+  const [user] = useAtom(userAtom);
+  const [profile] = useAtom(profileAtom);
+  const [boxes] = useAtom(boxesAtom);
 
   return (
     <Layout title="Boxes">

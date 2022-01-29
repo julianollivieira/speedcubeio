@@ -1,21 +1,37 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Box as MUIBox, Typography } from '@mui/material';
 import TimerClass from '@/classes/Timer';
-import { useData } from '@/hooks/useData';
+import { useAtom } from 'jotai';
+import {
+  userAtom,
+  scrambleAtom,
+  scrambleHistoryAtom,
+  scrambleLockedAtom,
+  currentPuzzleAtom,
+  timerActiveAtom,
+  currentBoxIdAtom,
+  boxesAtom,
+} from '@/store';
+import generateNewScramble from '@/utils/generateNewScramble';
+import createTime from '@/services/times/createTime';
+import createSnackbar from '@/utils/snackbar';
+import { useSnackbar } from 'notistack';
 
 const Timer = (): ReactElement => {
-  const {
-    scramble,
-    createTime,
-    box,
-    setTimerActive,
-    currentPuzzle,
-    generateNewScramble,
-    scrambleLocked,
-  } = useData();
+  const [user] = useAtom(userAtom);
+  const [scramble, setScramble] = useAtom(scrambleAtom);
+  const [currentBoxId] = useAtom(currentBoxIdAtom);
+  const [boxes, setBoxes] = useAtom(boxesAtom);
+  const [scrambleHistory, setScrambleHistory] = useAtom(scrambleHistoryAtom);
+  const [scrambleLocked] = useAtom(scrambleLockedAtom);
+  const [currentPuzzle] = useAtom(currentPuzzleAtom);
+  const [, setTimerActive] = useAtom(timerActiveAtom);
+
   const [time, setTime] = useState(0);
   const [readying, setReadying] = useState(false);
   const [ready, setReady] = useState(false);
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
     const timer = new TimerClass({
@@ -40,12 +56,58 @@ const Timer = (): ReactElement => {
       },
       onStop: async (time: number) => {
         setTimerActive(false);
-        await createTime({
+        if (!user || !currentPuzzle || !currentBoxId || !scramble?.scramble_string)
+          return;
+
+        createTime(user, currentBoxId, {
           time: time,
           puzzle: currentPuzzle,
-          scramble: scramble?.scramble_string ?? '',
-        });
-        generateNewScramble();
+          scramble: scramble?.scramble_string,
+        })
+          .then((newTime) => {
+            if (!newTime) return;
+            const currentBox = boxes.find((b) => b.id === currentBoxId);
+            if (!currentBox) return;
+            currentBox.times.push(newTime);
+            const newBoxes = boxes.map((b) => (b.id === currentBoxId ? currentBox : b));
+            setBoxes(newBoxes);
+          })
+          .catch(() => {
+            createSnackbar(
+              enqueueSnackbar,
+              closeSnackbar,
+              "Something wen't wrong while saving your time",
+              'error'
+            );
+          });
+
+        const newScramble = generateNewScramble(scrambleLocked, currentPuzzle);
+        if (!newScramble) {
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            "Something wen't wrong while generating a new scramble",
+            'error'
+          );
+          return;
+        }
+        setScramble(newScramble);
+        if (!currentPuzzle) {
+          createSnackbar(
+            enqueueSnackbar,
+            closeSnackbar,
+            "Something wen't wrong while generating a new scramble",
+            'error'
+          );
+          return;
+        }
+        setScrambleHistory([
+          ...scrambleHistory,
+          {
+            scramble: newScramble,
+            puzzle: currentPuzzle,
+          },
+        ]);
       },
     });
 
@@ -84,7 +146,7 @@ const Timer = (): ReactElement => {
       document.removeEventListener('keydown', keyDown);
       document.removeEventListener('keyup', keyUp);
     };
-  }, [box, currentPuzzle, scramble, scrambleLocked]);
+  }, [currentBoxId, currentPuzzle, scramble, scrambleLocked]);
 
   return (
     <MUIBox>

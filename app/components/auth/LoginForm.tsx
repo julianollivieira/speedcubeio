@@ -8,7 +8,9 @@ import Logo from '@/components/misc/Logo';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import authErrors from '@/utils/authErrors';
-import { useData } from '@/hooks/useData';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
+import login from '@/services/auth/login';
 
 interface Error {
   code: string;
@@ -16,36 +18,38 @@ interface Error {
 
 const LoginForm = (): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const { logIn } = useData();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [, setUser] = useAtom(userAtom);
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      try {
-        setLoading(true);
-        const userCredential = await logIn(values.email, values.password);
-        if (userCredential.user.emailVerified) {
+      setLoading(true);
+      login(values)
+        .then((userCredential) => {
+          setUser(userCredential.user);
+          if (userCredential.user.emailVerified) {
+            createSnackbar(
+              enqueueSnackbar,
+              closeSnackbar,
+              'Succesfully logged in',
+              'success'
+            );
+            Router.push('/home');
+          } else {
+            throw { code: 'auth/email-not-verified' };
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
           createSnackbar(
             enqueueSnackbar,
             closeSnackbar,
-            'Succesfully logged in',
-            'success'
+            authErrors[(error as Error).code],
+            'error'
           );
-          Router.push('/home');
-        } else {
-          throw { code: 'auth/email-not-verified' };
-        }
-      } catch (error: unknown) {
-        setLoading(false);
-        createSnackbar(
-          enqueueSnackbar,
-          closeSnackbar,
-          authErrors[(error as Error).code],
-          'error'
-        );
-      }
+        });
     },
   });
 

@@ -11,14 +11,19 @@ import { Box } from '@/types';
 import { useState, ReactElement } from 'react';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import deleteBox from '@/services/boxes/deleteBox';
+import { useAtom } from 'jotai';
+import { userAtom, boxesAtom } from '@/store';
 
 interface Props {
-  box: Box | null | undefined;
+  box: Box;
   handleClose: () => void;
-  deleteBox: () => Promise<void>;
+  onDelete?: () => void;
 }
 
-const DeleteBoxDialog = ({ box, handleClose, deleteBox }: Props): ReactElement => {
+const DeleteBoxDialog = ({ box, handleClose, onDelete }: Props): ReactElement => {
+  const [user] = useAtom(userAtom);
+  const [boxes, setBoxes] = useAtom(boxesAtom);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -37,32 +42,35 @@ const DeleteBoxDialog = ({ box, handleClose, deleteBox }: Props): ReactElement =
         <Button
           disabled={loading}
           onClick={async () => {
-            try {
-              setLoading(true);
-              await deleteBox();
-              createSnackbar(
-                enqueueSnackbar,
-                closeSnackbar,
-                'Box deleted succesfully',
-                'success'
-              );
-              handleClose();
-              setLoading(false);
-            } catch (error) {
-              setLoading(false);
-              createSnackbar(
-                enqueueSnackbar,
-                closeSnackbar,
-                "Something wen't wrong, please try again",
-                'error'
-              );
-            }
+            setLoading(true);
+            deleteBox(user!, box.id)
+              .then(() => {
+                setBoxes(boxes.filter((b) => b.id !== box.id));
+                createSnackbar(
+                  enqueueSnackbar,
+                  closeSnackbar,
+                  'Box deleted succesfully',
+                  'success'
+                );
+                handleClose();
+                setLoading(false);
+                if (onDelete) onDelete();
+              })
+              .catch(() => {
+                createSnackbar(
+                  enqueueSnackbar,
+                  closeSnackbar,
+                  "Something wen't wrong, please try again",
+                  'error'
+                );
+                setLoading(false);
+              });
           }}
         >
           Delete
         </Button>
       </DialogActions>
-      {loading ? (
+      {loading && (
         <LinearProgress
           sx={{
             width: 1,
@@ -70,8 +78,6 @@ const DeleteBoxDialog = ({ box, handleClose, deleteBox }: Props): ReactElement =
             borderBottomRightRadius: '4px',
           }}
         />
-      ) : (
-        <></>
       )}
     </Dialog>
   );

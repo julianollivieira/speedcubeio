@@ -9,13 +9,14 @@ import {
 } from '@mui/material';
 import { Security as SecurityIcon, Email as EmailIcon } from '@mui/icons-material';
 import { SyntheticEvent, useState, ReactElement } from 'react';
-import { useData } from '@/hooks/useData';
 import SecuritySettings from '@/components/account/SecuritySettings';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
 
 const AccountSettings = (): ReactElement => {
   const matches: boolean = useMediaQuery('(min-width:1200px)');
   const [value, setValue] = useState(0);
-  const { user } = useData();
+  const [user] = useAtom(userAtom);
 
   const handleChange = (_: SyntheticEvent<Element, Event>, newValue: number) => {
     setValue(newValue);
@@ -59,7 +60,7 @@ const AccountSettings = (): ReactElement => {
             Email address
           </Typography>
           <Box sx={{ pt: 4 }}>
-            <Typography variant="h6">Your current email address</Typography>
+            <Typography variant="h6">Current email address</Typography>
             <Typography sx={{ mt: 1 }}>
               Your current email address is {user?.email}
             </Typography>

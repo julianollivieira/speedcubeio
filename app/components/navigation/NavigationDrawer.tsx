@@ -10,7 +10,6 @@ import {
   Home as HomeIcon,
   Timer as TimerIcon,
   AllInbox as AllInboxIcon,
-  ShowChart as ShowChartIcon,
   Settings as SettingsIcon,
   Newspaper as NewspaperIcon,
 } from '@mui/icons-material';
@@ -108,14 +107,6 @@ const NavigationDrawer = ({
                 <AllInboxIcon />
               </ListItemIcon>
               <ListItemText primary="Boxes" />
-            </ListItem>
-          </Link>
-          <Link href="/statistics" passHref>
-            <ListItem button component="a" key="Statistics">
-              <ListItemIcon sx={{ paddingLeft: 1 }}>
-                <ShowChartIcon />
-              </ListItemIcon>
-              <ListItemText primary="Statistics" />
             </ListItem>
           </Link>
           <Link href="/news" passHref>

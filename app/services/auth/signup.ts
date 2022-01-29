@@ -1,11 +1,15 @@
-import { Profile } from '@/types';
 import {
-  Auth,
   createUserWithEmailAndPassword,
+  getAuth,
+  signOut,
   updateProfile,
   UserCredential,
+  sendEmailVerification,
 } from 'firebase/auth';
-import { Firestore, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
+import { Profile } from '@/types';
+import app from '@/utils/firebase/client';
+import { getFirestore } from '@firebase/firestore';
 
 interface Options {
   displayName: string;
@@ -13,16 +17,17 @@ interface Options {
   password: string;
 }
 
-const createAccount = async (
-  auth: Auth,
-  db: Firestore,
-  options: Options
-): Promise<{ profile: Profile; userCredential: UserCredential }> => {
-  const { email, password, displayName } = options;
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const signup = async (options: Options): Promise<UserCredential> => {
+  const { displayName, email, password } = options;
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
   const { user } = userCredential;
   await updateProfile(user, { displayName });
+  await sendEmailVerification(user);
+  await signOut(auth);
 
   const profileReference = doc(db, 'users', user.uid);
   const profile: Profile = {
@@ -33,7 +38,7 @@ const createAccount = async (
 
   await setDoc(profileReference, profile);
 
-  return { profile, userCredential };
+  return userCredential;
 };
 
-export default createAccount;
+export default signup;
