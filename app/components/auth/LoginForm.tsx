@@ -28,8 +28,8 @@ const LoginForm = (): ReactElement => {
       setLoading(true);
       login(values)
         .then((userCredential) => {
-          setUser(userCredential.user);
           if (userCredential.user.emailVerified) {
+            setUser(userCredential.user);
             createSnackbar(
               enqueueSnackbar,
               closeSnackbar,

@@ -1,4 +1,9 @@
-import { getAuth, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  UserCredential,
+} from 'firebase/auth';
 import app from '@/utils/firebase/client';
 
 interface Options {
@@ -10,7 +15,13 @@ const auth = getAuth(app);
 
 const login = async (options: Options): Promise<UserCredential> => {
   const { email, password } = options;
-  return signInWithEmailAndPassword(auth, email, password);
+
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  if (!userCredential.user.emailVerified) {
+    await signOut(auth);
+  }
+
+  return userCredential;
 };
 
 export default login;

@@ -14,7 +14,7 @@ const RequireAuthenticated = ({ children, inverse = false }: Props): ReactElemen
 
   redirectIfUnauthenticated(user, inverse);
 
-  if ((user === undefined && !inverse) || (user !== undefined && inverse)) {
+  if ((user === null && !inverse) || (user !== null && user?.emailVerified && inverse)) {
     return (
       <Box
         sx={{

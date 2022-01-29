@@ -8,7 +8,7 @@ const redirectIfUnauthenticated = (
 ): void => {
   useEffect(() => {
     if (user === null && !inverse) Router.push('/login');
-    if (user !== null && inverse) Router.push('/home');
+    if (user !== null && user?.emailVerified && inverse) Router.push('/home');
   }, [user]);
 };
 
