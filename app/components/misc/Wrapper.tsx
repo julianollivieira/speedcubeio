@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode, useEffect } from 'react';
-import { userAtom, profileAtom, boxesAtom } from '@/store';
+import { userAtom, profileAtom, boxesAtom, currentBoxIdAtom } from '@/store';
 import { useAtom } from 'jotai';
 import { User } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
@@ -17,27 +17,28 @@ const Wrapper = ({ children }: Props): ReactElement => {
   const [user, setUser] = useAtom(userAtom);
   const [, setProfile] = useAtom(profileAtom);
   const [, setBoxes] = useAtom(boxesAtom);
+  const [, setCurrentBoxId] = useAtom(currentBoxIdAtom);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user: User | null) => {
       if (user) {
         setUser(user);
       } else {
-        setUser(undefined);
+        setUser(null);
       }
     });
     return unsubscribe;
   }, []);
 
   useEffect(() => {
-    if (user !== undefined) {
-      getProfile(user).then((newProfile) => {
-        setProfile(newProfile);
-      });
-      getBoxes(user).then((newBoxes) => {
-        setBoxes(newBoxes);
-      });
-    }
+    if (user == undefined || user == null) return;
+    getProfile(user).then((newProfile) => {
+      setProfile(newProfile);
+    });
+    getBoxes(user).then((newBoxes) => {
+      setBoxes(newBoxes);
+      setCurrentBoxId(newBoxes[0].id);
+    });
   }, [user]);
 
   return <>{children}</>;

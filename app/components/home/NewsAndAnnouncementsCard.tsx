@@ -18,9 +18,9 @@ import { UnixEpochToDaysAgo } from '@/utils/helpers';
 import { useAtom } from 'jotai';
 import { postsAtom } from '@/store';
 import getPosts from '@/services/posts/getPosts';
-import { useEffect, Fragment } from 'react';
+import { useEffect, Fragment, ReactElement } from 'react';
 
-const NewsAndAnnouncementsCard = () => {
+const NewsAndAnnouncementsCard = (): ReactElement => {
   const [posts, setPosts] = useAtom(postsAtom);
 
   useEffect(() => {
@@ -85,7 +85,9 @@ const NewsAndAnnouncementsCard = () => {
             ))}
           </List>
         ) : (
-          <Typography sx={{ pt: 3, fontSize: 14, textAlign: 'center', color: '#AAA' }}>
+          <Typography
+            sx={{ pt: 3, pb: 2, fontSize: 14, textAlign: 'center', color: '#AAA' }}
+          >
             No posts yet, check back later
           </Typography>
         )}

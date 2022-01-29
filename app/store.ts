@@ -3,7 +3,7 @@ import { User } from 'firebase/auth';
 import { Profile, Post, Poll, Puzzle, Box } from '@/types';
 import { Scramble } from 'scrambow';
 
-export const userAtom = atom<User | undefined>(undefined);
+export const userAtom = atom<User | undefined | null>(undefined);
 export const profileAtom = atom<Profile | undefined>(undefined);
 
 export const postsAtom = atom<Post[]>([]);

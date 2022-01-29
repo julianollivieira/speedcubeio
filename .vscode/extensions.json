@@ -2,6 +2,7 @@
   "recommendations": [
     "pkief.material-icon-theme",
     "zhuangtongfa.material-theme",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
   ]
 }

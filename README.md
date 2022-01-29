@@ -1,3 +1,3 @@
-# Speedcubeio
+# ⏱ Speedcube.io
 
-⏱ Literally the best speedcube timer
+### Literally the best speedcube timer

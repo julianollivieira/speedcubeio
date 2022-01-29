@@ -131,8 +131,8 @@ const TimeListRow = ({
                     <IconButton onClick={() => setDeletingTime(timeData ?? null)}>
                       <DeleteIcon />
                     </IconButton>
-                    <IconButton>
-                      <EditIcon onClick={() => setEditingTime(timeData ?? null)} />
+                    <IconButton onClick={() => setEditingTime(timeData ?? null)}>
+                      <EditIcon />
                     </IconButton>
                   </ListItem>
                 </>
