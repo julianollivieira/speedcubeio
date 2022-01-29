@@ -11,16 +11,23 @@ import { Time } from '@/types';
 import { useState, ReactElement } from 'react';
 import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
+import { useAtom } from 'jotai';
+import { userAtom, currentBoxIdAtom, boxesAtom } from '@/store';
+import deleteTime from '@/services/times/deleteTime';
 
 interface Props {
   time: Time | null | undefined;
   handleClose: () => void;
-  deleteTime: () => Promise<void>;
+  onDelete: () => void;
 }
 
-const DeleteTimeDialog = ({ time, handleClose, deleteTime }: Props): ReactElement => {
+const DeleteTimeDialog = ({ time, handleClose, onDelete }: Props): ReactElement => {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const [user] = useAtom(userAtom);
+  const [boxes, setBoxes] = useAtom(boxesAtom);
+  const [currentBoxId] = useAtom(currentBoxIdAtom);
 
   return (
     <Dialog open={!!time} onClose={handleClose}>
@@ -37,32 +44,42 @@ const DeleteTimeDialog = ({ time, handleClose, deleteTime }: Props): ReactElemen
         <Button
           disabled={loading}
           onClick={async () => {
-            try {
-              setLoading(true);
-              await deleteTime();
-              createSnackbar(
-                enqueueSnackbar,
-                closeSnackbar,
-                'Time deleted succesfully',
-                'success'
-              );
-              handleClose();
-              setLoading(false);
-            } catch (error) {
-              setLoading(false);
-              createSnackbar(
-                enqueueSnackbar,
-                closeSnackbar,
-                "Something wen't wrong, please try again",
-                'error'
-              );
-            }
+            if (!user || !currentBoxId || !time) return;
+            setLoading(true);
+            deleteTime(user, currentBoxId, time.id)
+              .then(() => {
+                setBoxes(
+                  boxes.map((box) => {
+                    if (box.id === currentBoxId) {
+                      box.times = box.times.filter((t) => t.id !== time.id);
+                    }
+                    return box;
+                  })
+                );
+                createSnackbar(
+                  enqueueSnackbar,
+                  closeSnackbar,
+                  'Time deleted succesfully',
+                  'success'
+                );
+                handleClose();
+                onDelete();
+              })
+              .catch(() => {
+                createSnackbar(
+                  enqueueSnackbar,
+                  closeSnackbar,
+                  "Something wen't wrong, please try again",
+                  'error'
+                );
+              });
+            setLoading(false);
           }}
         >
           Delete
         </Button>
       </DialogActions>
-      {loading ? (
+      {loading && (
         <LinearProgress
           sx={{
             width: 1,
@@ -70,8 +87,6 @@ const DeleteTimeDialog = ({ time, handleClose, deleteTime }: Props): ReactElemen
             borderBottomRightRadius: '4px',
           }}
         />
-      ) : (
-        <></>
       )}
     </Dialog>
   );

@@ -22,10 +22,7 @@ import EditTimeDialog from '@/components/timer/dialogs/EditTimeDialog';
 import BoxSelector from '@/components/misc/BoxSelector';
 import PuzzleSelector from '@/components/misc/PuzzleSelector';
 import { useAtom } from 'jotai';
-import { userAtom, currentBoxIdAtom, boxesAtom } from '@/store';
-import deleteTime from '@/services/times/deleteTime';
-import createSnackbar from '@/utils/snackbar';
-import { useSnackbar } from 'notistack';
+import { currentBoxIdAtom, boxesAtom } from '@/store';
 
 const drawerWidth = 360;
 
@@ -83,7 +80,7 @@ const TimeListDrawer = ({
   closeDrawer,
 }: Props): ReactElement => {
   const theme = useTheme();
-  const [user] = useAtom(userAtom);
+
   const [currentBoxId] = useAtom(currentBoxIdAtom);
   const [boxes] = useAtom(boxesAtom);
 
@@ -92,7 +89,6 @@ const TimeListDrawer = ({
   const [deletingTime, setDeletingTime] = useState<Time | null>(null);
   const [editingTime, setEditingTime] = useState<Time | null>(null);
   const [box, setBox] = useState<BoxType | null>(null);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!currentBoxId || !boxes) return;
@@ -192,26 +188,7 @@ const TimeListDrawer = ({
             <DeleteTimeDialog
               time={deletingTime}
               handleClose={() => setDeletingTime(null)}
-              deleteTime={async (): Promise<void> => {
-                if (!user || !currentBoxId) return;
-                deleteTime(user, currentBoxId, deletingTime.id)
-                  .then(() => {
-                    // TODO: update state
-                    createSnackbar(
-                      enqueueSnackbar,
-                      closeSnackbar,
-                      'Time deleted succesfully',
-                      'success'
-                    );
-                  })
-                  .catch(() => {
-                    createSnackbar(
-                      enqueueSnackbar,
-                      closeSnackbar,
-                      "Something wen't wrong, please try again",
-                      'error'
-                    );
-                  });
+              onDelete={() => {
                 setRowOpen(null);
               }}
             />
