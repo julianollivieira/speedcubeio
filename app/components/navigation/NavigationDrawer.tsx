@@ -10,7 +10,6 @@ import {
   Home as HomeIcon,
   Timer as TimerIcon,
   AllInbox as AllInboxIcon,
-  ShowChart as ShowChartIcon,
   Settings as SettingsIcon,
   Newspaper as NewspaperIcon,
 } from '@mui/icons-material';

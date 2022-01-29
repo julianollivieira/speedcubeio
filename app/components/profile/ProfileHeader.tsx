@@ -21,8 +21,8 @@ import { useAtom } from 'jotai';
 dayjs.extend(utc);
 
 interface Props {
-  user: User;
-  profile: Profile;
+  user: User | null;
+  profile: Profile | null;
   showControls?: boolean;
 }
 
@@ -32,6 +32,7 @@ const ProfileHeader = ({ user, profile, showControls = false }: Props): ReactEle
   const [visibilityLoading, setVisibilityLoading] = useState(false);
 
   const toggleVisibility = () => {
+    if (!user || !profile) return;
     setVisibilityLoading(true);
     setProfileVisibility(user, !profile?.isPrivate).then((isPrivate) => {
       setProfile({ ...profile, isPrivate });
