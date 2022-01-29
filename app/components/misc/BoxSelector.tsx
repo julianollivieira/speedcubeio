@@ -22,11 +22,11 @@ const BoxSelector = (): ReactElement => {
       <FormControl fullWidth>
         <InputLabel shrink={true}>Current box</InputLabel>
         <Select
-          value={currentBoxId ?? boxes[0].id}
+          value={currentBoxId ? currentBoxId : 0}
           disabled={timerActive ? true : boxes.length == 0}
           input={<OutlinedInput notched={true} label="Current box"></OutlinedInput>}
           onChange={(event) => {
-            setCurrentBoxId(event.target.value);
+            setCurrentBoxId(event.target.value as string);
           }}
         >
           {boxes.map((boxItem: Box) => (
