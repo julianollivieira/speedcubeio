@@ -20,6 +20,7 @@ const editBox = async (user: User, boxId: Box['id'], options: Options): Promise<
     id: boxDocumentRef.id,
     createdAt: boxData?.createdAt,
     times: boxData?.times,
+    isPrivate: boxData?.isPrivate,
     ...options,
   } as Box;
 };
