@@ -68,6 +68,9 @@ const Timer = (): ReactElement => {
             if (!newTime) return;
             const currentBox = boxes.find((b) => b.id === currentBoxId);
             if (!currentBox) return;
+            if (!currentBox?.times) {
+              currentBox.times = [];
+            }
             currentBox.times.push(newTime);
             const newBoxes = boxes.map((b) => (b.id === currentBoxId ? currentBox : b));
             setBoxes(newBoxes);

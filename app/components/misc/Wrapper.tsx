@@ -37,7 +37,9 @@ const Wrapper = ({ children }: Props): ReactElement => {
     });
     getBoxes(user).then((newBoxes) => {
       setBoxes(newBoxes);
-      setCurrentBoxId(newBoxes[0].id);
+      if (newBoxes.length > 0) {
+        setCurrentBoxId(newBoxes[0].id);
+      }
     });
   }, [user]);
 
