@@ -16,7 +16,7 @@ import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import createBox from '@/services/boxes/createBox';
 import { useAtom } from 'jotai';
-import { userAtom, boxesAtom } from '@/store';
+import { userAtom, boxesAtom, currentBoxIdAtom } from '@/store';
 
 interface Props {
   open: boolean;
@@ -28,6 +28,7 @@ const CreateBoxDialog = ({ open, handleClose }: Props): ReactElement => {
   const [boxes, setBoxes] = useAtom(boxesAtom);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [, setCurrentBoxId] = useAtom(currentBoxIdAtom);
 
   const formik = useFormik({
     initialValues: { name: '', icon: '', color: '#FFF' },
@@ -36,6 +37,7 @@ const CreateBoxDialog = ({ open, handleClose }: Props): ReactElement => {
       setLoading(true);
       createBox(user!, values)
         .then((box) => {
+          if (boxes.length === 0) setCurrentBoxId(box.id);
           setBoxes([...boxes, box]);
           createSnackbar(
             enqueueSnackbar,

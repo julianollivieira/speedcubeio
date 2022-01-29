@@ -13,7 +13,7 @@ import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import deleteBox from '@/services/boxes/deleteBox';
 import { useAtom } from 'jotai';
-import { userAtom, boxesAtom } from '@/store';
+import { userAtom, boxesAtom, currentBoxIdAtom } from '@/store';
 
 interface Props {
   box: Box;
@@ -24,6 +24,7 @@ interface Props {
 const DeleteBoxDialog = ({ box, handleClose, onDelete }: Props): ReactElement => {
   const [user] = useAtom(userAtom);
   const [boxes, setBoxes] = useAtom(boxesAtom);
+  const [currentBoxId, setCurrentBoxId] = useAtom(currentBoxIdAtom);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -46,6 +47,7 @@ const DeleteBoxDialog = ({ box, handleClose, onDelete }: Props): ReactElement =>
             deleteBox(user!, box.id)
               .then(() => {
                 setBoxes(boxes.filter((b) => b.id !== box.id));
+                if (currentBoxId == box.id) setCurrentBoxId(undefined);
                 createSnackbar(
                   enqueueSnackbar,
                   closeSnackbar,
