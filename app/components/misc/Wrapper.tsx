@@ -16,7 +16,7 @@ interface Props {
 const Wrapper = ({ children }: Props): ReactElement => {
   const [user, setUser] = useAtom(userAtom);
   const [, setProfile] = useAtom(profileAtom);
-  const [, setBoxes] = useAtom(boxesAtom);
+  const [boxes, setBoxes] = useAtom(boxesAtom);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user: User | null) => {

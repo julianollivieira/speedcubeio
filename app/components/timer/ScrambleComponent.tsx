@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Box, Typography, ButtonGroup, Button, Tooltip } from '@mui/material';
 import {
   History as HistoryIcon,
@@ -13,7 +13,7 @@ import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import { useAtom } from 'jotai';
 import { scrambleAtom, scrambleLockedAtom, currentPuzzleAtom } from '@/store';
-import { Scrambow } from 'scrambow';
+import generateNewScramble from '@/utils/generateNewScramble';
 
 const ScrambleComponent = (): ReactElement => {
   const [scramble, setScramble] = useAtom(scrambleAtom);
@@ -22,6 +22,12 @@ const ScrambleComponent = (): ReactElement => {
 
   const [scrambleHistoryOpen, setScrambleHistoryOpen] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    const newScramble = generateNewScramble(scrambleLocked, currentPuzzle);
+    if (!newScramble) return;
+    setScramble(newScramble);
+  }, [currentPuzzle]);
 
   const handleToggleScrambleLockClick = (): void => {
     setScrambleLocked(!scrambleLocked);
@@ -34,14 +40,8 @@ const ScrambleComponent = (): ReactElement => {
   };
 
   const handleGenerateNewScrambleClick = (): void => {
-    if (scrambleLocked || !currentPuzzle) return;
-    const arr = ['2x2x2', '3x3x3', '4x4x4', '5x5x5', '6x6x6', '7x7x7'];
-    const removeLast2chars = arr.includes(currentPuzzle);
-    const scrambowPuzzleType = removeLast2chars
-      ? currentPuzzle.slice(0, -2)
-      : currentPuzzle;
-
-    const newScramble = new Scrambow().setType(scrambowPuzzleType).get()[0];
+    const newScramble = generateNewScramble(scrambleLocked, currentPuzzle);
+    if (!newScramble) return;
     setScramble(newScramble);
   };
 

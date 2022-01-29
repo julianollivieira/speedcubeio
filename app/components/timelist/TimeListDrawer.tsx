@@ -13,16 +13,19 @@ import {
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import { useData } from '@/hooks/useData';
 import TimeList from '@/classes/TimeList';
 import { useEffect, useState } from 'react';
 import TimeListRow from '@/components/timelist/TimeListRow';
-import { Time } from '@/types';
+import { Time, Box as BoxType } from '@/types';
 import DeleteTimeDialog from '@/components/timer/dialogs/DeleteTimeDialog';
 import EditTimeDialog from '@/components/timer/dialogs/EditTimeDialog';
-
 import BoxSelector from '@/components/misc/BoxSelector';
 import PuzzleSelector from '@/components/misc/PuzzleSelector';
+import { useAtom } from 'jotai';
+import { userAtom, currentBoxIdAtom, boxesAtom } from '@/store';
+import deleteTime from '@/services/times/deleteTime';
+import createSnackbar from '@/utils/snackbar';
+import { useSnackbar } from 'notistack';
 
 const drawerWidth = 360;
 
@@ -80,18 +83,27 @@ const TimeListDrawer = ({
   closeDrawer,
 }: Props): ReactElement => {
   const theme = useTheme();
-  const { deleteTime, box } = useData();
+  const [user] = useAtom(userAtom);
+  const [currentBoxId] = useAtom(currentBoxIdAtom);
+  const [boxes] = useAtom(boxesAtom);
+
   const [timeList, setTimeList] = useState<TimeList>();
   const [rowOpen, setRowOpen] = useState<number | null>(null);
   const [deletingTime, setDeletingTime] = useState<Time | null>(null);
   const [editingTime, setEditingTime] = useState<Time | null>(null);
+  const [box, setBox] = useState<BoxType | null>(null);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (box) {
-      const newTimeList = new TimeList(box);
-      setTimeList(newTimeList);
-    }
-  }, [box]);
+    if (!currentBoxId || !boxes) return;
+
+    const box = boxes.find((b) => b.id === currentBoxId);
+    if (!box) return;
+    setBox(box);
+
+    const newTimeList = new TimeList(box);
+    setTimeList(newTimeList);
+  }, [currentBoxId, boxes]);
 
   const handleSetRowOpen = (index: number | null) => setRowOpen(index);
 
@@ -181,7 +193,25 @@ const TimeListDrawer = ({
               time={deletingTime}
               handleClose={() => setDeletingTime(null)}
               deleteTime={async (): Promise<void> => {
-                await deleteTime(deletingTime.id);
+                if (!user || !currentBoxId) return;
+                deleteTime(user, currentBoxId, deletingTime.id)
+                  .then(() => {
+                    // TODO: update state
+                    createSnackbar(
+                      enqueueSnackbar,
+                      closeSnackbar,
+                      'Time deleted succesfully',
+                      'success'
+                    );
+                  })
+                  .catch(() => {
+                    createSnackbar(
+                      enqueueSnackbar,
+                      closeSnackbar,
+                      "Something wen't wrong, please try again",
+                      'error'
+                    );
+                  });
                 setRowOpen(null);
               }}
             />

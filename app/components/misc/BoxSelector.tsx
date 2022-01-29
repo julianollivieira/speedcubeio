@@ -22,7 +22,7 @@ const BoxSelector = (): ReactElement => {
       <FormControl fullWidth>
         <InputLabel shrink={true}>Current box</InputLabel>
         <Select
-          value={currentBoxId ?? '0'}
+          value={currentBoxId ?? boxes[0].id}
           disabled={timerActive ? true : boxes.length == 0}
           input={<OutlinedInput notched={true} label="Current box"></OutlinedInput>}
           onChange={(event) => {
@@ -49,7 +49,7 @@ const BoxSelector = (): ReactElement => {
             cursor: 'pointer',
           }}
         >
-          You don't have any boxes, click here to create one
+          You don&apos;t have any boxes, click here to create one
         </Link>
       )}
     </MUIBox>
