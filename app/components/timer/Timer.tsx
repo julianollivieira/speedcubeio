@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
-import { Box as MUIBox, BoxTypeMap, Typography } from '@mui/material';
+import { Box as MUIBox, Typography } from '@mui/material';
 import TimerClass from '@/classes/Timer';
 import { useAtom } from 'jotai';
 import {
