@@ -37,16 +37,7 @@ const TimerPage: NextPage = () => {
           >
             <ScrambleComponent />
           </Box>
-          <Box
-            sx={{
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Timer />
-          </Box>
+          <Timer />
           <Box sx={{ width: 1, height: 100 }}></Box>
         </Box>
         <Fab

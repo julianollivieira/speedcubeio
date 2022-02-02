@@ -30,18 +30,19 @@ const DeleteBoxDialog = ({ box, handleClose, onDelete }: Props): ReactElement =>
 
   return (
     <Dialog open={!!box} onClose={handleClose}>
-      <DialogTitle>Delete box</DialogTitle>
-      <DialogContent>
+      <DialogTitle sx={{ bgcolor: 'background.paper' }}>Delete box</DialogTitle>
+      <DialogContent sx={{ pt: 3, pb: 1, bgcolor: 'background.paper' }}>
         <DialogContentText id="alert-dialog-description">
           Are you sure you want to delete this box?
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ p: 2, bgcolor: 'background.paper' }}>
         <Button onClick={handleClose} autoFocus>
           Cancel
         </Button>
         <Button
           disabled={loading}
+          variant="contained"
           onClick={async () => {
             setLoading(true);
             deleteBox(user!, box.id)

@@ -66,8 +66,8 @@ const EditBoxDialog = ({ box, handleClose }: Props): ReactElement => {
   return (
     <Dialog open={!!box} onClose={handleClose}>
       <MUIBox component="form" onSubmit={formik.handleSubmit}>
-        <DialogTitle>Edit a box</DialogTitle>
-        <DialogContent>
+        <DialogTitle sx={{ bgcolor: 'background.paper' }}>Edit a box</DialogTitle>
+        <DialogContent dividers sx={{ bgcolor: '#151C24' }}>
           <TextField
             autoFocus
             name="name"
@@ -104,9 +104,9 @@ const EditBoxDialog = ({ box, handleClose }: Props): ReactElement => {
             }}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ p: 2, bgcolor: 'background.paper' }}>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" variant="contained" disabled={loading}>
             Save
           </Button>
         </DialogActions>

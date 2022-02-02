@@ -1,5 +1,5 @@
-import { ReactElement, useEffect, useState } from 'react';
-import { Box as MUIBox, Typography } from '@mui/material';
+import { ReactElement, useEffect, useRef, useState } from 'react';
+import { Box as MUIBox, BoxTypeMap, Typography } from '@mui/material';
 import TimerClass from '@/classes/Timer';
 import { useAtom } from 'jotai';
 import {
@@ -32,6 +32,8 @@ const Timer = (): ReactElement => {
   const [ready, setReady] = useState(false);
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = new TimerClass({
@@ -142,26 +144,70 @@ const Timer = (): ReactElement => {
       }
     };
 
+    const touchStart = () => {
+      if (!timer.isReadying) {
+        if (!timer.isRunning) {
+          timer.startReadying();
+        } else {
+          timer.stop();
+          setReadying(true);
+        }
+      }
+    };
+
+    const touchEnd = () => {
+      if (timer.justStopped) {
+        timer.justStopped = false;
+        setReadying(false);
+      } else {
+        if (!timer.isReady) {
+          timer.cancelReadying();
+        } else {
+          timer.start();
+        }
+      }
+    };
+
     document.addEventListener('keydown', keyDown);
     document.addEventListener('keyup', keyUp);
+
+    boxRef.current?.addEventListener('touchstart', touchStart);
+    boxRef.current?.addEventListener('touchend', touchEnd);
 
     return () => {
       document.removeEventListener('keydown', keyDown);
       document.removeEventListener('keyup', keyUp);
+
+      boxRef.current?.removeEventListener('touchstart', touchStart);
+      boxRef.current?.removeEventListener('touchend', touchEnd);
     };
   }, [currentBoxId, currentPuzzle, scramble, scrambleLocked]);
 
   return (
-    <MUIBox>
-      <Typography
-        color={readying ? '#D17777' : ready ? '#79D177' : 'textPrimary'}
-        sx={{
-          fontSize: { xs: '8em', xl: '16em' },
-          fontFamily: 'Digit',
-        }}
-      >
-        {(time / 1000).toFixed(2)}
-      </Typography>
+    <MUIBox
+      sx={{
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      ref={boxRef}
+    >
+      <MUIBox>
+        <Typography
+          color={readying ? '#D17777' : ready ? '#79D177' : 'textPrimary'}
+          sx={{
+            fontSize: { xs: '8em', xl: '16em' },
+            fontFamily: 'Digit',
+            userSelect: 'none',
+            msUserSelect: 'none',
+            MozUserSelect: 'none',
+            WebkitUserSelect: 'none',
+          }}
+        >
+          {(time / 1000).toFixed(2)}
+        </Typography>
+      </MUIBox>
     </MUIBox>
   );
 };
