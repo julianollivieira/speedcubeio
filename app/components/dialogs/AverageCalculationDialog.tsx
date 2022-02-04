@@ -1,0 +1,64 @@
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Box,
+  Tabs,
+  Tab,
+  Typography,
+} from '@mui/material';
+import { ReactElement, useState } from 'react';
+
+interface Props {
+  open: boolean;
+  handleClose: () => void;
+}
+
+const AverageCalculationDialog = ({ open, handleClose }: Props): ReactElement => {
+  const [value, setValue] = useState(0);
+
+  const handleChange = (_: any, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle sx={{ bgcolor: 'background.paper' }}>
+        View time calculations
+      </DialogTitle>
+      <DialogContent sx={{ pt: 3, pb: 1, bgcolor: 'background.paper' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="AO5" />
+            <Tab label="AO12" />
+            <Tab label="???" />
+          </Tabs>
+        </Box>
+        {value === 0 && (
+          <Box sx={{ p: 3 }}>
+            <Typography>1</Typography>
+          </Box>
+        )}
+        {value === 1 && (
+          <Box sx={{ p: 3 }}>
+            <Typography>2</Typography>
+          </Box>
+        )}
+        {value === 2 && (
+          <Box sx={{ p: 3 }}>
+            <Typography>3</Typography>
+          </Box>
+        )}
+      </DialogContent>
+      <DialogActions sx={{ p: 2, bgcolor: 'background.paper' }}>
+        <Button onClick={handleClose} autoFocus>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default AverageCalculationDialog;

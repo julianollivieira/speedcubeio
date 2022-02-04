@@ -25,6 +25,7 @@ import { currentBoxIdAtom, boxesAtom, userAtom } from '@/store';
 import deleteTime from '@/services/times/deleteTime';
 import DeleteDialog from '../dialogs/DeleteDialog';
 import { deleteTimeFromBoxArray } from '@/utils/state';
+import AverageCalculationDialog from '../dialogs/AverageCalculationDialog';
 
 const drawerWidth = 360;
 
@@ -92,6 +93,8 @@ const TimeListDrawer = ({
   const [deletingTime, setDeletingTime] = useState<Time | null>(null);
   const [editingTime, setEditingTime] = useState<Time | null>(null);
   const [box, setBox] = useState<BoxType | null>(null);
+  const [showTimeAverageCalculations, setShowTimeAverageCalculations] =
+    useState<Time | null>(null);
 
   useEffect(() => {
     if (!currentBoxId || !boxes) return;
@@ -165,6 +168,9 @@ const TimeListDrawer = ({
                           showControls={showControls}
                           setDeletingTime={(time: Time | null) => setDeletingTime(time)}
                           setEditingTime={(time: Time | null) => setEditingTime(time)}
+                          setShowTimeAverageCalculations={(time: Time | null) => {
+                            setShowTimeAverageCalculations(time);
+                          }}
                         />
                       );
                     })
@@ -212,6 +218,12 @@ const TimeListDrawer = ({
                     // await editTime(editingTime.id);
                     // setRowOpen(null);
                   }}
+                />
+              )}
+              {showTimeAverageCalculations && (
+                <AverageCalculationDialog
+                  open={!!showTimeAverageCalculations}
+                  handleClose={() => setShowTimeAverageCalculations(null)}
                 />
               )}
             </>
