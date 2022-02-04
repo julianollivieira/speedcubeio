@@ -9,7 +9,7 @@ const useTimeList = (box: Box | undefined): TimeList | undefined => {
     if (box) {
       setTimeList(new TimeList(box));
     }
-  }, [box]);
+  }, [box?.times]);
 
   return timeList;
 };

@@ -20,7 +20,7 @@ import {
 import { UnixEpochToDaysAgo, getBoxLastUseOrCreationTime } from '@/utils/helpers';
 import { Box, Profile } from '@/types';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
-import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
+import DeleteDialog from '@/components/dialogs/DeleteDialog';
 import TimeListDrawer from '@/components/timelist/TimeListDrawer';
 import { ReactElement, useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
@@ -35,6 +35,8 @@ import { Person as PersonIcon } from '@mui/icons-material';
 import setBoxVisibility from '@/services/boxes/setBoxVisibility';
 import { useAtom } from 'jotai';
 import { boxesAtom } from '@/store';
+import deleteBox from '@/services/boxes/deleteBox';
+import { deleteBoxFromBoxArray } from '@/utils/state';
 
 interface Props {
   user: User | null | undefined;
@@ -236,13 +238,18 @@ const BoxComponent = ({
       </Grid>
       {showControls && (
         <>
-          {deletingBox && (
-            <DeleteBoxDialog
-              box={deletingBox}
+          {deletingBox && user && (
+            <DeleteDialog
+              open={!!deletingBox}
+              title="Delete box"
+              content="Are you sure you want to delete this box?"
+              successMessage="Box deleted succesfully"
               handleClose={() => setDeletingBox(null)}
-              onDelete={() => {
-                Router.push('/boxes');
+              handleDelete={async () => {
+                await deleteBox(user, deletingBox.id);
+                setBoxes(deleteBoxFromBoxArray(boxes, deletingBox.id));
               }}
+              onSuccess={() => Router.push('/boxes')}
             />
           )}
           {editingBox && (

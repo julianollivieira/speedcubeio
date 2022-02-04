@@ -5,9 +5,13 @@ import { Grid, Typography } from '@mui/material';
 import BoxCard from '@/components/boxes/card/BoxCard';
 import BoxGridToolbar from '@/components/boxes/grid/BoxGridToolbar';
 import CreateBoxDialog from '@/components/boxes/dialogs/CreateBoxDialog';
-import DeleteBoxDialog from '@/components/boxes/dialogs/DeleteBoxDialog';
 import EditBoxDialog from '@/components/boxes/dialogs/EditBoxDialog';
+import DeleteDialog from '@/components/dialogs/DeleteDialog';
 import type { Profile } from '@/types';
+import deleteBox from '@/services/boxes/deleteBox';
+import { useAtom } from 'jotai';
+import { boxesAtom } from '@/store';
+import { deleteBoxFromBoxArray } from '@/utils/state';
 
 interface Props {
   user: User | null | undefined;
@@ -22,14 +26,16 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
   const [deletingBox, setDeletingBox] = useState<Box | null>(null);
   const [editingBox, setEditingBox] = useState<Box | null>(null);
 
+  const [, setBoxes] = useAtom(boxesAtom);
+
   const boxCards = boxes.map((box) => (
     <Grid xs={12} lg={6} xl={4} item key={box.id}>
       <BoxCard
         user={user}
         box={box}
         showControls={showControls}
-        openDeleteBoxDialog={() => setDeletingBox(box)}
-        openEditBoxDialog={() => setEditingBox(box)}
+        setDeletingBox={setDeletingBox}
+        setEditingBox={setEditingBox}
         share={() => console.log(`localhost:3000/users/${user?.uid}/boxes/${box.id}`)}
       />
     </Grid>
@@ -67,8 +73,18 @@ const BoxGrid = ({ user, boxes, profile, showControls = false }: Props): ReactEl
       {showControls && (
         <>
           <CreateBoxDialog open={creatingBox} handleClose={() => setCreatingBox(false)} />
-          {deletingBox && (
-            <DeleteBoxDialog box={deletingBox} handleClose={() => setDeletingBox(null)} />
+          {deletingBox && user && (
+            <DeleteDialog
+              open={!!deletingBox}
+              title="Delete box"
+              content="Are you sure you want to delete this box?"
+              successMessage="Box deleted succesfully"
+              handleClose={() => setDeletingBox(null)}
+              handleDelete={async () => {
+                await deleteBox(user, deletingBox.id);
+                setBoxes(deleteBoxFromBoxArray(boxes, deletingBox.id));
+              }}
+            />
           )}
           {editingBox && (
             <EditBoxDialog box={editingBox} handleClose={() => setEditingBox(null)} />

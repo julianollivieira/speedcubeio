@@ -36,8 +36,8 @@ interface Props {
   user: User | null | undefined;
   box: Box;
   showControls: boolean;
-  openDeleteBoxDialog: () => void;
-  openEditBoxDialog: () => void;
+  setDeletingBox: (box: Box) => void;
+  setEditingBox: (box: Box) => void;
   share: () => void;
 }
 
@@ -45,8 +45,8 @@ const BoxCard = ({
   user,
   box,
   showControls,
-  openDeleteBoxDialog,
-  openEditBoxDialog,
+  setDeletingBox,
+  setEditingBox,
   share,
 }: Props): ReactElement => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -195,7 +195,7 @@ const BoxCard = ({
             key="edit"
             onClick={() => {
               handleMenuClose();
-              openEditBoxDialog();
+              setEditingBox(box);
             }}
           >
             <ListItemIcon>
@@ -207,7 +207,7 @@ const BoxCard = ({
             key="delete"
             onClick={() => {
               handleMenuClose();
-              openDeleteBoxDialog();
+              setDeletingBox(box);
             }}
           >
             <ListItemIcon>

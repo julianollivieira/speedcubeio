@@ -17,12 +17,14 @@ import TimeList from '@/classes/TimeList';
 import { useEffect, useState } from 'react';
 import TimeListRow from '@/components/timelist/TimeListRow';
 import { Time, Box as BoxType } from '@/types';
-import DeleteTimeDialog from '@/components/timer/dialogs/DeleteTimeDialog';
 import EditTimeDialog from '@/components/timer/dialogs/EditTimeDialog';
 import BoxSelector from '@/components/misc/BoxSelector';
 import PuzzleSelector from '@/components/misc/PuzzleSelector';
 import { useAtom } from 'jotai';
-import { currentBoxIdAtom, boxesAtom } from '@/store';
+import { currentBoxIdAtom, boxesAtom, userAtom } from '@/store';
+import deleteTime from '@/services/times/deleteTime';
+import DeleteDialog from '../dialogs/DeleteDialog';
+import { deleteTimeFromBoxArray } from '@/utils/state';
 
 const drawerWidth = 360;
 
@@ -82,7 +84,8 @@ const TimeListDrawer = ({
   const theme = useTheme();
 
   const [currentBoxId] = useAtom(currentBoxIdAtom);
-  const [boxes] = useAtom(boxesAtom);
+  const [boxes, setBoxes] = useAtom(boxesAtom);
+  const [user] = useAtom(userAtom);
 
   const [timeList, setTimeList] = useState<TimeList>();
   const [rowOpen, setRowOpen] = useState<number | null>(null);
@@ -184,28 +187,34 @@ const TimeListDrawer = ({
               </Box>
             )}
           </Box>
-          {showControls && deletingTime ? (
-            <DeleteTimeDialog
-              time={deletingTime}
-              handleClose={() => setDeletingTime(null)}
-              onDelete={() => {
-                setRowOpen(null);
-              }}
-            />
-          ) : (
-            ''
-          )}
-          {showControls && editingTime ? (
-            <EditTimeDialog
-              time={editingTime}
-              handleClose={() => setEditingTime(null)}
-              editTime={async (): Promise<void> => {
-                // await editTime(editingTime.id);
-                // setRowOpen(null);
-              }}
-            />
-          ) : (
-            ''
+          {showControls && (
+            <>
+              {deletingTime && user && currentBoxId && (
+                <DeleteDialog
+                  open={!!deletingTime}
+                  title="Delete time"
+                  content="Are you sure you want to delete this time?"
+                  successMessage="Time deleted succesfully"
+                  handleClose={() => setDeletingTime(null)}
+                  handleDelete={async () => {
+                    await deleteTime(user, currentBoxId, deletingTime.id);
+                    setBoxes(
+                      deleteTimeFromBoxArray(boxes, currentBoxId, deletingTime.id)
+                    );
+                  }}
+                />
+              )}
+              {editingTime && (
+                <EditTimeDialog
+                  time={editingTime}
+                  handleClose={() => setEditingTime(null)}
+                  editTime={async (): Promise<void> => {
+                    // await editTime(editingTime.id);
+                    // setRowOpen(null);
+                  }}
+                />
+              )}
+            </>
           )}
         </>
       </Drawer>
