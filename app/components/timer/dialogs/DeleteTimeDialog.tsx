@@ -31,13 +31,13 @@ const DeleteTimeDialog = ({ time, handleClose, onDelete }: Props): ReactElement 
 
   return (
     <Dialog open={!!time} onClose={handleClose}>
-      <DialogTitle>Delete time</DialogTitle>
-      <DialogContent>
+      <DialogTitle sx={{ bgcolor: 'background.paper' }}>Delete time</DialogTitle>
+      <DialogContent sx={{ pt: 3, pb: 1, bgcolor: 'background.paper' }}>
         <DialogContentText id="alert-dialog-description">
           Are you sure you want to delete this time?
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ p: 2, bgcolor: 'background.paper' }}>
         <Button onClick={handleClose} autoFocus>
           Cancel
         </Button>

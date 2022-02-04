@@ -69,26 +69,13 @@ const EditTimeDialog = ({ time, handleClose, editTime }: Props): ReactElement =>
   return (
     <Dialog open={!!time} onClose={handleClose}>
       <Box component="form" onSubmit={formik.handleSubmit}>
-        <DialogTitle>Edit a time</DialogTitle>
-        <DialogContent>
-          {/* <TextField
-            autoFocus
-            name="time"
-            id="time"
-            label="time"
-            ref={ref}
-            value={formik.values.time}
-            onChange={formik.handleChange}
-            error={formik.touched.time && !!formik.errors.time}
-            helperText={formik.touched.time && formik.errors.time}
-            fullWidth
-            sx={{ my: 2 }}
-          /> */}
+        <DialogTitle sx={{ bgcolor: 'background.paper' }}>Edit a time</DialogTitle>
+        <DialogContent dividers sx={{ bgcolor: '#151C24' }}>
           <TextField
             autoFocus
             name="scramble"
             id="scramble"
-            label="scramble"
+            label="Scramble"
             value={formik.values.scramble}
             onChange={formik.handleChange}
             error={formik.touched.scramble && !!formik.errors.scramble}
@@ -99,7 +86,7 @@ const EditTimeDialog = ({ time, handleClose, editTime }: Props): ReactElement =>
           <TextField
             name="comment"
             id="comment"
-            label="comment"
+            label="Comment"
             value={formik.values.comment}
             onChange={formik.handleChange}
             error={formik.touched.comment && !!formik.errors.comment}
@@ -108,7 +95,7 @@ const EditTimeDialog = ({ time, handleClose, editTime }: Props): ReactElement =>
             sx={{ my: 2 }}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ p: 2, bgcolor: 'background.paper' }}>
           <Button onClick={handleClose}>Cancel</Button>
           <Button type="submit" disabled={loading}>
             Save
