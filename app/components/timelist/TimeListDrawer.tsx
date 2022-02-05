@@ -94,7 +94,7 @@ const TimeListDrawer = ({
   const [editingTime, setEditingTime] = useState<Time | null>(null);
   const [box, setBox] = useState<BoxType | null>(null);
   const [showTimeAverageCalculations, setShowTimeAverageCalculations] =
-    useState<Time | null>(null);
+    useState<number>(0);
 
   useEffect(() => {
     if (!currentBoxId || !boxes) return;
@@ -168,8 +168,8 @@ const TimeListDrawer = ({
                           showControls={showControls}
                           setDeletingTime={(time: Time | null) => setDeletingTime(time)}
                           setEditingTime={(time: Time | null) => setEditingTime(time)}
-                          setShowTimeAverageCalculations={(time: Time | null) => {
-                            setShowTimeAverageCalculations(time);
+                          setShowTimeAverageCalculations={(index: number) => {
+                            setShowTimeAverageCalculations(index);
                           }}
                         />
                       );
@@ -223,7 +223,8 @@ const TimeListDrawer = ({
               {showTimeAverageCalculations && (
                 <AverageCalculationDialog
                   open={!!showTimeAverageCalculations}
-                  handleClose={() => setShowTimeAverageCalculations(null)}
+                  index={showTimeAverageCalculations}
+                  handleClose={() => setShowTimeAverageCalculations(0)}
                 />
               )}
             </>

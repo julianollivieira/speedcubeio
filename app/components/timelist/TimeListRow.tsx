@@ -33,7 +33,7 @@ interface Props {
   showControls?: boolean;
   setDeletingTime: (timeData: Time | null) => void;
   setEditingTime: (timeData: Time | null) => void;
-  setShowTimeAverageCalculations: (timeData: Time | null) => void;
+  setShowTimeAverageCalculations: (index: number) => void;
 }
 
 const TimeListRow = ({
@@ -134,9 +134,7 @@ const TimeListRow = ({
                     <IconButton onClick={() => setEditingTime(timeData ?? null)}>
                       <EditIcon />
                     </IconButton>
-                    <IconButton
-                      onClick={() => setShowTimeAverageCalculations(timeData ?? null)}
-                    >
+                    <IconButton onClick={() => setShowTimeAverageCalculations(index)}>
                       <CalculateIcon />
                     </IconButton>
                     <IconButton onClick={() => setDeletingTime(timeData ?? null)}>

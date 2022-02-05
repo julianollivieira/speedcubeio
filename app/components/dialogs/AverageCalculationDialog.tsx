@@ -1,3 +1,4 @@
+import { Time } from '@/types';
 import {
   Dialog,
   DialogTitle,
@@ -10,13 +11,15 @@ import {
   Typography,
 } from '@mui/material';
 import { ReactElement, useState } from 'react';
+import AverageOfFiveCalculationsTable from '../timelist/averageCalculations/AverageOfFiveCalculationsTable';
 
 interface Props {
   open: boolean;
+  index: number;
   handleClose: () => void;
 }
 
-const AverageCalculationDialog = ({ open, handleClose }: Props): ReactElement => {
+const AverageCalculationDialog = ({ open, index, handleClose }: Props): ReactElement => {
   const [value, setValue] = useState(0);
 
   const handleChange = (_: any, newValue: number) => {
@@ -38,7 +41,8 @@ const AverageCalculationDialog = ({ open, handleClose }: Props): ReactElement =>
         </Box>
         {value === 0 && (
           <Box sx={{ p: 3 }}>
-            <Typography>1</Typography>
+            <Typography>Explanation about average of 5 here</Typography>
+            <AverageOfFiveCalculationsTable index={index} />
           </Box>
         )}
         {value === 1 && (
