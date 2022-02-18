@@ -50,7 +50,7 @@ const NavigationBar = ({
     <>
       <AppBar
         position="fixed"
-        sx={{ bgcolor: 'background.paper', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ bgcolor: 'background.paper', zIndex: (theme) => theme.zIndex.drawer + 3 }}
       >
         <Container maxWidth={!isNotApp ? false : 'lg'} disableGutters>
           <Toolbar

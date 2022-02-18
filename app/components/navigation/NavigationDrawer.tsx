@@ -77,7 +77,7 @@ const NavigationDrawer = ({
     <>
       <Backdrop
         open={open}
-        sx={{ color: '#fff', zIndex: 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         onClick={handleDrawerClose}
       />
       <Drawer
@@ -86,7 +86,12 @@ const NavigationDrawer = ({
         onMouseEnter={handleDrawerOpen}
         onMouseLeave={handleDrawerClose}
         theme={theme}
-        sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+        PaperProps={{ sx: { zIndex: (theme) => theme.zIndex.drawer + 2 } }}
       >
         <List sx={{ pt: '64px', flex: 1 }}>
           <Link href="/home" passHref>
