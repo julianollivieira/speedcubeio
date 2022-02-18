@@ -31,7 +31,7 @@ const AverageCalculationDialog = ({ open, index, handleClose }: Props): ReactEle
       <DialogTitle sx={{ bgcolor: 'background.paper' }}>
         View time calculations
       </DialogTitle>
-      <DialogContent sx={{ pt: 3, pb: 1, bgcolor: 'background.paper' }}>
+      <DialogContent dividers sx={{ pt: 3, pb: 1, bgcolor: '#151C24' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="AO5" />

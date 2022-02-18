@@ -44,6 +44,7 @@ const DeleteDialog = ({
           Cancel
         </Button>
         <Button
+          variant="contained"
           disabled={loading}
           onClick={async () => {
             setLoading(true);

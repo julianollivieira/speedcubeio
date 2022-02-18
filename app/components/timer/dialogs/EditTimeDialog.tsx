@@ -97,7 +97,7 @@ const EditTimeDialog = ({ time, handleClose, editTime }: Props): ReactElement =>
         </DialogContent>
         <DialogActions sx={{ p: 2, bgcolor: 'background.paper' }}>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" disabled={loading}>
+          <Button variant="contained" type="submit" disabled={loading}>
             Save
           </Button>
         </DialogActions>
