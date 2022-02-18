@@ -10,7 +10,6 @@ const deleteTime = async (
   boxId: Box['id'],
   timeId: Time['id']
 ): Promise<void> => {
-  console.log('delet etime', user, boxId, timeId);
   const boxDocumentRef = doc(db, 'users', user.uid, 'boxes', boxId);
   const boxSnapshot = await getDoc(boxDocumentRef);
   const boxData = boxSnapshot.data();

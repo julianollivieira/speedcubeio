@@ -214,10 +214,6 @@ const TimeListDrawer = ({
                 <EditTimeDialog
                   time={editingTime}
                   handleClose={() => setEditingTime(null)}
-                  editTime={async (): Promise<void> => {
-                    // await editTime(editingTime.id);
-                    // setRowOpen(null);
-                  }}
                 />
               )}
               {showTimeAverageCalculations && (

@@ -5,7 +5,6 @@ import { useAtom } from 'jotai';
 import {
   userAtom,
   scrambleAtom,
-  scrambleHistoryAtom,
   scrambleLockedAtom,
   currentPuzzleAtom,
   timerActiveAtom,
@@ -22,7 +21,6 @@ const Timer = (): ReactElement => {
   const [scramble, setScramble] = useAtom(scrambleAtom);
   const [currentBoxId] = useAtom(currentBoxIdAtom);
   const [boxes, setBoxes] = useAtom(boxesAtom);
-  const [scrambleHistory, setScrambleHistory] = useAtom(scrambleHistoryAtom);
   const [scrambleLocked] = useAtom(scrambleLockedAtom);
   const [currentPuzzle] = useAtom(currentPuzzleAtom);
   const [, setTimerActive] = useAtom(timerActiveAtom);
@@ -106,13 +104,6 @@ const Timer = (): ReactElement => {
           );
           return;
         }
-        setScrambleHistory([
-          ...scrambleHistory,
-          {
-            scramble: newScramble,
-            puzzle: currentPuzzle,
-          },
-        ]);
       },
     });
 

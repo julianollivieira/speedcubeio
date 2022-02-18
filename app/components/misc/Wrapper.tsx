@@ -1,5 +1,13 @@
 import { ReactElement, ReactNode, useEffect } from 'react';
-import { userAtom, profileAtom, boxesAtom, currentBoxIdAtom } from '@/store';
+import {
+  userAtom,
+  profileAtom,
+  boxesAtom,
+  currentBoxIdAtom,
+  scrambleAtom,
+  scrambleHistoryAtom,
+  currentPuzzleAtom,
+} from '@/store';
 import { useAtom } from 'jotai';
 import { User } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
@@ -15,6 +23,9 @@ interface Props {
 
 const Wrapper = ({ children }: Props): ReactElement => {
   const [user, setUser] = useAtom(userAtom);
+  const [scramble] = useAtom(scrambleAtom);
+  const [scrambleHistory, setScrambleHistory] = useAtom(scrambleHistoryAtom);
+  const [currentPuzzle] = useAtom(currentPuzzleAtom);
   const [, setProfile] = useAtom(profileAtom);
   const [, setBoxes] = useAtom(boxesAtom);
   const [, setCurrentBoxId] = useAtom(currentBoxIdAtom);
@@ -42,6 +53,17 @@ const Wrapper = ({ children }: Props): ReactElement => {
       }
     });
   }, [user]);
+
+  useEffect(() => {
+    if (!scramble || !currentPuzzle) return;
+    setScrambleHistory([
+      ...scrambleHistory,
+      {
+        scramble,
+        puzzle: currentPuzzle,
+      },
+    ]);
+  }, [scramble]);
 
   return <>{children}</>;
 };

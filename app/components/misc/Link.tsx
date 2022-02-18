@@ -12,6 +12,7 @@ interface Props {
   sx?: SxProps<Theme>;
 }
 
+// eslint-disable-next-line react/display-name
 const Link = forwardRef(
   ({ href, hrefAs, children, passHref, underline, sx }: Props, _) => {
     return (

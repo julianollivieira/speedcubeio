@@ -37,11 +37,17 @@ export const boxValidationSchema = yup.object().shape({
     .string()
     .required('Icon is required')
     .min(1, 'Icon should be at least 1 character')
-    .max(2, 'Icon cannot be longer then 2 characters'),
+    .max(2, 'Icon cannot be longer than 2 characters'),
   name: yup
     .string()
     .required('Name is required')
-    .max(32, 'Name should cannot be longer then 32 characters'),
+    .max(32, 'Name should cannot be longer than 32 characters'),
+});
+
+export const timeValidationSchema = yup.object().shape({
+  time: yup.number().required('Time is required'),
+  scramble: yup.string().max(1024, 'Scramble cannot be longer than 1024 characters'),
+  comment: yup.string().max(1024, 'Comment cannot be longer than 1024 characters'),
 });
 
 export const changePasswordValidationSchema = yup.object().shape({

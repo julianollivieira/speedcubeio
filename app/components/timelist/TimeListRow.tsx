@@ -88,7 +88,17 @@ const TimeListRow = ({
                 <ListItemText
                   sx={{ whiteSpace: 'normal' }}
                   primary="Scramble"
-                  secondary={timeData?.scramble}
+                  secondary={
+                    <span
+                      style={{
+                        fontStyle: timeData?.scramble ? 'normal' : 'italic',
+                      }}
+                    >
+                      {timeData?.scramble && timeData?.scramble !== ''
+                        ? timeData?.scramble
+                        : 'none'}
+                    </span>
+                  }
                 />
               </ListItem>
               <ListItem>
