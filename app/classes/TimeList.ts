@@ -1,4 +1,5 @@
 import { Box, Time } from '@/types';
+import { msToTime, amountOfTimesBetween } from '@/utils/helpers';
 
 class TimeList {
   public times: number[] = [];
@@ -32,6 +33,30 @@ class TimeList {
       ao5: this.ao5s[index],
       ao12: this.ao12s[index],
     }));
+  }
+
+  public getTimeDistributionChartObject(): { name: string; amount: number }[] {
+    const longestTime = this.getWorstTime();
+    let truncated = longestTime?.toFixed(1);
+    if (!truncated) return [];
+
+    if (parseInt(truncated[truncated.length - 1]) < 2) {
+      truncated = truncated.slice(0, -1);
+      truncated += '2';
+    }
+
+    const data = [];
+
+    const steps = parseInt(truncated) / 200;
+
+    for (let i = 0; i < steps; i++) {
+      data.push({
+        name: `${msToTime(i * 200)} - ${msToTime((i + 1) * 200)}`,
+        amount: amountOfTimesBetween(this.times, i * 200, (i + 1) * 200),
+      });
+    }
+
+    return data;
   }
 
   // public getPuzzlesPieChartObject(): any[] {

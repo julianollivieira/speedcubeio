@@ -37,7 +37,7 @@ const ResendEmailVerificationForm = (): ReactElement => {
         })
         .catch((error) => {
           setLoading(false);
-          let status: VariantType =
+          const status: VariantType =
             (error as Error).code === 'auth/email-already-verified' ? 'info' : 'error';
           createSnackbar(
             enqueueSnackbar,

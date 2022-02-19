@@ -11,6 +11,14 @@ export const capitalizeFirstLetter = (string?: string): string | null => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+export const amountOfTimesBetween = (
+  times: number[],
+  from: number,
+  to: number
+): number => {
+  return times.filter((time) => time > from && time <= to).length;
+};
+
 // Return a well formatted time string from input time (ms)
 export const msToTime = (
   ms: number | null = null,

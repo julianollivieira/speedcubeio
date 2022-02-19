@@ -29,6 +29,7 @@ import createSnackbar from '@/utils/snackbar';
 import { useSnackbar } from 'notistack';
 import SummaryTableCard from '@/components/statistics/SummaryTableCard';
 import TimeGraphCard from '@/components/statistics/TimeGraphCard';
+import TimeDistributionChartCard from '@/components/statistics/TimeDistributionChartCard';
 import LastDifferenceTableCard from '@/components/statistics/LastDifferenceTableCard';
 import Link from '@/components/misc/Link';
 import { Person as PersonIcon } from '@mui/icons-material';
@@ -234,6 +235,9 @@ const BoxComponent = ({
         </Grid>
         <Grid item xs={12}>
           <TimeGraphCard box={box === null ? undefined : box} />
+        </Grid>
+        <Grid item xs={12}>
+          <TimeDistributionChartCard box={box === null ? undefined : box} />
         </Grid>
       </Grid>
       {showControls && (

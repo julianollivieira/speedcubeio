@@ -1,5 +1,5 @@
 import { boxesAtom, currentBoxIdAtom } from '@/store';
-import { Box, Time } from '@/types';
+import { Box } from '@/types';
 import { msToTime } from '@/utils/helpers';
 import {
   TableContainer,

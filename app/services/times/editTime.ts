@@ -1,5 +1,5 @@
 import { Box, Time } from '@/types';
-import { getFirestore, updateDoc, getDoc, doc, deleteField } from '@firebase/firestore';
+import { getFirestore, updateDoc, getDoc, doc } from '@firebase/firestore';
 import app from '@/utils/firebase/client';
 import { User } from '@firebase/auth';
 
