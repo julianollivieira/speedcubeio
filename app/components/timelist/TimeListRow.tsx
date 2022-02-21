@@ -18,7 +18,6 @@ import {
   Description as DescriptionIcon,
   Delete as DeleteIcon,
   Edit as EditIcon,
-  Calculate as CalculateIcon,
 } from '@mui/icons-material';
 import { capitalizeFirstLetter } from '@/utils/helpers';
 import { msToTime, UnixEpochToUTC } from '@/utils/helpers';
@@ -33,7 +32,6 @@ interface Props {
   showControls?: boolean;
   setDeletingTime: (timeData: Time | null) => void;
   setEditingTime: (timeData: Time | null) => void;
-  setShowTimeAverageCalculations: (index: number) => void;
 }
 
 const TimeListRow = ({
@@ -46,7 +44,6 @@ const TimeListRow = ({
   showControls = false,
   setDeletingTime,
   setEditingTime,
-  setShowTimeAverageCalculations,
 }: Props): ReactElement => {
   return (
     <Fragment key={timeData?.id}>
@@ -143,9 +140,6 @@ const TimeListRow = ({
                   >
                     <IconButton onClick={() => setEditingTime(timeData ?? null)}>
                       <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => setShowTimeAverageCalculations(index)}>
-                      <CalculateIcon />
                     </IconButton>
                     <IconButton onClick={() => setDeletingTime(timeData ?? null)}>
                       <DeleteIcon />

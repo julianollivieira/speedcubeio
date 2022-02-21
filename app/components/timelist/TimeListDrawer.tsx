@@ -25,7 +25,6 @@ import { currentPuzzleAtom, currentBoxIdAtom, boxesAtom, userAtom } from '@/stor
 import deleteTime from '@/services/times/deleteTime';
 import DeleteDialog from '../dialogs/DeleteDialog';
 import { deleteTimeFromBoxArray } from '@/utils/state';
-import AverageCalculationDialog from '../dialogs/AverageCalculationDialog';
 
 const drawerWidth = 360;
 
@@ -94,8 +93,6 @@ const TimeListDrawer = ({
   const [deletingTime, setDeletingTime] = useState<Time | null>(null);
   const [editingTime, setEditingTime] = useState<Time | null>(null);
   const [box, setBox] = useState<BoxType | null>(null);
-  const [showTimeAverageCalculations, setShowTimeAverageCalculations] =
-    useState<number>(0);
 
   useEffect(() => {
     if (!currentBoxId || !boxes) return;
@@ -169,9 +166,6 @@ const TimeListDrawer = ({
                           showControls={showControls}
                           setDeletingTime={(time: Time | null) => setDeletingTime(time)}
                           setEditingTime={(time: Time | null) => setEditingTime(time)}
-                          setShowTimeAverageCalculations={(index: number) => {
-                            setShowTimeAverageCalculations(index);
-                          }}
                         />
                       );
                     })
@@ -220,13 +214,6 @@ const TimeListDrawer = ({
                 <EditTimeDialog
                   time={editingTime}
                   handleClose={() => setEditingTime(null)}
-                />
-              )}
-              {showTimeAverageCalculations && (
-                <AverageCalculationDialog
-                  open={!!showTimeAverageCalculations}
-                  index={showTimeAverageCalculations}
-                  handleClose={() => setShowTimeAverageCalculations(0)}
                 />
               )}
             </>
