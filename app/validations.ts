@@ -47,6 +47,7 @@ export const boxValidationSchema = yup.object().shape({
 export const timeValidationSchema = yup.object().shape({
   time: yup.number().required('Time is required'),
   scramble: yup.string().max(1024, 'Scramble cannot be longer than 1024 characters'),
+  puzzle: yup.string().max(64, 'Puzzle cannot be longer than 64 characters'),
   comment: yup.string().max(1024, 'Comment cannot be longer than 1024 characters'),
 });
 

@@ -21,7 +21,7 @@ import EditTimeDialog from '@/components/timer/dialogs/EditTimeDialog';
 import BoxSelector from '@/components/misc/BoxSelector';
 import PuzzleSelector from '@/components/misc/PuzzleSelector';
 import { useAtom } from 'jotai';
-import { currentBoxIdAtom, boxesAtom, userAtom } from '@/store';
+import { currentPuzzleAtom, currentBoxIdAtom, boxesAtom, userAtom } from '@/store';
 import deleteTime from '@/services/times/deleteTime';
 import DeleteDialog from '../dialogs/DeleteDialog';
 import { deleteTimeFromBoxArray } from '@/utils/state';
@@ -86,6 +86,7 @@ const TimeListDrawer = ({
 
   const [currentBoxId] = useAtom(currentBoxIdAtom);
   const [boxes, setBoxes] = useAtom(boxesAtom);
+  const [currentPuzzle, setCurrentPuzzle] = useAtom(currentPuzzleAtom);
   const [user] = useAtom(userAtom);
 
   const [timeList, setTimeList] = useState<TimeList>();
@@ -189,7 +190,12 @@ const TimeListDrawer = ({
                   backgroundColor: '#151C24',
                 }}
               >
-                <PuzzleSelector />
+                <PuzzleSelector
+                  currentPuzzle={currentPuzzle}
+                  onChange={(puzzle) => {
+                    setCurrentPuzzle(puzzle);
+                  }}
+                />
               </Box>
             )}
           </Box>

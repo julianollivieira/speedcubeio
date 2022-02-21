@@ -11,15 +11,19 @@ import { ReactElement, useEffect } from 'react';
 import puzzles from '@/utils/puzzles';
 import { capitalizeFirstLetter } from '@/utils/helpers';
 import { useAtom } from 'jotai';
-import { currentPuzzleAtom, timerActiveAtom } from '@/store';
+import { timerActiveAtom } from '@/store';
 
-const PuzzleSelector = (): ReactElement => {
-  const [currentPuzzle, setCurrentPuzzle] = useAtom(currentPuzzleAtom);
+interface Props {
+  currentPuzzle: Puzzle | undefined;
+  onChange: (puzzle: Puzzle) => void;
+}
+
+const PuzzleSelector = ({ currentPuzzle, onChange }: Props): ReactElement => {
   const [timerActive] = useAtom(timerActiveAtom);
 
   useEffect(() => {
     if (currentPuzzle === undefined) {
-      setCurrentPuzzle(puzzles[1]);
+      onChange(puzzles[1]);
     }
   }, []);
 
@@ -31,7 +35,7 @@ const PuzzleSelector = (): ReactElement => {
         disabled={timerActive ? true : puzzles.length == 0}
         input={<OutlinedInput notched={true} label="Current puzzle"></OutlinedInput>}
         onChange={(event: SelectChangeEvent) => {
-          setCurrentPuzzle(event.target.value as Puzzle);
+          onChange(event.target.value as Puzzle);
         }}
       >
         {puzzles.map((puzzleItem: Puzzle) => (

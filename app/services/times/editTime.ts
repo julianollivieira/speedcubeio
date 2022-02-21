@@ -3,7 +3,7 @@ import { getFirestore, updateDoc, getDoc, doc } from '@firebase/firestore';
 import app from '@/utils/firebase/client';
 import { User } from '@firebase/auth';
 
-type Options = Pick<Time, 'time' | 'scramble' | 'comment'>;
+type Options = Pick<Time, 'time' | 'scramble' | 'comment' | 'puzzle'>;
 
 const db = getFirestore(app);
 
@@ -25,6 +25,7 @@ const editTime = async (
         ...time,
         time: options.time,
         scramble: options.scramble,
+        puzzle: options.puzzle,
         comment: options.comment ? options.comment : '',
       } as Time;
       return updatedTime;

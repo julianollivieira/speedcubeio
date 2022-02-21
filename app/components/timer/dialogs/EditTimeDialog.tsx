@@ -20,6 +20,7 @@ import { useAtom } from 'jotai';
 import { userAtom, boxesAtom, currentBoxIdAtom } from '@/store';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import PuzzleSelector from '@/components/misc/PuzzleSelector';
 dayjs.extend(duration);
 
 const MaskedInput = IMaskMixin(({ inputRef }) => (
@@ -122,6 +123,12 @@ const EditTimeDialog = ({ time, handleClose }: Props): ReactElement => {
             helperText={formik.touched.scramble && formik.errors.scramble}
             fullWidth
             sx={{ my: 2 }}
+          />
+          <PuzzleSelector
+            currentPuzzle={formik.values.puzzle}
+            onChange={(puzzle) => {
+              formik.setFieldValue('puzzle', puzzle);
+            }}
           />
           <TextField
             name="comment"
